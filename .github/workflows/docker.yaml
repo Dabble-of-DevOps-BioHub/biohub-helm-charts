@@ -12,6 +12,8 @@ jobs:
       run: |-
         CALVER="$( date -u '+%Y.%m.%d' )"
         SHA7="${GITHUB_SHA::7}"
+        echo "CALVER=${CALVER}" >> $GITHUB_ENV
+        echo "SHA7=${SHA7}" >> $GITHUB_ENV
     - uses: mikefarah/yq@v4.16.2
       id: yq
       with:
