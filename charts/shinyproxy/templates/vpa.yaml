@@ -1,4 +1,4 @@
-{{- if .Values.appPod.verticalPodAutoscaling.enabled }}
+{{- if .Values.verticalPodAutoscaling.enabled }}
 apiVersion: "autoscaling.k8s.io/v1"
 kind: VerticalPodAutoscaler
 metadata:
@@ -16,5 +16,5 @@ spec:
     kind: Deployment
     name: "shinyproxy-{{ .Release.Name }}"
   resourcePolicy:
-    {{- toYaml .Values.appPod.verticalPodAutoscaling.resourcePolicy | nindent 4 }}
+    {{- toYaml .Values.verticalPodAutoscaling.resourcePolicy | nindent 4 }}
 {{- end }}

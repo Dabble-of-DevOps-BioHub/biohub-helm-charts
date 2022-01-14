@@ -20,6 +20,19 @@ letsEncrypt:
     # options: traefik, nginx
     class: ""
 
+verticalPodAutoscaling:
+  enabled: false
+  resourcePolicy:
+    containerPolicies:
+      - containerName: '*'
+        minAllowed:
+          cpu: 100m
+          memory: 50Mi
+        maxAllowed:
+          cpu: 8
+          memory: 5G
+        controlledResources: ["cpu", "memory"]
+
 appPod:
   resources:
     # appPod.resources.requests -- Resources requests for spawned pods
@@ -30,18 +43,6 @@ appPod:
     limits:
       cpu: 300m
       memory: 200Mi
-  verticalPodAutoscaling:
-    enabled: false
-    resourcePolicy:
-      containerPolicies:
-        - containerName: '*'
-          minAllowed:
-            cpu: 100m
-            memory: 50Mi
-          maxAllowed:
-            cpu: 8
-            memory: 5G
-          controlledResources: ["cpu", "memory"]
 # proxy -- See https://www.shinyproxy.io/configuration/ for application configuration
 # @default -- Default values
 proxy:
@@ -86,17 +87,5 @@ proxy:
     limits:
       cpu: 300m
       memory: 800Mi
-  verticalPodAutoscaling:
-    enabled: false
-    resourcePolicy:
-      containerPolicies:
-        - containerName: '*'
-          minAllowed:
-            cpu: 100m
-            memory: 50Mi
-          maxAllowed:
-            cpu: 8
-            memory: 5G
-          controlledResources: ["cpu", "memory"]
 
 createUsersNamespace: false
