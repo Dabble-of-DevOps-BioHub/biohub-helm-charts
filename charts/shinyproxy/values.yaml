@@ -59,6 +59,7 @@ proxy:
   # proxy.service -- ShinyProxy service configuration
   service:
     type: ClusterIP
+    clusterIP:
     annotations: {}
     ports:
       nodePort:

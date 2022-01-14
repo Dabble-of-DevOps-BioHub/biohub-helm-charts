@@ -63,7 +63,7 @@ spec:
             initialDelaySeconds: 40
             timeoutSeconds: 5
           {{- end }}
-      serviceAccountName: shinyproxy
+      serviceAccountName: "shinyproxy-{{ .Release.Name }}"
       volumes:
       - name: application-conf
         configMap:

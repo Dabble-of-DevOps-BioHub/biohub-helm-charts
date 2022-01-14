@@ -11,6 +11,11 @@ metadata:
   {{- end }}
 spec:
   type: {{ .Values.proxy.service.type }}
+
+  {{- if and .Values.proxy.service.clusterIP (eq .Values.proxy.service.type "ClusterIP") }}
+  clusterIP: {{ .Values.proxy.service.clusterIP }}
+  {{- end }}
+
   {{- if .Values.proxy.service.loadBalancerIP }}
   loadBalancerIP: {{ .Values.proxy.service.loadBalancerIP }}
   {{- end }}

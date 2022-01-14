@@ -16,5 +16,5 @@ spec:
     kind: Deployment
     name: "shinyproxy-{{ .Release.Name }}"
   resourcePolicy:
-    {{- toYaml .Values.appPod.verticalPodAutoscaling.resourcePolicy | nindent 3 }}
+    {{- toYaml .Values.appPod.verticalPodAutoscaling.resourcePolicy | nindent 4 }}
 {{- end }}
