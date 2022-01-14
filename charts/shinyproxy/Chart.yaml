@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: 2.5.0
+description: A Helm chart to install Shinyproxy
+name: shinyproxy
+type: application
+version: 0.6.1

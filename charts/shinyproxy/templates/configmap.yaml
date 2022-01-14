@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "shinyproxy-{{ .Release.Name }}"
+  labels:
+    {{- include "shinyproxy.labels" . | nindent 4 }}
+data:
+{{- $values := pick .Values "proxy" "logging" "management" }}
+{{- $_ := set $values "proxy" (omit $values.proxy "image" "annotations" "labels" "nodeSelector" "resources" "service" "ldap" "kerberos" "keycloak" "openid" "saml" "social" "users") }}
+{{- if not (hasKey $values.proxy.kubernetes "namespace") }}
+  {{- $_ := set $values.proxy.kubernetes "namespace" .Release.Namespace }}
+{{- end }}
+{{- range .Values.proxy.specs }}
+  {{- if not (index . "container-memory-request") }}
+    {{- $_ := set . "container-memory-request" $.Values.appPod.resources.requests.memory }}
+  {{- end }}
+  {{- if not (index . "container-cpu-request") }}
+    {{- $_ := set . "container-cpu-request" $.Values.appPod.resources.requests.cpu }}
+  {{- end }}
+  {{- if not (index . "container-memory-limit") }}
+    {{- $_ := set . "container-memory-limit" $.Values.appPod.resources.limits.memory }}
+  {{- end }}
+  {{- if not (index . "container-cpu-limit") }}
+    {{- $_ := set . "container-cpu-limit" $.Values.appPod.resources.limits.cpu }}
+  {{- end }}
+  {{- if (index . "labels") }}
+    {{- $_ := set . "labels" (merge .labels (dict "z2sp.instance" $.Release.Name)) }}
+  {{- else }}
+    {{- $_ := set . "labels" (dict "z2sp.instance" $.Release.Name) }}
+  {{- end }}
+{{- end }}
+  application.yml: |
+  {{- $values | toYaml | nindent 4 }}

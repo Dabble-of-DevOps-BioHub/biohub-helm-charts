@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    {{- include "shinyproxy.labels" . | nindent 4 }}
+  name: "shinyproxy-{{ .Release.Name }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "shinyproxy.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "shinyproxy.selectorLabels" . | nindent 8 }}
+        {{- if .Values.proxy.labels }}
+        {{- .Values.proxy.labels | toYaml | trimSuffix "\n" | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config-map: {{ include (print .Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print .Template.BasePath "/secrets.yaml") . | sha256sum }}
+        {{- if .Values.proxy.annotations }}
+        {{- .Values.proxy.annotations | toYaml | trimSuffix "\n" | nindent 8 }}
+        {{- end }}
+    spec:
+      nodeSelector: {{ toJson .Values.proxy.nodeSelector }}
+      containers:
+        - name: shinyproxy
+          image: {{ .Values.proxy.image.name }}:{{ .Values.proxy.image.tag }}
+          env:
+            - name: SPRING_APPLICATION_JSON
+              valueFrom:
+                secretKeyRef:
+                  name: "shinyproxy-{{ .Release.Name }}"
+                  key: secrets.json
+          volumeMounts:
+          - name: application-conf
+            mountPath: /opt/shinyproxy/application.yml
+            subPath: application.yml
+          resources:
+            {{- .Values.proxy.resources | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- if .Values.proxy.readinessProbe }}
+          readinessProbe:
+            {{- .Values.proxy.readinessProbe | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- else }}
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 9090
+            periodSeconds: 20
+            initialDelaySeconds: 40
+            timeoutSeconds: 5
+          {{- end }}
+          {{- if .Values.proxy.livenessProbe }}
+          livenessProbe:
+            {{- .Values.proxy.livenessProbe | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- else }}
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 9090
+            periodSeconds: 20
+            initialDelaySeconds: 40
+            timeoutSeconds: 5
+          {{- end }}
+      serviceAccountName: shinyproxy
+      volumes:
+      - name: application-conf
+        configMap:
+          name: "shinyproxy-{{ .Release.Name }}"
