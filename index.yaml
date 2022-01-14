@@ -3,6 +3,16 @@ entries:
   shinyproxy:
   - apiVersion: v2
     appVersion: 2.6.0
+    created: "2022-01-14T20:42:21.110606542Z"
+    description: A Helm chart to install Shinyproxy
+    digest: 6e2b23c4bde06f72693b69c26bc405fc73043f7212f7fc43353abba541a02da8
+    name: shinyproxy
+    type: application
+    urls:
+    - https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/download/shinyproxy-0.6.9/shinyproxy-0.6.9.tgz
+    version: 0.6.9
+  - apiVersion: v2
+    appVersion: 2.6.0
     created: "2022-01-14T19:30:11.567805681Z"
     description: A Helm chart to install Shinyproxy
     digest: b8d6dd8fa6c4cca2382bc99de0bf6b48f1288a491993a29020214097760b8efc
@@ -71,4 +81,4 @@ entries:
     urls:
     - https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/download/shinyproxy-0.6.2/shinyproxy-0.6.2.tgz
     version: 0.6.2
-generated: "2022-01-14T19:30:11.56783808Z"
+generated: "2022-01-14T20:42:21.110646643Z"
