@@ -11,6 +11,15 @@ ingress:
   # ingress.annotations -- Annotations to add to the ingress
   path: ""
   # ingress.path -- Set path in the ingress. Defaults to proxy.landing-page if blank.
+
+letsEncrypt:
+  enabled: true
+  # email: none@example.com
+  environment: production
+  ingress:
+    # options: traefik, nginx
+    class: ""
+
 appPod:
   resources:
     # appPod.resources.requests -- Resources requests for spawned pods
