@@ -4,7 +4,6 @@ Helm Charts for BioAnalyze.
 
 Mostly these will be related to BioInformatics, but will also include some bootstrap charts for EKS.
 
-
 ## Charts
 
 ### ShinyProxy
