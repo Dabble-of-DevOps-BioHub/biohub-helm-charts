@@ -21,6 +21,18 @@ appPod:
     limits:
       cpu: 300m
       memory: 200Mi
+  verticalPodAutoscaling:
+    enabled: false
+    resourcePolicy:
+      containerPolicies:
+        - containerName: '*'
+          minAllowed:
+            cpu: 100m
+            memory: 50Mi
+          maxAllowed:
+            cpu: 8
+            memory: 5G
+          controlledResources: ["cpu", "memory"]
 # proxy -- See https://www.shinyproxy.io/configuration/ for application configuration
 # @default -- Default values
 proxy:
@@ -36,7 +48,7 @@ proxy:
     internal-networking: true
   # proxy.image -- ShinyProxy Docker image to use
   image:
-    name: remche/shinyproxy
+    name: dabbleofdevops/shinyproxy
     tag: 2.6.0
   # proxy.labels -- ShinyProxy deployment labels
   labels: {}
@@ -64,4 +76,17 @@ proxy:
     limits:
       cpu: 300m
       memory: 800Mi
+  verticalPodAutoscaling:
+    enabled: false
+    resourcePolicy:
+      containerPolicies:
+        - containerName: '*'
+          minAllowed:
+            cpu: 100m
+            memory: 50Mi
+          maxAllowed:
+            cpu: 8
+            memory: 5G
+          controlledResources: ["cpu", "memory"]
+
 createUsersNamespace: false

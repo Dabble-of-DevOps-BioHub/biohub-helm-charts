@@ -1,4 +1,4 @@
-{{- if and .Values.createUsersPodsNamespace (hasKey .Values.proxy.kubernetes "namespace") }}  
+{{- if and .Values.createUsersPodsNamespace (hasKey .Values.proxy.kubernetes "namespace") }}
 apiVersion: v1
 kind: Namespace
 metadata:
