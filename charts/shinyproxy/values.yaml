@@ -11,28 +11,6 @@ ingress:
   # ingress.annotations -- Annotations to add to the ingress
   path: ""
   # ingress.path -- Set path in the ingress. Defaults to proxy.landing-page if blank.
-
-letsEncrypt:
-  enabled: true
-  # email: none@example.com
-  environment: production
-  ingress:
-    # options: traefik, nginx
-    class: ""
-
-verticalPodAutoscaling:
-  enabled: false
-  resourcePolicy:
-    containerPolicies:
-      - containerName: '*'
-        minAllowed:
-          cpu: 100m
-          memory: 50Mi
-        maxAllowed:
-          cpu: 8
-          memory: 5G
-        controlledResources: ["cpu", "memory"]
-
 appPod:
   resources:
     # appPod.resources.requests -- Resources requests for spawned pods
@@ -69,7 +47,6 @@ proxy:
   # proxy.service -- ShinyProxy service configuration
   service:
     type: ClusterIP
-    clusterIP:
     annotations: {}
     ports:
       nodePort:
@@ -87,5 +64,4 @@ proxy:
     limits:
       cpu: 300m
       memory: 800Mi
-
 createUsersNamespace: false

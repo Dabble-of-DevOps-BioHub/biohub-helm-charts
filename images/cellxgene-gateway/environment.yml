@@ -1,0 +1,19 @@
+name: cellxgene-gateway
+channels:
+- conda-forge
+dependencies:
+- python=3.7
+- requests
+- flask<2.0.0,>=1.0.2
+- psutil
+- black
+- twine
+- isort
+- coverage
+- pip
+- pip:
+  - pre_commit
+  - flask-api==2.0
+  - werkzeug==1.0.1
+  - cellxgene>=0.15
+  - cellxgene-gateway

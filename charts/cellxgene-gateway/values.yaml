@@ -1,0 +1,131 @@
+## @section Global parameters
+## Global Docker image parameters
+## Please, note that this will override the image parameters, including dependencies, configured to use the global value
+## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
+
+## @param global.imageRegistry Global Docker image registry
+## @param global.imagePullSecrets Global Docker registry secret names as an array
+## @param global.storageClass Global StorageClass for Persistent Volume(s)
+##
+global:
+  imageRegistry: ""
+  ## E.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+  storageClass: ""
+
+## @section Common parameters
+diagnosticMode:
+  enabled: true
+
+## @param kubeVersion Override Kubernetes version
+##
+kubeVersion: ""
+## @param nameOverride String to partially override common.names.fullname
+##
+nameOverride: ""
+## @param fullnameOverride String to fully override common.names.fullname
+##
+fullnameOverride: ""
+## @param commonLabels Labels to add to all deployed objects
+##
+commonLabels: {}
+## @param commonAnnotations Annotations to add to all deployed objects
+##
+commonAnnotations: {}
+## @param clusterDomain Kubernetes cluster domain name
+##
+clusterDomain: cluster.local
+## @param extraDeploy Array of extra objects to deploy with the release
+##
+extraDeploy: []
+
+shinyproxy:
+  ingress:
+    enabled: false
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # cert-manager.io/cluster-issuer: bigomics-playground-auth-letsencrypt
+    # hosts:
+    # - app.bioanalyzedev.io
+    # tls:
+    # - hosts:
+    #   - app.bioanalyzedev.io
+    #   secretName: bioanalyzedev-auth.local-tls
+  proxy:
+    service:
+      type: LoadBalancer
+    kubernetes:
+      pod-wait-time: 600000
+      namespace: default
+    resources:
+      requests:
+        cpu: 1
+        memory: 512Mi
+      limits:
+        cpu: 8
+        memory: 5G
+    title: "BioAnalyze - CellxGene Gateway"
+    logo-url: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png
+    container-log-path: ./container-logs
+    authentication: none
+    container-wait-time: 600000
+    landing_page: /app-direct/cellxgene-gateway
+    specs:
+    - id: cellxgene-gateway
+      port: 5005
+      display_name: "CellxGene Gateway"
+      container-image: dabbleofdevops/cellxgene-gateway:0.3.8-5
+      container-wait-time: 600000
+      heartbeat-enabled: true
+      heartbeat-timeout: 600000
+      container-memory-request: 2G
+      container-memory-limit: 10G
+      container-cpu-request: 1
+      container-cpu-limit: 8
+      target-path: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH')}"
+      container-env:
+        GATEWAY_ENABLE_ANNOTATIONS: 1
+        GATEWAY_ENABLE_BACKED_MODE: 1
+        PROXY_FIX_FOR: 1
+        PROXY_FIX_PROTO: 1
+        PROXY_FIX_HOST: 1
+        PROXY_FIX_PORT: 1
+        PROXY_FIX_PREFIX: 1
+        GATEWAY_IP: "0.0.0.0"
+        GATEWAY_PORT: 5005
+        # if you are using an s3 bucket you must have the credentials
+        # cannot have s3:// prefix
+        CELLXGENE_BUCKET: "cellxgene-gateway-example-set"
+        SCRIPT_NAME: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH').replaceFirst('/$','')}"
+      kubernetes-pod-patches: |-
+        - op: add
+          path: /spec/serviceAccountName
+          value: s3-read-write-cellxgene-example-bucket
+
+        - op: add
+          path: /spec/containers/0/env/-
+          value:
+              name: PROXY_ID
+              value: "#{proxy.id}"
+
+        - op: add
+          path: /spec/containers/0/env/-
+          value:
+              name: PROXY_USERID
+              value: "#{proxy.userId}"
+
+        # in case the app has no volumes yet:
+        - op: add
+          path: /spec/volumes
+          value:
+            - name: cache-volume
+              emptyDir: {}
+
+        - op: add
+          path: /spec/containers/0/volumeMounts
+          value:
+            - mountPath: /cache
+              name: cache-volume
