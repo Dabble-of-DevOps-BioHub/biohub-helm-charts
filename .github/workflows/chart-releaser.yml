@@ -24,6 +24,17 @@ jobs:
         with:
           version: v3.4.0
 
+      - name: Helm Dependency update
+        run: |
+
+          cd charts/shinyproxy
+          helm dep update
+          helm dep build
+
+          cd charts/cellxgene-gateway
+          helm dep update
+          helm dep build
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.2.1
         env:
