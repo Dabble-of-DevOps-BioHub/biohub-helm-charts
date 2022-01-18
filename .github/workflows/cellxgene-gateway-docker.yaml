@@ -25,9 +25,9 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: docker/build-push-action@v2
       with:
-        context: images/shinyproxy
+        context: images/cellxgene-gateway
         push: true
         build-args: |
-          SHINYPROXY_VERSION=${{ steps.yq.outputs.result }}
+          CELLXGENE_GATEWAY_VERSION=${{ steps.yq.outputs.result }}
         tags: |
           dabbleofdevops/cellxgene-gateway:${{ steps.yq.outputs.result }},dabbleofdevops/cellxgene-gateway:${{env.SHA7}}
