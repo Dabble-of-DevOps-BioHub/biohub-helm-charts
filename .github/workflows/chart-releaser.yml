@@ -27,6 +27,8 @@ jobs:
       - name: Helm Dependency update
         run: |
 
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add bioanalyze https://dabble-of-devops-bioanalyze.github.io/helm-charts/
           cd charts/shinyproxy
           helm dep update
           helm dep build

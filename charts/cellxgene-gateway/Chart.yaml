@@ -25,4 +25,6 @@ maintainers:
 name: cellxgene-gateway
 sources:
   - https://github.com/Novartis/cellxgene-gateway
+  - https://github.com/remche/zero-to-shinyproxy
+  - https://www.shinyproxy.io/documentation
 version: 0.1.0
