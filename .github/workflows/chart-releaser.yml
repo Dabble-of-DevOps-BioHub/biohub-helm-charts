@@ -33,7 +33,7 @@ jobs:
           helm dep update
           helm dep build
 
-          cd charts/cellxgene-gateway
+          cd ../../charts/cellxgene-gateway
           helm dep update
           helm dep build
 
