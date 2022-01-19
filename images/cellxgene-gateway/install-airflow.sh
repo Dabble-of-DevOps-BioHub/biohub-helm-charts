@@ -2,7 +2,7 @@
 
 source activate cellxgene-gateway
 
-mkdir -p ~/airflow
+mkdir -p ~/airflow/dags
 
 # Airflow needs a home. `~/airflow` is the default, but you can put it
 # somewhere else if you prefer (optional)

@@ -29,11 +29,10 @@ ENV AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION="False"
 COPY install-airflow.sh /tmp/install-airflow.sh
 RUN chmod 777 *sh && bash /tmp/install-airflow.sh
 
-COPY dags /root/airflow/dags
+COPY airflow/dags /root/airflow/dags
 
 # Copy in some dummy data for testing
 RUN mkdir -p /root/data/
-COPY data/pbmc3k.h5ad /root/data/pbmc3k.h5ad
 
 COPY app /opt/app
 WORKDIR /opt/app

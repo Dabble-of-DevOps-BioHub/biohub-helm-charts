@@ -77,7 +77,7 @@ shinyproxy:
     - id: cellxgene-gateway
       port: 5005
       display_name: "CellxGene Gateway"
-      container-image: dabbleofdevops/cellxgene-gateway:0.3.8-5
+      container-image: dabbleofdevops/cellxgene-gateway:0.3.8
       container-wait-time: 600000
       heartbeat-enabled: true
       heartbeat-timeout: 600000
