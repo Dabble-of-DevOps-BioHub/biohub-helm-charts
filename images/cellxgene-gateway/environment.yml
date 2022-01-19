@@ -10,6 +10,10 @@ dependencies:
 - twine
 - isort
 - coverage
+- fsspec
+- s3fs
+- ipython
+- supervisor
 - pip
 - pip:
   - pre_commit

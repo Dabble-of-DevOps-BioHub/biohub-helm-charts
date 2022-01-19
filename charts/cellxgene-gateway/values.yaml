@@ -102,6 +102,8 @@ shinyproxy:
         # cannot have s3:// prefix
         # CELLXGENE_BUCKET: "cellxgene-gateway-example-set"
         SCRIPT_NAME: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH').replaceFirst('/$','')}"
+        SYNC_ENABLED: "False"
+        ANNOTATION_DIR: "/cache"
 
       kubernetes-pod-patches: |-
         - op: add

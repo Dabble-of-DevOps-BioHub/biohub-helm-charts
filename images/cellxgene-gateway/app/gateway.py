@@ -27,7 +27,8 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.utils import secure_filename
 
 from cellxgene_gateway import env, flask_util
-from cellxgene_gateway.backend_cache import BackendCache
+#from cellxgene_gateway.backend_cache import BackendCache
+from backend_cache import BackendCache
 from cellxgene_gateway.cache_entry import CacheEntryStatus
 from cellxgene_gateway.cache_key import CacheKey
 from cellxgene_gateway.cellxgene_exception import CellxgeneException
@@ -38,11 +39,15 @@ from cellxgene_gateway.prune_process_cache import PruneProcessCache
 from cellxgene_gateway.util import current_time_stamp
 import cellxgene_gateway
 
-template_dir = os.path.dirname(cellxgene_gateway.__file__)
-template_dir = os.path.join(template_dir, 'templates')
+from logger import logger
+
+cellxgene_dir = os.path.dirname(cellxgene_gateway.__file__)
+template_dir = os.path.join(cellxgene_dir, 'templates')
+static_dir = os.path.join(cellxgene_dir, 'static')
 
 app = Flask(__name__)
-app = Flask(__name__, template_folder=template_dir)
+app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+app.config['DEBUG'] = True
 
 item_sources = []
 default_item_source = None
@@ -193,8 +198,12 @@ def matching_source(source_name):
 )
 @app.route("/view/<path:path>", methods=["GET", "PUT", "POST"])
 def do_view(path, source_name=None):
+    logger.info(path)
+    logger.info(source_name)
+
     source = matching_source(source_name)
     match = cache.check_path(source, path)
+    logger.info(cache)
 
     if match is None:
         lookup = source.lookup(path)
@@ -304,18 +313,16 @@ def launch():
 
 
 def main():
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s:%(name)s:%(levelname)s:%(message)s",
-    )
     cellxgene_data = os.environ.get("CELLXGENE_DATA", None)
     cellxgene_bucket = os.environ.get("CELLXGENE_BUCKET", None)
+    # global default_item_source
 
     if cellxgene_bucket is not None:
         from cellxgene_gateway.items.s3.s3item_source import S3ItemSource
 
         item_sources.append(S3ItemSource(cellxgene_bucket, name="s3"))
         default_item_source = "s3"
+
     if cellxgene_data is not None:
         from cellxgene_gateway.items.file.fileitem_source import FileItemSource
 
