@@ -85,6 +85,7 @@ shinyproxy:
       container-memory-limit: 10G
       container-cpu-request: 1
       container-cpu-limit: 8
+      # service-account: s3-read-write-cellxgene-example-bucket
       target-path: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH')}"
       container-env:
         GATEWAY_ENABLE_ANNOTATIONS: 1
@@ -100,11 +101,8 @@ shinyproxy:
         # cannot have s3:// prefix
         CELLXGENE_BUCKET: "cellxgene-gateway-example-set"
         SCRIPT_NAME: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH').replaceFirst('/$','')}"
-      kubernetes-pod-patches: |-
-        - op: add
-          path: /spec/serviceAccountName
-          value: s3-read-write-cellxgene-example-bucket
 
+      kubernetes-pod-patches: |-
         - op: add
           path: /spec/containers/0/env/-
           value:
