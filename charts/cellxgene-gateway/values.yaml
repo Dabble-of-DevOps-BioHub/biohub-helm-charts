@@ -97,9 +97,10 @@ shinyproxy:
         PROXY_FIX_PREFIX: 1
         GATEWAY_IP: "0.0.0.0"
         GATEWAY_PORT: 5005
+        # Must specify one of CELLXGENE_BUCKET or CELLXGENE_DATA
         # if you are using an s3 bucket you must have the credentials
         # cannot have s3:// prefix
-        CELLXGENE_BUCKET: "cellxgene-gateway-example-set"
+        # CELLXGENE_BUCKET: "cellxgene-gateway-example-set"
         SCRIPT_NAME: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH').replaceFirst('/$','')}"
 
       kubernetes-pod-patches: |-
