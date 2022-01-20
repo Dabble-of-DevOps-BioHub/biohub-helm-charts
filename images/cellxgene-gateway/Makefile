@@ -34,6 +34,13 @@ dev:
 	$(MAKE) build
 	$(MAKE) up
 
+compose/up:
+	docker-compose build
+	docker-compose up -d
+
+compose/shell:
+	docker-compose exec -it cellxgene bash
+
 shell:
 	$(MAKE) build
 	 docker run -it \

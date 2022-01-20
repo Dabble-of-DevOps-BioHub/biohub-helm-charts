@@ -25,7 +25,10 @@ default_args = {
 
 
 S3_BUCKET = os.environ.get("CELLXGENE_BUCKET")
-ANNOTATION_DIR = os.environ.get("ANNOTATION_DIR", S3_BUCKET, os.path.abspath("annotations"))
+
+ANNOTATION_DIR = os.environ.get('ANNOTATION_DIR', os.path.abspath('annotations'))
+ANNOTATION_DIR = os.path.join(ANNOTATION_DIR, S3_BUCKET)
+
 S3_BUCKET = f"s3://{S3_BUCKET}"
 SYNC_ENABLED = os.environ.get("SYNC_ENABLED", 'False').lower() in ['true', '1', 'yes']
 

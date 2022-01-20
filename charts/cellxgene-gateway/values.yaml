@@ -72,7 +72,7 @@ shinyproxy:
     container-log-path: ./container-logs
     authentication: none
     container-wait-time: 600000
-    landing_page: /app-direct/cellxgene-gateway
+    landing_page: /app_direct/cellxgene-gateway
     specs:
     - id: cellxgene-gateway
       port: 5005
