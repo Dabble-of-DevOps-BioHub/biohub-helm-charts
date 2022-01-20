@@ -32,19 +32,19 @@ ANNOTATION_DIR = os.path.join(ANNOTATION_DIR, S3_BUCKET)
 S3_BUCKET = f"s3://{S3_BUCKET}"
 SYNC_ENABLED = os.environ.get("SYNC_ENABLED", 'False').lower() in ['true', '1', 'yes']
 
-with DAG("sync_down", catchup=False, default_args=default_args) as sync_down_dag:
+# with DAG("sync_down", catchup=False, default_args=default_args) as sync_down_dag:
 
-    @task(task_id="sync_down")
-    def sync_down():
-        if SYNC_ENABLED:
-            print(f"Sync enabled.. sync down s3 {S3_BUCKET}-> local {ANNOTATION_DIR}")
-            command = f"aws s3 sync {S3_BUCKET} {ANNOTATION_DIR}"
-            print(f"Running command: {command}")
-            subprocess.run(command, shell=True, check=True, capture_output=True)
-        else:
-            print("Sync not enabled. Nothing to do here")
+#     @task(task_id="sync_down")
+#     def sync_down():
+#         if SYNC_ENABLED:
+#             print(f"Sync enabled.. sync down s3 {S3_BUCKET}-> local {ANNOTATION_DIR}")
+#             command = f"aws s3 sync {S3_BUCKET}/ {ANNOTATION_DIR}"
+#             print(f"Running command: {command}")
+#             subprocess.run(command, shell=True, check=True, capture_output=True)
+#         else:
+#             print("Sync not enabled. Nothing to do here")
 
-    sync_down()
+#     sync_down()
 
 with DAG("sync_up", catchup=False, default_args=default_args) as sync_up_dag:
 

@@ -34,12 +34,16 @@ dev:
 	$(MAKE) build
 	$(MAKE) up
 
-compose/up:
+compose/restart:
+	docker-compose stop
+	rm -rf airflow/logs/*
+	rm -rf app/supervisord.log
+	rm -rf app/supervisord.pid
 	docker-compose build
 	docker-compose up -d
 
 compose/shell:
-	docker-compose exec -it cellxgene bash
+	docker-compose exec cellxgene bash
 
 shell:
 	$(MAKE) build

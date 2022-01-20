@@ -6,12 +6,12 @@ services:
     ports:
       - 5005:5005
     environment:
-      - CELLXGENE_BUCKET="cellxgene-gateway-example-set"
-      - ANNOTATION_DIR="/root/data"
-      - SYNC_ENABLED="True"
+      CELLXGENE_BUCKET: cellxgene-gateway-example-set
+      ANNOTATION_DIR: /root/data
+      SYNC_ENABLED: "True"
     volumes:
       - ~/.aws:/root/.aws
       - ./airflow/logs:/root/airflow/logs
       - ./airflow/dags:/root/airflow/dags
       - ./app:/opt/app
-      - ./data:/root/data
+      #- ./data:/root/data

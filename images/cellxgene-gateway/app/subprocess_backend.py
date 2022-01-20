@@ -35,15 +35,13 @@ class SubprocessBackend:
         bucket = os.environ.get('CELLXGENE_BUCKET', '')
         clean_file_path = file_path
 
-        if 's3://' in clean_file_path:
-            clean_file_path  = clean_file_path.replace('s3://', '')
-            if f"{bucket}/" in clean_file_path:
-                clean_file_path = clean_file_path.replace(f"{bucket}/", '')
-            elif f"{bucket}" in clean_file_path:
-                clean_file_path = clean_file_path.replace(f"{bucket}", '')
+        if f"s3://{bucket}/" in clean_file_path:
+            clean_file_path = clean_file_path.replace(f"s3://{bucket}/", '')
+        elif f"s3://{bucket}" in clean_file_path:
+            clean_file_path = clean_file_path.replace(f"s3://{bucket}", '')
 
         dataset_file = clean_file_path
-        if "s3://" in clean_file_path:
+        if len(bucket):
             annotations_dir = os.path.join(ANNOTATION_DIR, bucket, f"{dataset_file}_annotations")
         else:
             annotations_dir = os.path.join(ANNOTATION_DIR, f"{dataset_file}_annotations")

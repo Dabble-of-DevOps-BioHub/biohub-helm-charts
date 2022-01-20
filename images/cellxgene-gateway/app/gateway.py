@@ -315,7 +315,7 @@ def launch():
 def main():
     cellxgene_data = os.environ.get("CELLXGENE_DATA", None)
     cellxgene_bucket = os.environ.get("CELLXGENE_BUCKET", None)
-    # global default_item_source
+    #global default_item_source
 
     if cellxgene_bucket is not None:
         from cellxgene_gateway.items.s3.s3item_source import S3ItemSource
@@ -328,8 +328,10 @@ def main():
 
         item_sources.append(FileItemSource(cellxgene_data, name="local"))
         default_item_source = "local"
+
     if len(item_sources) == 0:
         raise Exception("Please specify CELLXGENE_DATA or CELLXGENE_BUCKET")
+
     flask_util.include_source_in_url = len(item_sources) > 1
 
     launch()
