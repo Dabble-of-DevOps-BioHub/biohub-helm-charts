@@ -29,7 +29,6 @@ proxy:
   landing-page: /
   heartbeat-rate: 10000
   heartbeat-timeout: 60000
-  port: 8080
   authentication: none
   container-backend: kubernetes
   kubernetes:
@@ -64,4 +63,3 @@ proxy:
     limits:
       cpu: 300m
       memory: 800Mi
-createUsersNamespace: false

@@ -26,7 +26,5 @@ spec:
           - "pods"
           - "-l"
           - "z2sp.instance={{ .Release.Name }}"
-          {{- if (hasKey .Values.proxy.kubernetes "namespace") }}
           - "-n"
-          - "{{ .Values.proxy.kubernetes.namespace }}"
-          {{- end }}
+          - "{{ default .Release.Namespace }}"
