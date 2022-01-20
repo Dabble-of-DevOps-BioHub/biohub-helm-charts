@@ -22,7 +22,7 @@ spec:
   selector:
       {{- include "shinyproxy.selectorLabels" . | nindent 6 }}
   ports:
-    - port: 8080
+    - port: 80
       targetPort: 8080
       {{- if .Values.proxy.service.ports.nodePort }}
       nodePort: {{ .Values.proxy.service.ports.nodePort }}
