@@ -40,9 +40,11 @@ jobs:
           helm dep build
 
       # "arn:aws:ecr:us-east-1:018835827632:repository/shinyproxy"
-      # 018835827632.dkr.ecr.us-east-1.amazonaws.com/shinyproxy
       # "018835827632.dkr.ecr.us-east-1.amazonaws.com/helm-shinyproxy"
       # 018835827632.dkr.ecr.us-east-1.amazonaws.com/helm-cellxgene-gateway
+      # Helm chart name must be the same as the repo name
+      # 018835827632.dkr.ecr.us-east-1.amazonaws.com/cellxgene-gateway
+      # 018835827632.dkr.ecr.us-east-1.amazonaws.com/shinyproxy
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.2.1
         env:
@@ -52,4 +54,19 @@ jobs:
         run: |-
           ls -lah .cr-release-packages
 
+      # Helm chart name must be the same as the repo name
+      # 018835827632.dkr.ecr.us-east-1.amazonaws.com/cellxgene-gateway
+      # 018835827632.dkr.ecr.us-east-1.amazonaws.com/shinyproxy
+      - name: Upload to ECR
+        run: |-
+          export HELM_EXPERIMENTAL_OCI=1
+          find .cr-release-packages -name 'shinyproxy*.tgz' | xargs -I {} helm push {} oci://018835827632.dkr.ecr.us-east-1.amazonaws.com/
+          find .cr-release-packages -name 'cellxgene-gateway*.tgz' | xargs -I {} helm push {} oci://018835827632.dkr.ecr.us-east-1.amazonaws.com/
 
+          aws ecr describe-images \
+            --repository-name shinyproxy \
+            --region us-east-1
+
+          aws ecr describe-images \
+            --repository-name cellxgene-gateway \
+            --region us-east-1

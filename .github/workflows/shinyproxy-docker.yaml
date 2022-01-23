@@ -8,11 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Run changed-files
         id: changed-docker
         uses: tj-actions/changed-files@v13.1
         with:
-          path: images/cellxgene-gateway
+          path: images/shinyproxy
       - name: Set Job Environment Variables
         run: |-
           CALVER="$( date -u '+%Y.%m.%d' )"
@@ -37,3 +39,4 @@ jobs:
             SHINYPROXY_VERSION=${{ steps.yq.outputs.result }}
           tags: |
             dabbleofdevops/shinyproxy:${{ steps.yq.outputs.result }},dabbleofdevops/shinyproxy:${{env.SHA7}}
+
