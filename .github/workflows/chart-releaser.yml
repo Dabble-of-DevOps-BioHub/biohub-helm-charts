@@ -57,6 +57,18 @@ jobs:
       # Helm chart name must be the same as the repo name
       # 018835827632.dkr.ecr.us-east-1.amazonaws.com/cellxgene-gateway
       # 018835827632.dkr.ecr.us-east-1.amazonaws.com/shinyproxy
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
       - name: Upload to ECR
         run: |-
           export HELM_EXPERIMENTAL_OCI=1
