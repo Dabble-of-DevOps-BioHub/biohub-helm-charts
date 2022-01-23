@@ -2,7 +2,7 @@ ingress:
   # ingress.enabled -- Whether to expose via ingress controller
   enabled: false
   # ingress.classname -- IngressClass that should be used
-  classname: null
+  classname:
   # ingress.hosts -- The hostname that should be exposed
   hosts: []
   # ingress.tls -- TLS configuration
@@ -36,7 +36,7 @@ proxy:
   # proxy.image -- ShinyProxy Docker image to use
   image:
     name: dabbleofdevops/shinyproxy
-    tag: 2.6.0
+    tag: 0.0.1-n021.h6d523ec
   # proxy.labels -- ShinyProxy deployment labels
   labels: {}
   # proxy.annotations -- ShinyProxy deployment annotations

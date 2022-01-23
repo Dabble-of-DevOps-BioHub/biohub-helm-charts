@@ -39,7 +39,17 @@ jobs:
           helm dep update
           helm dep build
 
+      # "arn:aws:ecr:us-east-1:018835827632:repository/shinyproxy"
+      # 018835827632.dkr.ecr.us-east-1.amazonaws.com/shinyproxy
+      # "018835827632.dkr.ecr.us-east-1.amazonaws.com/helm-shinyproxy"
+      # 018835827632.dkr.ecr.us-east-1.amazonaws.com/helm-cellxgene-gateway
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.2.1
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: List packages
+        run: |-
+          ls -lah .cr-release-packages
+
+
