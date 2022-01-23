@@ -56,7 +56,7 @@ with DAG("sync_up", catchup=False, default_args=default_args) as sync_up_dag:
                 command = f"aws s3 sync {ANNOTATION_DIR} {S3_BUCKET}"
                 print(f"Running command: {command}")
                 subprocess.run(command, shell=True, check=True, capture_output=True)
-                sleep(30)
+                sleep(5)
         else:
             print("Sync not enabled. Nothing to do here")
 
