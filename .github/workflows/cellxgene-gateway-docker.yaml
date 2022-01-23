@@ -1,62 +1,67 @@
-name: Build and Push CellxGene Gateway Docker image
-on:
-  push:
-    branches:
-      - main
-jobs:
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+  name: Build and Push CellxGene Gateway Docker image
+  on:
+    push:
+      branches:
+        - main
+  jobs:
+    publish:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+          with:
+            fetch-depth: 0
 
-      - name: Run changed-files
-        id: changed-docker
-        uses: tj-actions/changed-files@v13.1
-        with:
-          path: images/cellxgene-gateway
+        - name: Run changed-files
+          id: changed-docker
+          uses: tj-actions/changed-files@v13.1
+          with:
+            path: images/cellxgene-gateway
 
-      - name: Set Job Environment Variables
-        if: steps.changed-docker.outputs.any_changed == 'true'
-        run: |-
-          CALVER="$( date -u '+%Y.%m.%d' )"
-          SHA7="${GITHUB_SHA::7}"
-          echo "CALVER=${CALVER}" >> $GITHUB_ENV
-          echo "SHA7=${SHA7}" >> $GITHUB_ENV
+        - name: Get Changed Files
+          id: changed-files
+          run: |-
+            echo "${{ steps.changed-docker.outputs }}"
 
-      - uses: mikefarah/yq@v4.16.2
-        if: steps.changed-docker.outputs.any_changed == 'true'
-        id: yq
-        with:
-          cmd: yq eval '.appVersion' charts/cellxgene-gateway/Chart.yaml
+        - name: Set Job Environment Variables
+          if: steps.changed-docker.outputs.any_changed == 'true'
+          run: |-
+            CALVER="$( date -u '+%Y.%m.%d' )"
+            SHA7="${GITHUB_SHA::7}"
+            echo "CALVER=${CALVER}" >> $GITHUB_ENV
+            echo "SHA7=${SHA7}" >> $GITHUB_ENV
 
-      - uses: docker/setup-buildx-action@v1
-        if: steps.changed-docker.outputs.any_changed == 'true'
+        - uses: mikefarah/yq@v4.16.2
+          if: steps.changed-docker.outputs.any_changed == 'true'
+          id: yq
+          with:
+            cmd: yq eval '.appVersion' charts/cellxgene-gateway/Chart.yaml
 
-      - uses: docker/login-action@v1
-        if: steps.changed-docker.outputs.any_changed == 'true'
-        with:
-          username: ${{ secrets.DOCKERHUB_USER }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        - uses: docker/setup-buildx-action@v1
+          if: steps.changed-docker.outputs.any_changed == 'true'
 
-      - uses: docker/build-push-action@v2
-        if: steps.changed-docker.outputs.any_changed == 'true'
-        with:
-          context: images/cellxgene-gateway
-          push: true
-          build-args: |
-            CELLXGENE_GATEWAY_VERSION=${{ steps.yq.outputs.result }}
-          tags: |
-            dabbleofdevops/cellxgene-gateway:${{ steps.yq.outputs.result }},dabbleofdevops/cellxgene-gateway:${{env.SHA7}}
+        - uses: docker/login-action@v1
+          if: steps.changed-docker.outputs.any_changed == 'true'
+          with:
+            username: ${{ secrets.DOCKERHUB_USER }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: us-east-1
+        - uses: docker/build-push-action@v2
+          if: steps.changed-docker.outputs.any_changed == 'true'
+          with:
+            context: images/cellxgene-gateway
+            push: true
+            build-args: |
+              CELLXGENE_GATEWAY_VERSION=${{ steps.yq.outputs.result }}
+            tags: |
+              dabbleofdevops/cellxgene-gateway:${{ steps.yq.outputs.result }},dabbleofdevops/cellxgene-gateway:${{env.SHA7}}
 
-      # - name: Login to Amazon ECR
-      #   id: login-ecr
-      #   uses: aws-actions/amazon-ecr-login@v1
+        # - name: Configure AWS credentials
+        #   uses: aws-actions/configure-aws-credentials@v1
+        #   with:
+        #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        #     aws-region: us-east-1
+
+        # - name: Login to Amazon ECR
+        #   id: login-ecr
+        #   uses: aws-actions/amazon-ecr-login@v1
