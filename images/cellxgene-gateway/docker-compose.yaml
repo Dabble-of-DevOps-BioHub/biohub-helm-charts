@@ -2,16 +2,16 @@ version: "3"
 
 services:
   cellxgene:
-    build: ./
+    build: .
     ports:
       - 5005:5005
     environment:
       CELLXGENE_BUCKET: cellxgene-gateway-example-set
-      ANNOTATION_DIR: /root/data
+      ANNOTATION_DIR: /opt/bitnami/data
       SYNC_ENABLED: "True"
     volumes:
-      - ~/.aws:/root/.aws
-      - ./airflow/logs:/root/airflow/logs
-      - ./airflow/dags:/root/airflow/dags
-      - ./app:/opt/app
+      - ~/.aws:/.aws
+      - ./airflow/logs:/opt/bitnami/airflow/logs
+      - ./airflow/dags:/opt/bitnami/airflow/dags
+      - ./app:/opt/bitnami/projects/app
       #- ./data:/root/data

@@ -1,4 +1,5 @@
-FROM openjdk:11-jre
+#FROM openjdk:11-jre
+FROM bitnami/java:11-debian-10
 
 ARG SHINYPROXY_VERSION="2.6.0"
 
