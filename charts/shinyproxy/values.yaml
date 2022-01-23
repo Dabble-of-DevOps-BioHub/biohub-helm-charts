@@ -36,7 +36,7 @@ proxy:
   # proxy.image -- ShinyProxy Docker image to use
   image:
     name: dabbleofdevops/shinyproxy
-    tag: 0.0.1-n021.h6d523ec
+    tag: 2.6.0
   # proxy.labels -- ShinyProxy deployment labels
   labels: {}
   # proxy.annotations -- ShinyProxy deployment annotations
