@@ -15,7 +15,7 @@
           id: changed-docker
           uses: tj-actions/changed-files@v13.1
           with:
-            path: images/cellxgene-gateway
+            files: "images/cellxgene-gateway/**"
 
         - name: Get Changed Files
           id: changed-files
