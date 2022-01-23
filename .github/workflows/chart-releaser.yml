@@ -61,7 +61,6 @@ jobs:
         run: |-
           export HELM_EXPERIMENTAL_OCI=1
 
-          helm --version
           find .cr-release-packages -name 'shinyproxy*.tgz' | xargs -I {} helm push {} oci://018835827632.dkr.ecr.us-east-1.amazonaws.com/
           find .cr-release-packages -name 'cellxgene-gateway*.tgz' | xargs -I {} helm push {} oci://018835827632.dkr.ecr.us-east-1.amazonaws.com/
 
