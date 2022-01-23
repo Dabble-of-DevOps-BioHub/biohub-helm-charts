@@ -53,6 +53,7 @@ ENV GATEWAY_PORT="5005"
 ENV GATEWAY_ENABLE_ANNOTATIONS="True"
 ENV CELLXGENE_LOCATION="${CONDA_DIR}/envs/cellxgene-gateway/bin/cellxgene"
 ENV ANNOTATION_DIR="/opt/bitnami/airflow/data"
+ENV HOME="/opt/bitnami"
 
 RUN mkdir -p ${ANNOTATION_DIR}
 
