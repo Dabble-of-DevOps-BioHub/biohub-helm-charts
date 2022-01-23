@@ -20,7 +20,7 @@ Access the pod you want to debug by executing
 
 Get the services by listing
 
-  kubectl get svc --namespace {{ .release.namespace }} shinyproxy-{{ .release.name }}
+  kubectl get svc --namespace {{ .Release.namespace }} shinyproxy-{{ .release.name }}
 
 {{- else }}
 
