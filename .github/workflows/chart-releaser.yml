@@ -21,8 +21,8 @@ jobs:
 
       - name: Install Helm
         uses: azure/setup-helm@v1
-        with:
-          version: v3.4.0
+        # with:
+        #   version: v3.4.0
 
       - name: Helm Dependency update
         run: |
@@ -60,6 +60,8 @@ jobs:
       - name: Upload to ECR
         run: |-
           export HELM_EXPERIMENTAL_OCI=1
+
+          helm --version
           find .cr-release-packages -name 'shinyproxy*.tgz' | xargs -I {} helm push {} oci://018835827632.dkr.ecr.us-east-1.amazonaws.com/
           find .cr-release-packages -name 'cellxgene-gateway*.tgz' | xargs -I {} helm push {} oci://018835827632.dkr.ecr.us-east-1.amazonaws.com/
 
