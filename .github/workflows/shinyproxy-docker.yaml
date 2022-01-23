@@ -14,7 +14,7 @@ jobs:
         id: changed-docker
         uses: tj-actions/changed-files@v13.1
         with:
-          path: images/shinyproxy
+          files: "images/shinyproxy/**"
 
       - name: Set Job Environment Variables
         if: steps.changed-docker.outputs.any_changed == 'true'
