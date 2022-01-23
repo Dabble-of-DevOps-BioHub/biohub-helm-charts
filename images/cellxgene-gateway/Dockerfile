@@ -52,6 +52,9 @@ RUN mamba env create -f environment.yml && \
 ENV GATEWAY_PORT="5005"
 ENV GATEWAY_ENABLE_ANNOTATIONS="True"
 ENV CELLXGENE_LOCATION="${CONDA_DIR}/envs/cellxgene-gateway/bin/cellxgene"
+ENV ANNOTATION_DIR="/opt/bitnami/airflow/data"
+
+RUN mkdir -p ${ANNOTATION_DIR}
 
 # Airflow vars
 ENV AIRFLOW__CORE__LOAD_EXAMPLES="False"

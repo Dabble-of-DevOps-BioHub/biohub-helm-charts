@@ -26,11 +26,11 @@ default_args = {
 
 S3_BUCKET = os.environ.get("CELLXGENE_BUCKET")
 
-ANNOTATION_DIR = os.environ.get('ANNOTATION_DIR', os.path.abspath('annotations'))
+ANNOTATION_DIR = os.environ.get("ANNOTATION_DIR", os.path.abspath("annotations"))
 ANNOTATION_DIR = os.path.join(ANNOTATION_DIR, S3_BUCKET)
 
 S3_BUCKET = f"s3://{S3_BUCKET}"
-SYNC_ENABLED = os.environ.get("SYNC_ENABLED", 'False').lower() in ['true', '1', 'yes']
+SYNC_ENABLED = os.environ.get("SYNC_ENABLED", "False").lower() in ["true", "1", "yes"]
 
 # with DAG("sync_down", catchup=False, default_args=default_args) as sync_down_dag:
 
@@ -52,8 +52,6 @@ with DAG("sync_up", catchup=False, default_args=default_args) as sync_up_dag:
     def sync_up():
         if SYNC_ENABLED:
             print(f"Sync enabled.. sync up local: {ANNOTATION_DIR} with s3 {S3_BUCKET}")
-            command = f"mkdir -p {ANNOTATION_DIR}"
-            subprocess.run(command, shell=True, check=True, capture_output=True)
             while True:
                 command = f"aws s3 sync {ANNOTATION_DIR} {S3_BUCKET}"
                 print(f"Running command: {command}")
