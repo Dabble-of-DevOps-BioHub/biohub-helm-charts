@@ -3,6 +3,40 @@ entries:
   cellxgene-gateway:
   - apiVersion: v2
     appVersion: 0.3.8
+    created: "2022-01-23T08:03:11.774973531Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 1.x.x
+    - name: shinyproxy
+      repository: https://dabble-of-devops-bioanalyze.github.io/helm-charts/
+      version: 0.x.x
+    description: Helm chart for CellXGene Gateway from https://github.com/Novartis/cellxgene-gateway
+    digest: a5f0ba4ead2a29c6dde2ca32724fcdf3ded3eddfed123675d1c1be4bc1d1c760
+    icon: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v2_logo_only-01.png
+    keywords:
+    - bioinformatics
+    - datascience
+    - machinelearning
+    - single-cell
+    - cellxgene
+    - cellxgene-gateway
+    - scanpy
+    maintainers:
+    - email: jillian@dabbleofdevops.com
+      name: Jillian Rowe
+    name: cellxgene-gateway
+    sources:
+    - https://github.com/Novartis/cellxgene-gateway
+    - https://github.com/remche/zero-to-shinyproxy
+    - https://www.shinyproxy.io/documentation
+    urls:
+    - https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/download/cellxgene-gateway-0.2.1/cellxgene-gateway-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: 0.3.8
     created: "2022-01-23T07:01:26.565968954Z"
     dependencies:
     - name: common
@@ -344,6 +378,16 @@ entries:
   shinyproxy:
   - apiVersion: v2
     appVersion: 2.6.0
+    created: "2022-01-23T08:03:11.903293758Z"
+    description: A Helm chart to install Shinyproxy
+    digest: 734e7a4a3e6e0282e031146bfd2a86cc11ffb93e9b5368b21e4f7044cbe4f095
+    name: shinyproxy
+    type: application
+    urls:
+    - https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/download/shinyproxy-0.8.0/shinyproxy-0.8.0.tgz
+    version: 0.8.0
+  - apiVersion: v2
+    appVersion: 2.6.0
     created: "2022-01-20T13:21:50.875531129Z"
     description: A Helm chart to install Shinyproxy
     digest: 5f9e9ee7cd794e142e4cbf6c9c481eb7e62eeea15f0290369bf87b9a9ccc1bb0
@@ -492,4 +536,4 @@ entries:
     urls:
     - https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/download/shinyproxy-0.0.1-n039.h6cec70b/shinyproxy-0.0.1-n039.h6cec70b.tgz
     version: 0.0.1-n039.h6cec70b
-generated: "2022-01-23T07:01:26.566069155Z"
+generated: "2022-01-23T08:03:11.903616482Z"
