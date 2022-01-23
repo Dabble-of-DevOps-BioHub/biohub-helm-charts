@@ -76,6 +76,7 @@ WORKDIR ${APP_DIR}
 # If running in dev and don't want to use supervisord or s3 sync just run directly
 # CMD ["python", "gateway.py"]
 
+
 # PROD
 # Run the supervisord that spins up the airflow-scheduler and the log
 CMD ["bash", "-c", "supervisord -c supervisord.conf; tail -f supervisord.log"]

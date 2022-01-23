@@ -20,7 +20,7 @@
         - name: Get Changed Files
           id: changed-files
           run: |-
-            echo "${{ steps.changed-docker.outputs }}"
+            echo "${{ steps.changed-docker.outputs.any_changed }}"
 
         - name: Set Job Environment Variables
           if: steps.changed-docker.outputs.any_changed == 'true'
