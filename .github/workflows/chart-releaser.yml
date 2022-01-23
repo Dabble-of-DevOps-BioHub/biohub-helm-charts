@@ -70,16 +70,37 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Upload to ECR
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+          REPO: 018835827632.dkr.ecr.us-east-1.amazonaws.com
+          HELM_EXPERIMENTAL_OCI: "1"
         run: |-
-          export HELM_EXPERIMENTAL_OCI=1
 
-          find .cr-release-packages -name 'shinyproxy*.tgz' | xargs -I {} helm push {} oci://018835827632.dkr.ecr.us-east-1.amazonaws.com/
-          find .cr-release-packages -name 'cellxgene-gateway*.tgz' | xargs -I {} helm push {} oci://018835827632.dkr.ecr.us-east-1.amazonaws.com/
+          aws ecr get-login-password \
+              --region us-east-1 | helm registry login \
+              --username AWS \
+              --password-stdin ${REPO}
 
+          find .cr-release-packages \
+            -name 'shinyproxy*.tgz' | xargs -I {} helm push {} oci://${REPO}/
+
+          find .cr-release-packages \
+            -name 'cellxgene-gateway*.tgz' | xargs -I {} helm push {} oci://${REPO}/
+
+      - name: Describe images
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+          REPO: 018835827632.dkr.ecr.us-east-1.amazonaws.com
+          HELM_EXPERIMENTAL_OCI: "1"
+        run: |-
           aws ecr describe-images \
-            --repository-name shinyproxy \
+            --repository-name cellxgene-gateway \
             --region us-east-1
 
           aws ecr describe-images \
-            --repository-name cellxgene-gateway \
+            --repository-name shinyproxy \
             --region us-east-1
