@@ -3,6 +3,40 @@ entries:
   cellxgene-gateway:
   - apiVersion: v2
     appVersion: 0.3.8
+    created: "2022-01-23T10:50:40.859264545Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 1.x.x
+    - name: shinyproxy
+      repository: https://dabble-of-devops-bioanalyze.github.io/helm-charts/
+      version: 0.x.x
+    description: Helm chart for CellXGene Gateway from https://github.com/Novartis/cellxgene-gateway
+    digest: 4777c662ef0cb151ee2eed4278695c142ccc02e0a69b884bc0aa6ea78f2b2382
+    icon: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v2_logo_only-01.png
+    keywords:
+    - bioinformatics
+    - datascience
+    - machinelearning
+    - single-cell
+    - cellxgene
+    - cellxgene-gateway
+    - scanpy
+    maintainers:
+    - email: jillian@dabbleofdevops.com
+      name: Jillian Rowe
+    name: cellxgene-gateway
+    sources:
+    - https://github.com/Novartis/cellxgene-gateway
+    - https://github.com/remche/zero-to-shinyproxy
+    - https://www.shinyproxy.io/documentation
+    urls:
+    - https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/download/cellxgene-gateway-0.3.2/cellxgene-gateway-0.3.2.tgz
+    version: 0.3.2
+  - apiVersion: v2
+    appVersion: 0.3.8
     created: "2022-01-23T10:26:45.939006416Z"
     dependencies:
     - name: common
@@ -946,4 +980,4 @@ entries:
     urls:
     - https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/download/shinyproxy-0.0.1-n039.h6cec70b/shinyproxy-0.0.1-n039.h6cec70b.tgz
     version: 0.0.1-n039.h6cec70b
-generated: "2022-01-23T10:26:45.939392311Z"
+generated: "2022-01-23T10:50:40.859719948Z"
