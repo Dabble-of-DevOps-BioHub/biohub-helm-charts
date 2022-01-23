@@ -69,6 +69,7 @@ COPY airflow/dags /opt/bitnami/airflow/dags
 # RUN mkdir -p /root/data/
 
 ENV APP_DIR="/opt/bitnami/projects/app"
+RUN mkdir -p ${APP_DIR}
 COPY app ${APP_DIR}
 WORKDIR ${APP_DIR}
 

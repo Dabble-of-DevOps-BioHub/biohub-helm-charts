@@ -12,6 +12,6 @@ services:
     volumes:
       - ~/.aws:/.aws
       - ./airflow/logs:/opt/bitnami/airflow/logs
-      - ./airflow/dags:/opt/bitnami/airflow/dags
-      - ./app:/opt/bitnami/projects/app
+      # - ./airflow/dags:/opt/bitnami/airflow/dags
+      # - ./app:/opt/bitnami/projects/app
       #- ./data:/root/data
