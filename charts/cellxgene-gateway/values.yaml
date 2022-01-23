@@ -66,6 +66,9 @@ shinyproxy:
       limits:
         cpu: 8
         memory: 5G
+    image:
+      name: dabbleofdevops/shinyproxy
+      tag: 2.6.0
     title: "BioAnalyze - CellxGene Gateway"
     logo-url: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png
     container-log-path: ./container-logs
