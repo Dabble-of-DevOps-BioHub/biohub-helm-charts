@@ -12,7 +12,7 @@ The chart has been deployed in diagnostic mode. All probes have been disabled an
 
 Get the list of pods by executing:
 
-  kubectl get pods --namespace {{ .release.namespace }} -l app.kubernetes.io/instance={{ .release.name }}
+  kubectl get pods --namespace {{ .Release.namespace }} -l app.kubernetes.io/instance={{ .Release.name }}
 
 Access the pod you want to debug by executing
 
@@ -20,7 +20,7 @@ Access the pod you want to debug by executing
 
 Get the services by listing
 
-  kubectl get svc --namespace {{ .Release.namespace }} shinyproxy-{{ .release.name }}
+  kubectl get svc --namespace {{ .Release.namespace }} shinyproxy-{{ .Release.name }}
 
 {{- else }}
 
