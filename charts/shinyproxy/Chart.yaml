@@ -3,7 +3,7 @@ appVersion: 2.6.0
 description: A Helm chart to install Shinyproxy
 name: shinyproxy
 type: application
-version: 0.9.0
+version: 0.9.1
 dependencies:
   - name: common
     repository: https://charts.bitnami.com/bitnami
