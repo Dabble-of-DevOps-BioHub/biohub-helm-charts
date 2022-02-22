@@ -325,6 +325,7 @@ clusterIssuer:
 ## @section ShinyProxy AppPod application parameters
 ## ShinyProxy configuration
 ## ref: https://www.shinyproxy.io/documentation/configuration
+## appPod sets the default resources. Each of these can be overridden in the specs.*.container-memory-request
 
 appPod:
   resources:
@@ -341,27 +342,33 @@ appPod:
 
 ## @section ShinyProxy Proxy application parameters
 ## ShinyProxy Kubernetes configuration
+## ref: https://www.shinyproxy.io/documentation/configuration/#general
 ## ref: https://www.shinyproxy.io/documentation/configuration/#kubernetes
+# The first block of configuration in the application.yml file concerns general configuration values for the ShinyProxy application:
 
 proxy:
-  ## @param proxy.title
+  ## @param proxy.title The title that is displayed in the ShinyProxy navigation bar;
   title: Open Analytics Shiny Proxy
-  ## @param proxy.logo-url
+  ## @param proxy.logo-url The url of the logo that is displayed in the ShinyProxy navigation bar; this can also be a local file using the file scheme (file://)
   logo-url: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png
-  ## @param proxy.landing-page
+  ## @param proxy.landing-page The URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;
   landing-page: /
-  ## @param proxy.heartbeat-rate
+  ## @param proxy.heartbeat-rate The user’s browser will sent a heartbeat call every heartbeat-rate milliseconds; default value is 10000 (10 seconds);
   heartbeat-rate: 10000
-  ## @param proxy.heartbeat-timeout
+  ## @param proxy.heartbeat-timeout If the server does not receive a heartbeat for heartbeat-timeout milliseconds, the relevant proxy will be released (and the container stopped); default value is 60000 (60 seconds). Apps can override this using the heartbeat-timeout property.
   heartbeat-timeout: 60000
-  ## @param proxy.authentication
+  ## @param proxy.authentication Authentication see the ShinyProxy [docs](https://www.shinyproxy.io/documentation/configuration/#authentication)
   authentication: none
-  ## @param proxy.container-backend
+  ## @param proxy.container-log-path ShinyProxy can be configured to store log files of running containers. These log files contain the stdout and stderr output of the R process running the Shiny app.
+  container-log-path: ./container-logs
+  ## @param proxy.container-wait-time timeout for the container to be available to ShinyProxy; defaults to 20s (20000)
+  container-wait-time: 600000
+  ## @param proxy.container-backend This is a helm chart so we're using Kubernetes
   container-backend: kubernetes
   kubernetes:
     ## @param proxy.kubernetes.internal-networking
     internal-networking: true
-  ## @param proxy.specs
+  ## @param proxy.specs See the [specs](https://www.shinyproxy.io/documentation/configuration/#apps) docs.
   specs: []
 
 
