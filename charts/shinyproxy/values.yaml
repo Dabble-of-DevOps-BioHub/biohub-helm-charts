@@ -1,65 +1,563 @@
-ingress:
-  # ingress.enabled -- Whether to expose via ingress controller
+## @section Global parameters
+## Global Docker image parameters
+## Please, note that this will override the image parameters, including dependencies, configured to use the global value
+## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
+
+## @param global.imageRegistry Global Docker image registry
+## @param global.imagePullSecrets Global Docker registry secret names as an array
+##
+global:
+  imageRegistry: ""
+  ## E.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+
+## @section Common parameters
+
+## @param nameOverride String to partially override nginx.fullname template (will maintain the release name)
+##
+nameOverride: ""
+## @param fullnameOverride String to fully override nginx.fullname template
+##
+fullnameOverride: ""
+## @param kubeVersion Force target Kubernetes version (using Helm capabilities if not set)
+##
+kubeVersion: ""
+## @param clusterDomain Kubernetes Cluster Domain
+##
+clusterDomain: cluster.local
+## @param extraDeploy Extra objects to deploy (value evaluated as a template)
+##
+extraDeploy: []
+## @param commonLabels Add labels to all the deployed resources
+##
+commonLabels: {}
+## @param commonAnnotations Add annotations to all the deployed resources
+##
+commonAnnotations: {}
+
+## @section ShinyProxy parameters
+
+## Bitnami ShinyProxy image version
+## ref: https://hub.docker.com/r/bitnami/nginx/tags/
+## @param image.registry ShinyProxy image registry
+## @param image.repository ShinyProxy image repository
+## @param image.tag ShinyProxy image tag (immutable tags are recommended)
+## @param image.pullPolicy ShinyProxy image pull policy
+## @param image.pullSecrets Specify docker-registry secret names as an array
+## @param image.debug Set to true if you would like to see extra information on logs
+##
+image:
+  registry: docker.io
+  repository: dabbleofdevops/shinyproxy
+  tag: 2.6.0
+
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## E.g.:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+  ## Set to true if you would like to see extra information on logs
+  ##
+  debug: false
+## @param hostAliases Deployment pod host aliases
+## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+##
+hostAliases: []
+## Command and args for running the container (set to default if not set). Use array form
+## @param command Override default container command (useful when using custom images)
+## @param args Override default container args (useful when using custom images)
+##
+command: []
+args: []
+## @param extraEnvVars Extra environment variables to be set on ShinyProxy containers
+## E.g:
+## extraEnvVars:
+##   - name: FOO
+##     value: BAR
+##
+extraEnvVars: []
+## @param extraEnvVarsCM ConfigMap with extra environment variables
+##
+extraEnvVarsCM: ""
+## @param extraEnvVarsSecret Secret with extra environment variables
+##
+extraEnvVarsSecret: ""
+
+## @section ShinyProxy deployment parameters
+
+## @param replicaCount Number of ShinyProxy replicas to deploy
+##
+replicaCount: 1
+## @param podLabels Additional labels for ShinyProxy pods
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+##
+podLabels: {}
+## @param podAnnotations Annotations for ShinyProxy pods
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+##
+podAnnotations: {}
+## @param podAffinityPreset Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+##
+podAffinityPreset: ""
+## @param podAntiAffinityPreset Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+##
+podAntiAffinityPreset: soft
+## Node affinity preset
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity
+##
+nodeAffinityPreset:
+  ## @param nodeAffinityPreset.type Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`
+  ##
+  type: ""
+  ## @param nodeAffinityPreset.key Node label key to match Ignored if `affinity` is set.
+  ## E.g.
+  ## key: "kubernetes.io/e2e-az-name"
+  ##
+  key: ""
+  ## @param nodeAffinityPreset.values Node label values to match. Ignored if `affinity` is set.
+  ## E.g.
+  ## values:
+  ##   - e2e-az1
+  ##   - e2e-az2
+  ##
+  values: []
+## @param affinity Affinity for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+## Note: podAffinityPreset, podAntiAffinityPreset, and  nodeAffinityPreset will be ignored when it's set
+##
+affinity: {}
+## @param nodeSelector Node labels for pod assignment. Evaluated as a template.
+## Ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+## @param tolerations Tolerations for pod assignment. Evaluated as a template.
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: {}
+## @param priorityClassName Priority class name
+## ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
+##
+priorityClassName: ""
+## ShinyProxy pods' Security Context.
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+## @param podSecurityContext.enabled Enabled ShinyProxy pods' Security Context
+## @param podSecurityContext.fsGroup Set ShinyProxy pod's Security Context fsGroup
+## @param podSecurityContext.sysctls sysctl settings of the ShinyProxy pods
+##
+podSecurityContext:
   enabled: false
-  # ingress.classname -- IngressClass that should be used
-  classname:
-  # ingress.hosts -- The hostname that should be exposed
-  hosts: []
-  # ingress.tls -- TLS configuration
-  tls: []
+  fsGroup: 1001
+  ## sysctl settings
+  ## Example:
+  ## sysctls:
+  ## - name: net.core.somaxconn
+  ##   value: "10000"
+  ##
+  sysctls: []
+## ShinyProxy containers' Security Context.
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+## @param containerSecurityContext.enabled Enabled ShinyProxy containers' Security Context
+## @param containerSecurityContext.runAsUser Set ShinyProxy container's Security Context runAsUser
+## @param containerSecurityContext.runAsNonRoot Set ShinyProxy container's Security Context runAsNonRoot
+##
+containerSecurityContext:
+  enabled: false
+  runAsUser: 1001
+  runAsNonRoot: true
+## Configures the ports ShinyProxy listens on
+## @param containerPorts.http Sets http port inside ShinyProxy container
+## @param containerPorts.https Sets https port inside ShinyProxy container
+##
+containerPorts:
+  http: 8080
+  https: ""
+## ShinyProxy containers' resource requests and limits
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## We usually recommend not to specify default resources and to leave this as a conscious
+## choice for the user. This also increases chances charts run on environments with little
+## resources, such as Minikube. If you do want to specify resources, uncomment the following
+## lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+## @param resources.limits The resources limits for the ShinyProxy container
+## @param resources.requests The requested resources for the ShinyProxy container
+##
+resources:
+  requests:
+    cpu: 200m
+    memory: 512Mi
+  limits:
+    cpu: 300m
+    memory: 800Mi
+
+## ShinyProxy containers' liveness probe.
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+## @param livenessProbe.enabled Enable livenessProbe
+## @param livenessProbe.initialDelaySeconds Initial delay seconds for livenessProbe
+## @param livenessProbe.periodSeconds Period seconds for livenessProbe
+## @param livenessProbe.timeoutSeconds Timeout seconds for livenessProbe
+## @param livenessProbe.failureThreshold Failure threshold for livenessProbe
+## @param livenessProbe.successThreshold Success threshold for livenessProbe
+##
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 30
+  timeoutSeconds: 5
+  periodSeconds: 10
+  failureThreshold: 6
+  successThreshold: 1
+## ShinyProxy containers' readiness probe.
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+## @param readinessProbe.enabled Enable readinessProbe
+## @param readinessProbe.initialDelaySeconds Initial delay seconds for readinessProbe
+## @param readinessProbe.periodSeconds Period seconds for readinessProbe
+## @param readinessProbe.timeoutSeconds Timeout seconds for readinessProbe
+## @param readinessProbe.failureThreshold Failure threshold for readinessProbe
+## @param readinessProbe.successThreshold Success threshold for readinessProbe
+##
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 5
+  timeoutSeconds: 3
+  periodSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
+
+## @param customLivenessProbe Override default liveness probe
+##
+customLivenessProbe: {}
+## @param customReadinessProbe Override default readiness probe
+##
+customReadinessProbe: {}
+## Autoscaling parameters
+## @param autoscaling.enabled Enable autoscaling for ShinyProxy deployment
+## @param autoscaling.minReplicas Minimum number of replicas to scale back
+## @param autoscaling.maxReplicas Maximum number of replicas to scale out
+## @param autoscaling.targetCPU Target CPU utilization percentage
+## @param autoscaling.targetMemory Target Memory utilization percentage
+##
+autoscaling:
+  enabled: false
+  minReplicas: ""
+  maxReplicas: ""
+  targetCPU: ""
+  targetMemory: ""
+## @param extraVolumes Array to add extra volumes
+##
+extraVolumes: []
+## @param extraVolumeMounts Array to add extra mount
+##
+extraVolumeMounts: []
+## Pods Service Account
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+##
+serviceAccount:
+  ## @param serviceAccount.create Enable creation of ServiceAccount for nginx pod
+  ##
+  create: false
+  ## @param serviceAccount.name The name of the ServiceAccount to use.
+  ## If not set and create is true, a name is generated using the `common.names.fullname` template
+  name: ""
+  ## @param serviceAccount.annotations Annotations for service account. Evaluated as a template.
+  ## Only used if `create` is `true`.
+  ##
   annotations: {}
-  # ingress.annotations -- Annotations to add to the ingress
-  path: ""
-  # ingress.path -- Set path in the ingress. Defaults to proxy.landing-page if blank.
+  ## @param serviceAccount.autoMount Auto-mount the service account token in the pod
+  ##
+  autoMount: false
+## @param sidecars Sidecar parameters
+## e.g:
+## sidecars:
+##   - name: your-image-name
+##     image: your-image
+##     imagePullPolicy: Always
+##     ports:
+##       - name: portname
+##         containerPort: 1234
+##
+sidecars: []
+
+## @param sidecarSingleProcessNamespace Enable sharing the process namespace with sidecars
+## This will switch pod.spec.shareProcessNamespace parameter
+##
+sidecarSingleProcessNamespace: false
+
+## @param initContainers Extra init containers
+##
+initContainers: []
+## Pod Disruption Budget configuration
+## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+##
+pdb:
+  ## @param pdb.create Created a PodDisruptionBudget
+  ##
+  create: false
+  ## @param pdb.minAvailable Min number of pods that must still be available after the eviction
+  ##
+  minAvailable: 1
+  ## @param pdb.maxUnavailable Max number of pods that can be unavailable after the eviction
+  ##
+  maxUnavailable: 0
+
+## @section ShinyProxy clusterissuer parameters to enable letsEncrypt
+
+# Must have cert manager installed in order to set this to true
+clusterIssuer:
+  ## @param clusterIssuer.enabled  create a clusterissuer let's encrypt secret
+  ##
+  enabled: false
+  ## @param clusterIssuer.email email to add to letsEncrypt
+  email: ""
+
+## @section ShinyProxy AppPod application parameters
+## ShinyProxy configuration
+## ref: https://www.shinyproxy.io/documentation/configuration
+
 appPod:
   resources:
-    # appPod.resources.requests -- Resources requests for spawned pods
     requests:
+      ## @param appPod.resources.requests.cpu -- Resources requests for spawned pods
       cpu: 200m
+      ## @param appPod.resources.requests.memory -- Resources requests for spawned pods
       memory: 100Mi
-    # appPod.resources.limits -- Resources limits for spawned pods
     limits:
+      ## @param appPod.resources.limits.cpu -- Resources requests for spawned pods
       cpu: 300m
+      ## @param appPod.resources.limits.memory -- Resources requests for spawned pods
       memory: 200Mi
-# proxy -- See https://www.shinyproxy.io/configuration/ for application configuration
-# @default -- Default values
+
+## @section ShinyProxy Proxy application parameters
+## ShinyProxy Kubernetes configuration
+## ref: https://www.shinyproxy.io/documentation/configuration/#kubernetes
+
 proxy:
+  ## @param proxy.title
   title: Open Analytics Shiny Proxy
-  logo-url: http://www.openanalytics.eu/sites/www.openanalytics.eu/themes/oa/logo.png
+  ## @param proxy.logo-url
+  logo-url: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png
+  ## @param proxy.landing-page
   landing-page: /
+  ## @param proxy.heartbeat-rate
   heartbeat-rate: 10000
+  ## @param proxy.heartbeat-timeout
   heartbeat-timeout: 60000
+  ## @param proxy.authentication
   authentication: none
+  ## @param proxy.container-backend
   container-backend: kubernetes
   kubernetes:
+    ## @param proxy.kubernetes.internal-networking
     internal-networking: true
-  # proxy.image -- ShinyProxy Docker image to use
-  image:
-    name: dabbleofdevops/shinyproxy
-    tag: 2.6.0
-  # proxy.labels -- ShinyProxy deployment labels
-  labels: {}
-  # proxy.annotations -- ShinyProxy deployment annotations
+  ## @param proxy.specs
+  specs: []
+
+
+## @section Traffic Exposure parameters
+
+## ShinyProxy Service properties
+##
+service:
+  ## @param service.type Service type
+  ##
+  type: LoadBalancer
+  ## @param service.port Service HTTP port
+  ##
+  port: 80
+  ## @param service.httpsPort Service HTTPS port
+  ##
+  # httpsPort: 443
+  ## @param service.nodePorts [object] Specify the nodePort(s) value(s) for the LoadBalancer and NodePort service types.
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+  ##
+  nodePorts:
+    http: ""
+    https: ""
+  ## @param service.targetPort [object] Target port reference value for the Loadbalancer service types can be specified explicitly.
+  ## Listeners for the Loadbalancer can be custom mapped to the http or https service.
+  ## Example: Mapping the https listener to targetPort http [http: https]
+  ##
+  targetPort:
+    http: http
+    https: https
+  ## @param service.loadBalancerIP LoadBalancer service IP address
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+  ##
+  loadBalancerIP: ""
+  ## @param service.annotations Service annotations
+  ## This can be used to set the LoadBalancer service type to internal only.
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+  ## This can be used to set the external dns variables
+  ## ref: https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#verify-externaldns-works-service-example
+  ## Example:
+  ## annotations:
+  ##  external-dns.alpha.kubernetes.io/hostname: nginx.external-dns-test.my-org.com
+  ##
   annotations: {}
-  # proxy.nodeSelector -- ShinyProxy deployment node selector
-  nodeSelector: {}
-  # proxy.service -- ShinyProxy service configuration
-  service:
-    type: ClusterIP
-    annotations: {}
-    ports:
-      nodePort:
-    loadBalancerIP:
-  # proxy.livenessProbe -- ShinyProxy deployment liveness probe
-  livenessProbe: {}
-  # proxy.readinessProbe -- ShinyProxy deployment readiness probe
-  readinessProbe: {}
-  resources:
-    # proxy.resources.requests -- ShinyProxy pod resources requests
-    requests:
-      cpu: 200m
-      memory: 512Mi
-    # proxy.resources.limits -- ShinyProxy pod resources limits
-    limits:
-      cpu: 300m
-      memory: 800Mi
+  ## @param service.externalTrafficPolicy Enable client source IP preservation
+  ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ##
+  externalTrafficPolicy: Cluster
+
+## @section Ingress parameters
+
+## Configure the ingress resource that allows you to access the
+## Nginx installation. Set up the URL
+## ref: https://kubernetes.io/docs/user-guide/ingress/
+##
+ingress:
+  ## @param ingress.enabled Set to true to enable ingress record generation
+  ##
+  enabled: false
+  ## DEPRECATED: Use ingress.annotations instead of ingress.certManager
+  ## certManager: false
+  ##
+
+  ## @param ingress.pathType Ingress path type
+  ##
+  pathType: ImplementationSpecific
+  ## @param ingress.apiVersion Force Ingress API version (automatically detected if not set)
+  ##
+  apiVersion: ""
+  ## @param ingress.hostname Default host for the ingress resource
+  ##
+  hostname: nginx.local
+  ## @param ingress.path The Path to Nginx. You may need to set this to '/*' in order to use this with ALB ingress controllers.
+  ##
+  path: /
+  ## @param ingress.annotations Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations.
+  ## For a full list of possible ingress annotations, please see
+  ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md
+  ## Use this parameter to set the required annotations for cert-manager, see
+  ## ref: https://cert-manager.io/docs/usage/ingress/#supported-annotations
+  ##
+  ## e.g:
+  ## annotations:
+  ##   kubernetes.io/ingress.class: nginx
+  ##   cert-manager.io/cluster-issuer: cluster-issuer-name
+  ##
+  annotations: {}
+  ## @param ingress.tls Create TLS Secret
+  ## TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.ingress.hostname }}
+  ## You can use the ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it
+  ##
+  tls: false
+  ## @param ingress.extraHosts The list of additional hostnames to be covered with this ingress record.
+  ## Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array
+  ## extraHosts:
+  ## - name: nginx.local
+  ##   path: /
+  ##
+  extraHosts: []
+  ## @param ingress.extraPaths Any additional arbitrary paths that may need to be added to the ingress under the main host.
+  ## For example: The ALB ingress controller requires a special rule for handling SSL redirection.
+  ## extraPaths:
+  ## - path: /*
+  ##   backend:
+  ##     serviceName: ssl-redirect
+  ##     servicePort: use-annotation
+  ##
+  extraPaths: []
+  ## @param ingress.extraTls The tls configuration for additional hostnames to be covered with this ingress record.
+  ## see: https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
+  ## extraTls:
+  ## - hosts:
+  ##     - nginx.local
+  ##   secretName: nginx.local-tls
+  ##
+  extraTls: []
+  ## @param ingress.secrets If you're providing your own certificates, please use this to add the certificates as secrets
+  ## key and certificate should start with -----BEGIN CERTIFICATE----- or
+  ## -----BEGIN RSA PRIVATE KEY-----
+  ##
+  ## name should line up with a tlsSecret set further up
+  ## If you're using cert-manager, this is unneeded, as it will create the secret for you if it is not set
+  ##
+  ## It is also possible to create and manage the certificates outside of this helm chart
+  ## Please see README.md for more information
+  ## e.g:
+  ## - name: nginx.local-tls
+  ##   key:
+  ##   certificate:
+  ##
+  secrets: []
+## Health Ingress parameters
+##
+healthIngress:
+  ## @param healthIngress.enabled Set to true to enable health ingress record generation
+  ##
+  enabled: false
+  ## DEPRECATED: Use ingress.annotations instead of ingress.certManager
+  ## certManager: false
+  ##
+
+  ## @param healthIngress.pathType Ingress path type
+  ##
+  pathType: ImplementationSpecific
+  ## @param healthIngress.hostname When the health ingress is enabled, a host pointing to this will be created
+  ##
+  hostname: example.local
+  ## @param healthIngress.annotations Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations.
+  ## For a full list of possible ingress annotations, please see
+  ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md
+  ## Use this parameter to set the required annotations for cert-manager, see
+  ## ref: https://cert-manager.io/docs/usage/ingress/#supported-annotations
+  ##
+  ## e.g:
+  ## annotations:
+  ##   kubernetes.io/ingress.class: nginx
+  ##   cert-manager.io/cluster-issuer: cluster-issuer-name
+  ##
+  annotations: {}
+  ## @param healthIngress.tls Enable TLS configuration for the hostname defined at `healthIngress.hostname` parameter
+  ## TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.healthIngress.hostname }}
+  ## You can use the healthIngress.secrets parameter to create this TLS secret, relay on cert-manager to create it, or
+  ## let the chart create self-signed certificates for you
+  ##
+  tls: false
+  ## @param healthIngress.extraHosts The list of additional hostnames to be covered with this health ingress record
+  ## Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array
+  ## E.g.
+  ## extraHosts:
+  ##   - name: example.local
+  ##     path: /
+  ##
+  extraHosts: []
+  ## @param healthIngress.extraTls TLS configuration for additional hostnames to be covered
+  ## see: https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
+  ## E.g.
+  ## extraTls:
+  ##   - hosts:
+  ##       - example.local
+  ##     secretName: example.local-tls
+  ##
+  extraTls: []
+  ## @param healthIngress.secrets TLS Secret configuration
+  ## If you're providing your own certificates, please use this to add the certificates as secrets
+  ## key and certificate should start with -----BEGIN CERTIFICATE----- or -----BEGIN RSA PRIVATE KEY-----
+  ## name should line up with a secretName set further up
+  ## If it is not set and you're using cert-manager, this is unneeded, as it will create the secret for you
+  ## If it is not set and you're NOT using cert-manager either, self-signed certificates will be created
+  ## It is also possible to create and manage the certificates outside of this helm chart
+  ## Please see README.md for more information
+  ##
+  ## E.g.
+  ## secrets:
+  ##   - name: example.local-tls
+  ##     key:
+  ##     certificate:
+  ##
+  secrets: []
+
+# TODO Add Prometheus Exporter
+# https://github.com/bitnami/charts/blob/master/bitnami/nginx/values.yaml#L748

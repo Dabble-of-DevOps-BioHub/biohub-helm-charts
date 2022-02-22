@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "shinyproxy-{{ .Release.Name }}"
-  labels:
-    {{- include "shinyproxy.labels" . | nindent 4 }}
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
 data:
 {{- $values := pick .Values "proxy" "logging" "management" }}
 {{- $_ := set $values "proxy" (omit $values.proxy "verticalPodAutoscaling" "image" "annotations" "labels" "nodeSelector" "resources" "service" "ldap" "kerberos" "keycloak" "openid" "saml" "social" "users") }}

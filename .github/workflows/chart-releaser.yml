@@ -35,7 +35,7 @@ jobs:
           helm dep update
           helm dep build
 
-          cd ../../charts/cellxgene-gateway
+          cd ../../charts/single-cell-cloud-lab
           helm dep update
           helm dep build
 
@@ -87,7 +87,7 @@ jobs:
             -name 'shinyproxy*.tgz' | xargs -I {} helm push {} oci://${REPO}/
 
           find .cr-release-packages \
-            -name 'cellxgene-gateway*.tgz' | xargs -I {} helm push {} oci://${REPO}/
+            -name 'single-cell-cloud-lab*.tgz' | xargs -I {} helm push {} oci://${REPO}/
 
       - name: Describe images
         env:
@@ -98,7 +98,7 @@ jobs:
           HELM_EXPERIMENTAL_OCI: "1"
         run: |-
           aws ecr describe-images \
-            --repository-name cellxgene-gateway \
+            --repository-name single-cell-cloud-lab \
             --region us-east-1
 
           aws ecr describe-images \

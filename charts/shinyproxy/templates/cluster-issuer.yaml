@@ -1,0 +1,21 @@
+{{- if .Values.clusterIssuer.enabled -}}
+{{- $releaseName  := .Release.Name -}}
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: {{ include "common.names.fullname" . }}-letsencrypt
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    name: {{ include "common.names.fullname" . }}-letsencrypt
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+spec:
+  acme:
+    email: {{.Values.clusterIssuer.email}}
+    privateKeySecretRef:
+      name: {{ include "common.names.fullname" . }}-letsencrypt
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+{{- end }}

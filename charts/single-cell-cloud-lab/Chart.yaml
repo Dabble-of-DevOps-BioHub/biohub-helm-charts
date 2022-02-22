@@ -22,8 +22,9 @@ keywords:
 maintainers:
   - email: jillian@dabbleofdevops.com
     name: Jillian Rowe
-name: cellxgene-gateway
+name: single-cell-cloud-lab
 sources:
+  - https://github.com/dabble-of-devops-bioanalyze/single-cell-cloud-lab/
   - https://github.com/Novartis/cellxgene-gateway
   - https://github.com/remche/zero-to-shinyproxy
   - https://www.shinyproxy.io/documentation

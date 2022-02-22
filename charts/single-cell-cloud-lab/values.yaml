@@ -66,20 +66,23 @@ shinyproxy:
       limits:
         cpu: 8
         memory: 5G
+
     image:
-      name: dabbleofdevops/shinyproxy
-      tag: 2.6.0
-    title: "BioAnalyze - CellxGene Gateway"
+      repository: dabbleofdevops/shinyproxy
+      # tag: 2.6.0
+      tag: 503883c
+
+    title: "BioAnalyze - Single Cell Cloud Lab"
     logo-url: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png
     container-log-path: ./container-logs
     authentication: none
     container-wait-time: 600000
-    landing_page: /app_direct/cellxgene-gateway
+    landing_page: /app_direct/single-cell-cloud-lab/
     specs:
-    - id: cellxgene-gateway
+    - id: single-cell-cloud-lab
       port: 5005
-      display_name: "CellxGene Gateway"
-      container-image: dabbleofdevops/cellxgene-gateway:0.3.8
+      display_name: "Single Cell Cloud Lab"
+      container-image: dabbleofdevops/k8s-single-cell-cloud-lab:v1.0.0
       container-wait-time: 600000
       heartbeat-enabled: true
       heartbeat-timeout: 600000
@@ -90,22 +93,13 @@ shinyproxy:
       # service-account: s3-read-write-cellxgene-example-bucket
       target-path: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH')}"
       container-env:
-        GATEWAY_ENABLE_ANNOTATIONS: 1
-        GATEWAY_ENABLE_BACKED_MODE: 1
-        PROXY_FIX_FOR: 1
-        PROXY_FIX_PROTO: 1
-        PROXY_FIX_HOST: 1
-        PROXY_FIX_PORT: 1
-        PROXY_FIX_PREFIX: 1
-        GATEWAY_IP: "0.0.0.0"
-        GATEWAY_PORT: 5005
         # Must specify one of CELLXGENE_BUCKET or CELLXGENE_DATA
         # if you are using an s3 bucket you must have the credentials
         # cannot have s3:// prefix
         # CELLXGENE_BUCKET: "cellxgene-gateway-example-set"
         SCRIPT_NAME: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH').replaceFirst('/$','')}"
-        SYNC_ENABLED: "False"
-        ANNOTATION_DIR: "/cache"
+        SYNC_ENABLED: "True"
+        PUBLIC: "True"
 
       kubernetes-pod-patches: |-
         - op: add

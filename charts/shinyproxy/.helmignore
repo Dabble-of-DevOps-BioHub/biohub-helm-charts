@@ -24,3 +24,5 @@
 
 # ci folder
 ci
+examples
+templates/*.bak
