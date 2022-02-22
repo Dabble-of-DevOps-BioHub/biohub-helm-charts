@@ -4,6 +4,24 @@ DOCKER="dabbleofdevops/terraform:terraform-0.14"
 VERSION?=0.0.01
 SHA?=0.0.1
 
+helm/dep:
+	helm repo add bitnami https://charts.bitnami.com/bitnami
+	helm repo add bioanalyze https://dabble-of-devops-bioanalyze.github.io/helm-charts/
+	helm repo update
+
+helm/build:
+	$(MAKE) helm/dep
+	PWD=$(shell pwd)
+
+	cd charts/shinyproxy
+	helm dep update
+	helm dep build
+
+	cd ${PWD}
+	cd charts/single-cell-cloud-lab
+	helm dep update
+	helm dep build
+
 make-dirs:
 	mkdir -p .aws
 

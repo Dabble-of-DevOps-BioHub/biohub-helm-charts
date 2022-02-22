@@ -37,8 +37,7 @@ jobs:
           helm dep update
           helm dep build
 
-          cd ${PWD}
-          cd charts/single-cell-cloud-lab
+          cd ../../charts/single-cell-cloud-lab
           helm dep update
           helm dep build
 
