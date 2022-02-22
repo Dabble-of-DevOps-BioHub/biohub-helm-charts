@@ -190,15 +190,17 @@ containerPorts:
 ## choice for the user. This also increases chances charts run on environments with little
 ## resources, such as Minikube. If you do want to specify resources, uncomment the following
 ## lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-## @param resources.limits The resources limits for the ShinyProxy container
-## @param resources.requests The requested resources for the ShinyProxy container
 ##
 resources:
   requests:
+    ## @param resources.requests.cpu The requested resources for the ShinyProxy container
     cpu: 200m
+    ## @param resources.requests.memory The requested resources for the ShinyProxy container
     memory: 512Mi
   limits:
+    ## @param resources.limits.cpu The requested resources for the ShinyProxy container
     cpu: 300m
+    ## @param resources.limits.memory The requested resources for the ShinyProxy container
     memory: 800Mi
 
 ## ShinyProxy containers' liveness probe.
@@ -376,7 +378,7 @@ service:
   port: 80
   ## @param service.httpsPort Service HTTPS port
   ##
-  # httpsPort: 443
+  httpsPort: 443
   ## @param service.nodePorts [object] Specify the nodePort(s) value(s) for the LoadBalancer and NodePort service types.
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
   ##

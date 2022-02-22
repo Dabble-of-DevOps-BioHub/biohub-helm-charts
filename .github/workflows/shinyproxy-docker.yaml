@@ -1,4 +1,5 @@
 name: Build and Push ShinyProxy Docker image
+
 on:
   push:
     branches:

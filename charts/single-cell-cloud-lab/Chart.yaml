@@ -9,7 +9,7 @@ dependencies:
   - name: shinyproxy
     repository: "https://dabble-of-devops-bioanalyze.github.io/helm-charts/"
     version: 0.x.x
-description: "Helm chart for CellXGene Gateway from https://github.com/Novartis/cellxgene-gateway"
+description: "Helm chart for Single Cell Analysis using several single cell tools."
 icon: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v2_logo_only-01.png
 keywords:
   - bioinformatics

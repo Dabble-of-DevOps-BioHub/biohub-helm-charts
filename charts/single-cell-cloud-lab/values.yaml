@@ -17,8 +17,9 @@ global:
   storageClass: ""
 
 ## @section Common parameters
-diagnosticMode:
-  enabled: true
+# diagnosticMode:
+#   ## @param diagnosticMode.enabled enable diagnostic mode
+#   enabled: true
 
 ## @param kubeVersion Override Kubernetes version
 ##

@@ -1,28 +1,28 @@
 {{/*
 Return the proper image name
 */}}
-{{- define "cellxgene-gateway.image" -}}
+{{- define "single-cell-cloud-lab.image" -}}
 {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
 {{- end -}}
 
 {{/*
 Return the proper image name (for the init container volume-permissions image)
 */}}
-{{- define "cellxgene-gateway.volumePermissions.image" -}}
+{{- define "single-cell-cloud-lab.volumePermissions.image" -}}
 {{- include "common.images.image" ( dict "imageRoot" .Values.volumePermissions.image "global" .Values.global ) -}}
 {{- end -}}
 
 {{/*
 Return the proper Docker Image Registry Secret Names
 */}}
-{{- define "cellxgene-gateway.imagePullSecrets" -}}
+{{- define "single-cell-cloud-lab.imagePullSecrets" -}}
 {{ include "common.images.pullSecrets" (dict "images" (list .Values.image ) "global" .Values.global) }}
 {{- end -}}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "cellxgene-gateway.serviceAccountName" -}}
+{{- define "single-cell-cloud-lab.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
     {{ default (printf "%s-foo" (include "common.names.fullname" .)) .Values.serviceAccount.name }}
 {{- else -}}
@@ -34,7 +34,7 @@ Create the name of the service account to use
 Return true if cert-manager required annotations for TLS signed certificates are set in the Ingress annotations
 Ref: https://cert-manager.io/docs/usage/ingress/#supported-annotations
 */}}
-{{- define "cellxgene-gateway.ingress.certManagerRequest" -}}
+{{- define "single-cell-cloud-lab.ingress.certManagerRequest" -}}
 {{ if or (hasKey . "cert-manager.io/cluster-issuer") (hasKey . "cert-manager.io/issuer") }}
     {{- true -}}
 {{- end -}}
@@ -43,10 +43,10 @@ Ref: https://cert-manager.io/docs/usage/ingress/#supported-annotations
 {{/*
 Compile all warnings into a single message.
 */}}
-{{- define "cellxgene-gateway.validateValues" -}}
+{{- define "single-cell-cloud-lab.validateValues" -}}
 {{- $messages := list -}}
-{{- $messages := append $messages (include "cellxgene-gateway.validateValues.foo" .) -}}
-{{- $messages := append $messages (include "cellxgene-gateway.validateValues.bar" .) -}}
+{{- $messages := append $messages (include "single-cell-cloud-lab.validateValues.foo" .) -}}
+{{- $messages := append $messages (include "single-cell-cloud-lab.validateValues.bar" .) -}}
 {{- $messages := without $messages "" -}}
 {{- $message := join "\n" $messages -}}
 
