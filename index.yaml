@@ -786,6 +786,22 @@ entries:
   shinyproxy:
   - apiVersion: v2
     appVersion: 2.6.0
+    created: "2022-02-22T12:26:02.965295039Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 1.x.x
+    description: A Helm chart to install Shinyproxy
+    digest: 4596ad06b4a9da458351aa8195881b5fc1ebc0f526fac3f9713327e7a2079d8a
+    name: shinyproxy
+    type: application
+    urls:
+    - https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/download/shinyproxy-0.9.1/shinyproxy-0.9.1.tgz
+    version: 0.9.1
+  - apiVersion: v2
+    appVersion: 2.6.0
     created: "2022-01-23T10:25:24.42105447Z"
     description: A Helm chart to install Shinyproxy
     digest: 5086a79fc67c0377bb0f2eab5d3ddbdfc9c9deafb315af04a987697840f5ccc1
@@ -1014,4 +1030,40 @@ entries:
     urls:
     - https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/download/shinyproxy-0.0.1-n039.h6cec70b/shinyproxy-0.0.1-n039.h6cec70b.tgz
     version: 0.0.1-n039.h6cec70b
-generated: "2022-01-23T11:29:03.607248848Z"
+  single-cell-cloud-lab:
+  - apiVersion: v2
+    appVersion: 0.3.8
+    created: "2022-02-22T12:26:03.168397808Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 1.x.x
+    - name: shinyproxy
+      repository: https://dabble-of-devops-bioanalyze.github.io/helm-charts/
+      version: 0.x.x
+    description: Helm chart for Single Cell Analysis using several single cell tools.
+    digest: 5372fd3dde81f9313c99f99d31dceb7bfcde66fbd8faa1b1bcf71fcc8673e4e9
+    icon: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v2_logo_only-01.png
+    keywords:
+    - bioinformatics
+    - datascience
+    - machinelearning
+    - single-cell
+    - cellxgene
+    - cellxgene-gateway
+    - scanpy
+    maintainers:
+    - email: jillian@dabbleofdevops.com
+      name: Jillian Rowe
+    name: single-cell-cloud-lab
+    sources:
+    - https://github.com/dabble-of-devops-bioanalyze/single-cell-cloud-lab/
+    - https://github.com/Novartis/cellxgene-gateway
+    - https://github.com/remche/zero-to-shinyproxy
+    - https://www.shinyproxy.io/documentation
+    urls:
+    - https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/download/single-cell-cloud-lab-0.4.0/single-cell-cloud-lab-0.4.0.tgz
+    version: 0.4.0
+generated: "2022-02-22T12:26:03.168677909Z"
