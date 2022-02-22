@@ -84,3 +84,103 @@ A Helm chart to install the [Single Cell Cloud Lab](https://github.com/dabble-of
       name: cache-volume` |
 
 
+  path: /spec/containers/0/env/-
+  value:
+      name: PROXY_ID
+      value: "#{proxy.id}"
+
+- op: add
+  path: /spec/containers/0/env/-
+  value:
+      name: PROXY_USERID
+      value: "#{proxy.userId}"
+
+# in case the app has no volumes yet:
+- op: add
+  path: /spec/volumes
+  value:
+    - name: cache-volume
+      emptyDir: {}
+
+- op: add
+  path: /spec/containers/0/volumeMounts
+  value:
+    - mountPath: /cache
+      name: cache-volume` |
+
+
+  path: /spec/containers/0/env/-
+  value:
+      name: PROXY_ID
+      value: "#{proxy.id}"
+
+- op: add
+  path: /spec/containers/0/env/-
+  value:
+      name: PROXY_USERID
+      value: "#{proxy.userId}"
+
+# in case the app has no volumes yet:
+- op: add
+  path: /spec/volumes
+  value:
+    - name: cache-volume
+      emptyDir: {}
+
+- op: add
+  path: /spec/containers/0/volumeMounts
+  value:
+    - mountPath: /cache
+      name: cache-volume` |
+
+
+  path: /spec/containers/0/env/-
+  value:
+      name: PROXY_ID
+      value: "#{proxy.id}"
+
+- op: add
+  path: /spec/containers/0/env/-
+  value:
+      name: PROXY_USERID
+      value: "#{proxy.userId}"
+
+# in case the app has no volumes yet:
+- op: add
+  path: /spec/volumes
+  value:
+    - name: cache-volume
+      emptyDir: {}
+
+- op: add
+  path: /spec/containers/0/volumeMounts
+  value:
+    - mountPath: /cache
+      name: cache-volume` |
+
+
+  path: /spec/containers/0/env/-
+  value:
+      name: PROXY_ID
+      value: "#{proxy.id}"
+
+- op: add
+  path: /spec/containers/0/env/-
+  value:
+      name: PROXY_USERID
+      value: "#{proxy.userId}"
+
+# in case the app has no volumes yet:
+- op: add
+  path: /spec/volumes
+  value:
+    - name: cache-volume
+      emptyDir: {}
+
+- op: add
+  path: /spec/containers/0/volumeMounts
+  value:
+    - mountPath: /cache
+      name: cache-volume` |
+
+

@@ -17,8 +17,7 @@ helm/build:
 	helm dep update
 	helm dep build
 
-	cd ${PWD}
-	cd charts/single-cell-cloud-lab
+	cd ../../charts/single-cell-cloud-lab
 	helm dep update
 	helm dep build
 
@@ -46,6 +45,18 @@ docker/push:
 	docker push 018835827632.dkr.ecr.us-east-1.amazonaws.com/k8s-shinyproxy:$(VERSION)
 	docker push 018835827632.dkr.ecr.us-east-1.amazonaws.com/k8s-shinyproxy:$(SHA)
 
+helm/readme:
+	cd charts/shinyproxy && \
+		readme-generator \
+			--values values.yaml \
+			--readme README.md \
+			-m values.json
+
+	cd charts/single-cell-cloud-lab && \
+		readme-generator \
+			--values values.yaml \
+			--readme README.md \
+			-m values.json
 
 eks/shell:
 	$(MAKE) make-dirs

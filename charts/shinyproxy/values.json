@@ -1,0 +1,726 @@
+{
+    "title": "Chart Values",
+    "type": "object",
+    "properties": {
+        "global": {
+            "type": "object",
+            "properties": {
+                "imageRegistry": {
+                    "type": "string",
+                    "default": "\"\"",
+                    "description": "Global Docker image registry"
+                },
+                "imagePullSecrets": {
+                    "type": "array",
+                    "default": "[]",
+                    "description": "Global Docker registry secret names as an array"
+                }
+            }
+        },
+        "nameOverride": {
+            "type": "string",
+            "default": "\"\"",
+            "description": "String to partially override nginx.fullname template (will maintain the release name)"
+        },
+        "fullnameOverride": {
+            "type": "string",
+            "default": "\"\"",
+            "description": "String to fully override nginx.fullname template"
+        },
+        "kubeVersion": {
+            "type": "string",
+            "default": "\"\"",
+            "description": "Force target Kubernetes version (using Helm capabilities if not set)"
+        },
+        "clusterDomain": {
+            "type": "string",
+            "default": "cluster.local",
+            "description": "Kubernetes Cluster Domain"
+        },
+        "extraDeploy": {
+            "type": "array",
+            "default": "[]",
+            "description": "Extra objects to deploy (value evaluated as a template)"
+        },
+        "commonLabels": {
+            "type": "object",
+            "default": "{}",
+            "description": "Add labels to all the deployed resources"
+        },
+        "commonAnnotations": {
+            "type": "object",
+            "default": "{}",
+            "description": "Add annotations to all the deployed resources"
+        },
+        "image": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": "string",
+                    "default": "docker.io",
+                    "description": "ShinyProxy image registry"
+                },
+                "repository": {
+                    "type": "string",
+                    "default": "dabbleofdevops/shinyproxy",
+                    "description": "ShinyProxy image repository"
+                },
+                "tag": {
+                    "type": "string",
+                    "default": "2.6.0",
+                    "description": "ShinyProxy image tag (immutable tags are recommended)"
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "default": "IfNotPresent",
+                    "description": "ShinyProxy image pull policy"
+                },
+                "pullSecrets": {
+                    "type": "array",
+                    "default": "[]",
+                    "description": "Specify docker-registry secret names as an array"
+                },
+                "debug": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Set to true if you would like to see extra information on logs"
+                }
+            }
+        },
+        "hostAliases": {
+            "type": "array",
+            "default": "[]",
+            "description": "Deployment pod host aliases"
+        },
+        "command": {
+            "type": "array",
+            "default": "[]",
+            "description": "Override default container command (useful when using custom images)"
+        },
+        "args": {
+            "type": "array",
+            "default": "[]",
+            "description": "Override default container args (useful when using custom images)"
+        },
+        "extraEnvVars": {
+            "type": "array",
+            "default": "[]",
+            "description": "Extra environment variables to be set on ShinyProxy containers"
+        },
+        "extraEnvVarsCM": {
+            "type": "string",
+            "default": "\"\"",
+            "description": "ConfigMap with extra environment variables"
+        },
+        "extraEnvVarsSecret": {
+            "type": "string",
+            "default": "\"\"",
+            "description": "Secret with extra environment variables"
+        },
+        "replicaCount": {
+            "type": "number",
+            "default": 1,
+            "description": "Number of ShinyProxy replicas to deploy"
+        },
+        "podLabels": {
+            "type": "object",
+            "default": "{}",
+            "description": "Additional labels for ShinyProxy pods"
+        },
+        "podAnnotations": {
+            "type": "object",
+            "default": "{}",
+            "description": "Annotations for ShinyProxy pods"
+        },
+        "podAffinityPreset": {
+            "type": "string",
+            "default": "\"\"",
+            "description": "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        },
+        "podAntiAffinityPreset": {
+            "type": "string",
+            "default": "soft",
+            "description": "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        },
+        "nodeAffinityPreset": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "default": "\"\"",
+                    "description": "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                },
+                "key": {
+                    "type": "string",
+                    "default": "\"\"",
+                    "description": "Node label key to match Ignored if `affinity` is set."
+                },
+                "values": {
+                    "type": "array",
+                    "default": "[]",
+                    "description": "Node label values to match. Ignored if `affinity` is set."
+                }
+            }
+        },
+        "affinity": {
+            "type": "object",
+            "default": "{}",
+            "description": "Affinity for pod assignment"
+        },
+        "nodeSelector": {
+            "type": "object",
+            "default": "{}",
+            "description": "Node labels for pod assignment. Evaluated as a template."
+        },
+        "tolerations": {
+            "type": "object",
+            "default": "{}",
+            "description": "Tolerations for pod assignment. Evaluated as a template."
+        },
+        "priorityClassName": {
+            "type": "string",
+            "default": "\"\"",
+            "description": "Priority class name"
+        },
+        "podSecurityContext": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enabled ShinyProxy pods' Security Context"
+                },
+                "fsGroup": {
+                    "type": "number",
+                    "default": 1001,
+                    "description": "Set ShinyProxy pod's Security Context fsGroup"
+                },
+                "sysctls": {
+                    "type": "array",
+                    "default": "[]",
+                    "description": "sysctl settings of the ShinyProxy pods"
+                }
+            }
+        },
+        "containerSecurityContext": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enabled ShinyProxy containers' Security Context"
+                },
+                "runAsUser": {
+                    "type": "number",
+                    "default": 1001,
+                    "description": "Set ShinyProxy container's Security Context runAsUser"
+                },
+                "runAsNonRoot": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Set ShinyProxy container's Security Context runAsNonRoot"
+                }
+            }
+        },
+        "containerPorts": {
+            "type": "object",
+            "properties": {
+                "http": {
+                    "type": "number",
+                    "default": 8080,
+                    "description": "Sets http port inside ShinyProxy container"
+                },
+                "https": {
+                    "type": "string",
+                    "default": "\"\"",
+                    "description": "Sets https port inside ShinyProxy container"
+                }
+            }
+        },
+        "resources": {
+            "type": "object",
+            "properties": {
+                "requests": {
+                    "type": "object",
+                    "properties": {
+                        "cpu": {
+                            "type": "string",
+                            "default": "200m",
+                            "description": "The requested resources for the ShinyProxy container"
+                        },
+                        "memory": {
+                            "type": "string",
+                            "default": "512Mi",
+                            "description": "The requested resources for the ShinyProxy container"
+                        }
+                    }
+                },
+                "limits": {
+                    "type": "object",
+                    "properties": {
+                        "cpu": {
+                            "type": "string",
+                            "default": "300m",
+                            "description": "The requested resources for the ShinyProxy container"
+                        },
+                        "memory": {
+                            "type": "string",
+                            "default": "800Mi",
+                            "description": "The requested resources for the ShinyProxy container"
+                        }
+                    }
+                }
+            }
+        },
+        "livenessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable livenessProbe"
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "default": 30,
+                    "description": "Initial delay seconds for livenessProbe"
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "default": 10,
+                    "description": "Period seconds for livenessProbe"
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "default": 5,
+                    "description": "Timeout seconds for livenessProbe"
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "default": 6,
+                    "description": "Failure threshold for livenessProbe"
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "default": 1,
+                    "description": "Success threshold for livenessProbe"
+                }
+            }
+        },
+        "readinessProbe": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable readinessProbe"
+                },
+                "initialDelaySeconds": {
+                    "type": "number",
+                    "default": 5,
+                    "description": "Initial delay seconds for readinessProbe"
+                },
+                "periodSeconds": {
+                    "type": "number",
+                    "default": 5,
+                    "description": "Period seconds for readinessProbe"
+                },
+                "timeoutSeconds": {
+                    "type": "number",
+                    "default": 3,
+                    "description": "Timeout seconds for readinessProbe"
+                },
+                "failureThreshold": {
+                    "type": "number",
+                    "default": 3,
+                    "description": "Failure threshold for readinessProbe"
+                },
+                "successThreshold": {
+                    "type": "number",
+                    "default": 1,
+                    "description": "Success threshold for readinessProbe"
+                }
+            }
+        },
+        "customLivenessProbe": {
+            "type": "object",
+            "default": "{}",
+            "description": "Override default liveness probe"
+        },
+        "customReadinessProbe": {
+            "type": "object",
+            "default": "{}",
+            "description": "Override default readiness probe"
+        },
+        "autoscaling": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable autoscaling for ShinyProxy deployment"
+                },
+                "minReplicas": {
+                    "type": "string",
+                    "default": "\"\"",
+                    "description": "Minimum number of replicas to scale back"
+                },
+                "maxReplicas": {
+                    "type": "string",
+                    "default": "\"\"",
+                    "description": "Maximum number of replicas to scale out"
+                },
+                "targetCPU": {
+                    "type": "string",
+                    "default": "\"\"",
+                    "description": "Target CPU utilization percentage"
+                },
+                "targetMemory": {
+                    "type": "string",
+                    "default": "\"\"",
+                    "description": "Target Memory utilization percentage"
+                }
+            }
+        },
+        "extraVolumes": {
+            "type": "array",
+            "default": "[]",
+            "description": "Array to add extra volumes"
+        },
+        "extraVolumeMounts": {
+            "type": "array",
+            "default": "[]",
+            "description": "Array to add extra mount"
+        },
+        "serviceAccount": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable creation of ServiceAccount for nginx pod"
+                },
+                "name": {
+                    "type": "string",
+                    "default": "\"\"",
+                    "description": "The name of the ServiceAccount to use."
+                },
+                "annotations": {
+                    "type": "object",
+                    "default": "{}",
+                    "description": "Annotations for service account. Evaluated as a template."
+                },
+                "autoMount": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Auto-mount the service account token in the pod"
+                }
+            }
+        },
+        "sidecars": {
+            "type": "array",
+            "default": "[]",
+            "description": "Sidecar parameters"
+        },
+        "sidecarSingleProcessNamespace": {
+            "type": "boolean",
+            "default": false,
+            "description": "Enable sharing the process namespace with sidecars"
+        },
+        "initContainers": {
+            "type": "array",
+            "default": "[]",
+            "description": "Extra init containers"
+        },
+        "pdb": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Created a PodDisruptionBudget"
+                },
+                "minAvailable": {
+                    "type": "number",
+                    "default": 1,
+                    "description": "Min number of pods that must still be available after the eviction"
+                },
+                "maxUnavailable": {
+                    "type": "number",
+                    "default": 0,
+                    "description": "Max number of pods that can be unavailable after the eviction"
+                }
+            }
+        },
+        "clusterIssuer": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "create a clusterissuer let's encrypt secret"
+                },
+                "email": {
+                    "type": "string",
+                    "default": "\"\"",
+                    "description": "email to add to letsEncrypt"
+                }
+            }
+        },
+        "appPod": {
+            "type": "object",
+            "properties": {
+                "resources": {
+                    "type": "object",
+                    "properties": {
+                        "requests": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "string",
+                                    "default": "200m",
+                                    "description": "-- Resources requests for spawned pods"
+                                },
+                                "memory": {
+                                    "type": "string",
+                                    "default": "100Mi",
+                                    "description": "-- Resources requests for spawned pods"
+                                }
+                            }
+                        },
+                        "limits": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "string",
+                                    "default": "300m",
+                                    "description": "-- Resources requests for spawned pods"
+                                },
+                                "memory": {
+                                    "type": "string",
+                                    "default": "200Mi",
+                                    "description": "-- Resources requests for spawned pods"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "proxy": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "default": "Open Analytics Shiny Proxy",
+                    "description": "The title that is displayed in the ShinyProxy navigation bar;"
+                },
+                "logo-url": {
+                    "type": "string",
+                    "default": "https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png",
+                    "description": "The url of the logo that is displayed in the ShinyProxy navigation bar; this can also be a local file using the file scheme (file://)"
+                },
+                "landing-page": {
+                    "type": "string",
+                    "default": "/",
+                    "description": "The URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;"
+                },
+                "heartbeat-rate": {
+                    "type": "number",
+                    "default": 10000,
+                    "description": "The user’s browser will sent a heartbeat call every heartbeat-rate milliseconds; default value is 10000 (10 seconds);"
+                },
+                "heartbeat-timeout": {
+                    "type": "number",
+                    "default": 60000,
+                    "description": "If the server does not receive a heartbeat for heartbeat-timeout milliseconds, the relevant proxy will be released (and the container stopped); default value is 60000 (60 seconds). Apps can override this using the heartbeat-timeout property."
+                },
+                "authentication": {
+                    "type": "string",
+                    "default": "none",
+                    "description": "Authentication see the ShinyProxy [docs](https://www.shinyproxy.io/documentation/configuration/#authentication)"
+                },
+                "container-log-path": {
+                    "type": "string",
+                    "default": "./container-logs",
+                    "description": "ShinyProxy can be configured to store log files of running containers. These log files contain the stdout and stderr output of the R process running the Shiny app."
+                },
+                "container-wait-time": {
+                    "type": "number",
+                    "default": 600000,
+                    "description": "timeout for the container to be available to ShinyProxy; defaults to 20s (20000)"
+                },
+                "container-backend": {
+                    "type": "string",
+                    "default": "kubernetes",
+                    "description": "This is a helm chart so we're using Kubernetes"
+                },
+                "kubernetes": {
+                    "type": "object",
+                    "properties": {
+                        "internal-networking": {
+                            "type": "boolean",
+                            "default": true,
+                            "description": ""
+                        }
+                    }
+                },
+                "specs": {
+                    "type": "array",
+                    "default": "[]",
+                    "description": "See the [specs](https://www.shinyproxy.io/documentation/configuration/#apps) docs."
+                }
+            }
+        },
+        "service": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "default": "LoadBalancer",
+                    "description": "Service type"
+                },
+                "port": {
+                    "type": "number",
+                    "default": 80,
+                    "description": "Service HTTP port"
+                },
+                "httpsPort": {
+                    "type": "number",
+                    "default": 443,
+                    "description": "Service HTTPS port"
+                },
+                "nodePorts": {
+                    "type": "object",
+                    "default": "{}",
+                    "description": "Specify the nodePort(s) value(s) for the LoadBalancer and NodePort service types."
+                },
+                "targetPort": {
+                    "type": "object",
+                    "default": "{}",
+                    "description": "Target port reference value for the Loadbalancer service types can be specified explicitly."
+                },
+                "loadBalancerIP": {
+                    "type": "string",
+                    "default": "\"\"",
+                    "description": "LoadBalancer service IP address"
+                },
+                "annotations": {
+                    "type": "object",
+                    "default": "{}",
+                    "description": "Service annotations"
+                },
+                "externalTrafficPolicy": {
+                    "type": "string",
+                    "default": "Cluster",
+                    "description": "Enable client source IP preservation"
+                }
+            }
+        },
+        "ingress": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Set to true to enable ingress record generation"
+                },
+                "pathType": {
+                    "type": "string",
+                    "default": "ImplementationSpecific",
+                    "description": "Ingress path type"
+                },
+                "apiVersion": {
+                    "type": "string",
+                    "default": "\"\"",
+                    "description": "Force Ingress API version (automatically detected if not set)"
+                },
+                "hostname": {
+                    "type": "string",
+                    "default": "nginx.local",
+                    "description": "Default host for the ingress resource"
+                },
+                "path": {
+                    "type": "string",
+                    "default": "/",
+                    "description": "The Path to Nginx. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+                },
+                "annotations": {
+                    "type": "object",
+                    "default": "{}",
+                    "description": "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+                },
+                "tls": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Create TLS Secret"
+                },
+                "extraHosts": {
+                    "type": "array",
+                    "default": "[]",
+                    "description": "The list of additional hostnames to be covered with this ingress record."
+                },
+                "extraPaths": {
+                    "type": "array",
+                    "default": "[]",
+                    "description": "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+                },
+                "extraTls": {
+                    "type": "array",
+                    "default": "[]",
+                    "description": "The tls configuration for additional hostnames to be covered with this ingress record."
+                },
+                "secrets": {
+                    "type": "array",
+                    "default": "[]",
+                    "description": "If you're providing your own certificates, please use this to add the certificates as secrets"
+                }
+            }
+        },
+        "healthIngress": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Set to true to enable health ingress record generation"
+                },
+                "pathType": {
+                    "type": "string",
+                    "default": "ImplementationSpecific",
+                    "description": "Ingress path type"
+                },
+                "hostname": {
+                    "type": "string",
+                    "default": "example.local",
+                    "description": "When the health ingress is enabled, a host pointing to this will be created"
+                },
+                "annotations": {
+                    "type": "object",
+                    "default": "{}",
+                    "description": "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+                },
+                "tls": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable TLS configuration for the hostname defined at `healthIngress.hostname` parameter"
+                },
+                "extraHosts": {
+                    "type": "array",
+                    "default": "[]",
+                    "description": "The list of additional hostnames to be covered with this health ingress record"
+                },
+                "extraTls": {
+                    "type": "array",
+                    "default": "[]",
+                    "description": "TLS configuration for additional hostnames to be covered"
+                },
+                "secrets": {
+                    "type": "array",
+                    "default": "[]",
+                    "description": "TLS Secret configuration"
+                }
+            }
+        }
+    }
+}
