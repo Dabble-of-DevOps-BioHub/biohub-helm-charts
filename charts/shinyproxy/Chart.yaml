@@ -3,7 +3,7 @@ appVersion: 2.6.0
 description: A Helm chart to install Shinyproxy
 name: shinyproxy
 type: application
-version: 0.9.2
+version: 0.9.3
 icon: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v2_logo_only-01.png
 dependencies:
   - name: common
