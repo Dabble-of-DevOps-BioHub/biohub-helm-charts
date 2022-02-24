@@ -26,20 +26,7 @@ jobs:
 
       - name: Helm Dependency update
         run: |
-
-          helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm repo add bioanalyze https://dabble-of-devops-bioanalyze.github.io/helm-charts/
-          helm repo update
-
-          PWD=$(pwd)
-
-          cd charts/shinyproxy
-          helm dep update
-          helm dep build
-
-          cd ../../charts/single-cell-cloud-lab
-          helm dep update
-          helm dep build
+          make helm/build
 
       # "arn:aws:ecr:us-east-1:018835827632:repository/shinyproxy"
       # "018835827632.dkr.ecr.us-east-1.amazonaws.com/helm-shinyproxy"
