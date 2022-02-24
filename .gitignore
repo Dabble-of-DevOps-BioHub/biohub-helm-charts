@@ -48,3 +48,7 @@ images/cellxgene-gateway/data
 images/cellxgene-gateway/airflow/logs
 images/cellxgene-gateway/app/supervisord.log
 images/cellxgene-gateway/app/supervisord.pid
+
+charts/*/*.tgz
+charts/shinyproxy/*.tgz
+charts/single-cell-cloud-lab/*.tgz

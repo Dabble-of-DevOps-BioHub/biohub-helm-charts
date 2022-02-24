@@ -19,13 +19,13 @@ helm/build:
 	$(MAKE) helm/dep
 	PWD=$(shell pwd)
 
-	cd charts/shinyproxy
-	helm dep update
-	helm dep build
+	cd charts/shinyproxy && \
+		helm dep update && \
+		helm dep build
 
-	cd ../../charts/single-cell-cloud-lab
-	helm dep update
-	helm dep build
+	cd charts/single-cell-cloud-lab && \
+		helm dep update && \
+		helm dep build
 
 make-dirs:
 	mkdir -p .aws
@@ -45,8 +45,8 @@ docker/push:
 	docker push $(DOCKERHUB_IMAGE):latest
 	docker push $(DOCKERHUB_IMAGE):$(VERSION)
 	docker push $(DOCKERHUB_IMAGE):$(SHA)
-	# aws ecr
-	# aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 018835827632.dkr.ecr.us-east-1.amazonaws.com
+
+	# push to ecr
 	aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 709825985650.dkr.ecr.us-east-1.amazonaws.com
 	docker push $(ECR_IMAGE):latest
 	docker push $(ECR_IMAGE):$(VERSION)
