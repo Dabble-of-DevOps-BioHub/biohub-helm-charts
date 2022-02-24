@@ -26,3 +26,5 @@
 ci
 examples
 templates/*.bak
+Makefile
+.build-harness

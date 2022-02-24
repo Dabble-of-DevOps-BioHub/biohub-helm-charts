@@ -479,12 +479,12 @@
                                 "cpu": {
                                     "type": "string",
                                     "default": "200m",
-                                    "description": "-- Resources requests for spawned pods"
+                                    "description": "Resources requests for spawned pods"
                                 },
                                 "memory": {
                                     "type": "string",
                                     "default": "100Mi",
-                                    "description": "-- Resources requests for spawned pods"
+                                    "description": "Resources requests for spawned pods"
                                 }
                             }
                         },
@@ -494,14 +494,440 @@
                                 "cpu": {
                                     "type": "string",
                                     "default": "300m",
-                                    "description": "-- Resources requests for spawned pods"
+                                    "description": "Resources requests for spawned pods"
                                 },
                                 "memory": {
                                     "type": "string",
                                     "default": "200Mi",
-                                    "description": "-- Resources requests for spawned pods"
+                                    "description": "Resources requests for spawned pods"
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "auth": {
+            "type": "object",
+            "properties": {
+                "authSimpleEnabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": ""
+                },
+                "users": {
+                    "type": "array",
+                    "description": "",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": ""
+                            },
+                            "password": {
+                                "type": "string",
+                                "description": "Please note that you should absolutely change this password"
+                            },
+                            "groups": {
+                                "type": "string",
+                                "description": "User Groups"
+                            }
+                        }
+                    }
+                },
+                "authNoneEnabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Default is no authentication, public app"
+                },
+                "authLDAPEnabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Use LDAP Authentication"
+                },
+                "ldap": {
+                    "type": "object",
+                    "properties": {
+                        "url": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "the LDAP connection string, composed of the URL and base DN of the LDAP directory"
+                        },
+                        "user-dn-pattern": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "pattern of the distinguished name for a user. Use this if all your users are in a single LDAP location"
+                        },
+                        "user-search-filter": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "LDAP filter to search for users. Use this if your users are in different LDAP locations, and you cannot use user-dn-pattern"
+                        },
+                        "user-search-base": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "search base to search for users. Only used if user-search-filter is set"
+                        },
+                        "group-search-filter": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "LDAP filter used to search for group memberships"
+                        },
+                        "group-search-base": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "search base to search for groups. Only used if group-search-filter is set"
+                        },
+                        "manager-dn": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "the distinguished name of the user used to bind to the LDAP directory; leave empty if the initial bind is anonymous"
+                        },
+                        "manager-password": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "the password of the user used to bind to the LDAP directory; can be omitted if manager-dn is empty (i.e. when the initial bind is anonymous)."
+                        }
+                    }
+                },
+                "authKerberosEnabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": ""
+                },
+                "kerberos": {
+                    "type": "object",
+                    "properties": {
+                        "auth-service-principal": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "principal name of the Kerberos entity that processes authentication requests;"
+                        },
+                        "auth-service-keytab": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "path to the keytab file containing the secret of the auth-service-principal;"
+                        },
+                        "deleg-service-principal": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "principal name of the Kerberos entity that obtains delegated service tickets for the user; if not specified the value of the auth-service-principal will be used also for the deleg-service-principal;"
+                        },
+                        "deleg-service-keytab": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "path to the keytab file containing the secret of the deleg-service-principal; if not specified the value of the auth-service-keytab is used as the deleg-service-keytab;"
+                        },
+                        "backend-principals": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "array of service principals for which delegated service tickets should be obtained e.g. [\"HTTP/your-api-server.com\", \"postgres/your-postgres-server.com\"]"
+                        },
+                        "client-ccache-path": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "absolute or relative path to a folder where user-specific credential caches are maintained; these are mounted automatically as volumes in the container, and contain service tickets for the configured backend-principals;"
+                        },
+                        "ticket-renew-interval": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "interval in milliseconds for automatically renewing the backend service tickets; the default is 28800000 which corresponds to 8 hours."
+                        }
+                    }
+                },
+                "authKeyCloakEnabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable KeyCloak/SSO"
+                },
+                "keycloak": {
+                    "type": "object",
+                    "properties": {
+                        "realm": {
+                            "type": "string",
+                            "default": "yoursso",
+                            "description": ""
+                        },
+                        "auth-server-url": {
+                            "type": "string",
+                            "default": "http://yoururl.com:8180/auth",
+                            "description": ""
+                        },
+                        "resource": {
+                            "type": "string",
+                            "default": "yourresource",
+                            "description": ""
+                        },
+                        "credentials-secret": {
+                            "type": "string",
+                            "default": "your-credentials-secret",
+                            "description": ""
+                        },
+                        "ssl-required": {
+                            "type": "string",
+                            "default": "none",
+                            "description": "one can set the SSL/HTTPS mode to one of none, all or external (default). These options are documented here;"
+                        },
+                        "name-attribute": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "name of the attribute to use as the user’s name; one of name (default, current behaviour), preferred_username, nickname or email"
+                        },
+                        "use-resource-role-mappings": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": "boolean value to use either client roles (true) or realm roles (false; default); see also the relevant Keycloak documentation."
+                        }
+                    }
+                },
+                "authOpenIDEnabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable OIDC authentication. Default is false"
+                },
+                "openid": {
+                    "type": "object",
+                    "properties": {
+                        "auth-url": {
+                            "type": "string",
+                            "default": "https://accounts.google.com/o/oauth2/v2/auth",
+                            "description": ""
+                        },
+                        "token-url": {
+                            "type": "string",
+                            "default": "https://www.googleapis.com/oauth2/v4/token",
+                            "description": ""
+                        },
+                        "jwks-url": {
+                            "type": "string",
+                            "default": "https://www.googleapis.com/oauth2/v3/certs",
+                            "description": ""
+                        },
+                        "logout-url": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "URL to be used for logging out of the OpenId session on the OpenId provider back-end; for an Auth0 back-end one can specify e.g."
+                        },
+                        "client-id": {
+                            "type": "string",
+                            "default": "***",
+                            "description": ""
+                        },
+                        "client-secret": {
+                            "type": "string",
+                            "default": "***",
+                            "description": ""
+                        }
+                    }
+                },
+                "authSAMLEnabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable SAML Auth"
+                },
+                "saml": {
+                    "type": "object",
+                    "properties": {
+                        "idp-metadata-url": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "the URL where the IDP’s metadata can be retrieved"
+                        },
+                        "app-entity-id": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "the entity ID of this application, must match the AudienceRestriction in the SAML assertion received from the IDP"
+                        },
+                        "app-base-url": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "the application’s base URL. Some IDPs require that you specify valid callback URLs. This must match a valid callback URL."
+                        },
+                        "name-attribute": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "the name of the attribute in the SAML assertion containing the username"
+                        },
+                        "roles-attribute": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "the name of the attribute in the SAML assertion containing the user roles"
+                        },
+                        "logout-url": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "optional URL to which the user will be redirected when they logout"
+                        },
+                        "logout-method": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "can be local (default) or saml. See below for more information."
+                        },
+                        "log-attributes": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "when set to true, ShinyProxy logs all SAML attributes provided by the IDP when a user logs in. This makes it easier to find the correct attribute to use for the name-attribute and roles-attribute configuration. Note that this may log sensitive information (e.g., some SAML claims may contain passwords or tokens), therefore this option should only be used when setting up SAML (or you have to ensure no sensitive values are contained within the SAML assertion)."
+                        },
+                        "max-authentication-age": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "configures the maximum age of SAML credentials in seconds. By default, this is 7200 seconds (i.e. 2 hours). See this FAQ entry for more information and an alternative solution."
+                        },
+                        "force-authn": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "if set to true the IDP is required to re-authenticate the user and not rely on previous authentication events. This is useful when the IDP provides ShinyProxy credentials which are older than the time configured in the max-authentication-age. See this FAQ entry for more information and an alternative solution."
+                        },
+                        "keystore": {
+                            "type": "string",
+                            "default": "path to the JKS keystore",
+                            "description": ""
+                        },
+                        "keystore-password": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "(If the IDP sends back encrypted SAML assertions) Password to access the keystore. If omitted, encryption-cert-password will be used instead"
+                        },
+                        "encryption-cert-name": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "(If the IDP sends back encrypted SAML assertions) Name of the certificate whose public key the SAML Assertion is encrypted with"
+                        },
+                        "encryption-cert-password": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "(If the IDP sends back encrypted SAML assertions) Password of the certificate whose public key the SAML Assertion is encrypted with"
+                        }
+                    }
+                },
+                "authSocialEnabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable Social Auth"
+                },
+                "social": {
+                    "type": "object",
+                    "properties": {
+                        "facebookEnabled": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": ""
+                        },
+                        "facebook": {
+                            "type": "object",
+                            "properties": {
+                                "app-id": {
+                                    "type": "string",
+                                    "default": "yourfacebookappid",
+                                    "description": ""
+                                },
+                                "app-secret": {
+                                    "type": "string",
+                                    "default": "yourfacebookappsecret",
+                                    "description": ""
+                                }
+                            }
+                        },
+                        "twitterEnabled": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": ""
+                        },
+                        "twitter": {
+                            "type": "object",
+                            "properties": {
+                                "app-id": {
+                                    "type": "string",
+                                    "default": "yourtwitterappid",
+                                    "description": ""
+                                },
+                                "app-secret": {
+                                    "type": "string",
+                                    "default": "yourtwitterappsecret",
+                                    "description": ""
+                                }
+                            }
+                        },
+                        "googleEnabled": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": ""
+                        },
+                        "google": {
+                            "type": "object",
+                            "properties": {
+                                "app-id": {
+                                    "type": "string",
+                                    "default": "yourgoogleappid",
+                                    "description": ""
+                                },
+                                "app-secret": {
+                                    "type": "string",
+                                    "default": "yourgoogleappsecret",
+                                    "description": ""
+                                }
+                            }
+                        },
+                        "githubEnabled": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": ""
+                        },
+                        "github": {
+                            "type": "object",
+                            "properties": {
+                                "app-id": {
+                                    "type": "string",
+                                    "default": "yourgithubappid",
+                                    "description": ""
+                                },
+                                "app-secret": {
+                                    "type": "string",
+                                    "default": "yourgithubappsecret",
+                                    "description": ""
+                                }
+                            }
+                        },
+                        "linkedinEnabled": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": ""
+                        },
+                        "linkedin": {
+                            "type": "object",
+                            "properties": {
+                                "app-id": {
+                                    "type": "string",
+                                    "default": "yourlinkedinappid",
+                                    "description": ""
+                                },
+                                "app-secret": {
+                                    "type": "string",
+                                    "default": "yourlinkedinappsecret",
+                                    "description": ""
+                                }
+                            }
+                        }
+                    }
+                },
+                "authWebServiceEnabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": ""
+                },
+                "webservice": {
+                    "type": "object",
+                    "properties": {
+                        "authentication-url": {
+                            "type": "string",
+                            "default": "https://your-auth-server.com/login",
+                            "description": ""
+                        },
+                        "authentication-request-body": {
+                            "type": "string",
+                            "default": "{\"username\": \"%s\", \"password\": \"%s\"}",
+                            "description": ""
                         }
                     }
                 }

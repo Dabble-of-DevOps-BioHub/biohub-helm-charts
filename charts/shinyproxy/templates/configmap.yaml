@@ -6,6 +6,37 @@ metadata:
   labels: {{- include "common.labels.standard" . | nindent 4 }}
 data:
 {{- $values := pick .Values "proxy" "logging" "management" }}
+{{- $auth := pick .Values "auth" }}
+
+# Auth Type
+{{- if .Values.auth.authSimpleEnabled }}
+  {{- $_ :=  set $values.proxy "authentication" "simple" }}
+  {{- $_ := set $values.proxy "users" .Values.auth.users }}
+{{- else if .Values.auth.authNoneEnabled }}
+  {{- $_ := set $values.proxy "authentication" "none" }}
+{{- else if .Values.auth.authLDAPEnabled }}
+  {{-  $_ := set $values.proxy "authentication" "ldap" }}
+  {{- $_ := set $values.proxy "ldap" .Values.auth.ldap }}
+{{- else if .Values.auth.authKerberosEnabled }}
+  {{-  $_ := set $values.proxy "authentication" "kerberos" }}
+  {{- $_ := set $values.proxy "kerberos" .Values.auth.kerberos }}
+{{- else if .Values.auth.authKeyCloakEnabled }}
+  {{-  $_ := set $values.proxy "authentication" "keycloak" }}
+  {{- $_ := set $values.proxy "keycloak" .Values.auth.keycloak }}
+{{- else if .Values.auth.authOpenIDEnabled }}
+  {{-  $_ := set $values.proxy "authentication" "openid" }}
+  {{- $_ := set $values.proxy "openid" .Values.auth.openid }}
+{{- else if .Values.auth.authSAMLEnabled }}
+  {{-  $_ := set $values.proxy "authentication" "saml" }}
+  {{- $_ := set $values.proxy "saml" .Values.auth.saml }}
+{{- else if .Values.auth.authSocialEnabled }}
+  {{-  $_ := set $values.proxy "authentication" "social" }}
+  {{- $_ := set $values.proxy "social" .Values.auth.social }}
+{{- else if .Values.auth.authWebServiceEnabled }}
+  {{-  $_ := set $values.proxy "authentication" "webservice" }}
+  {{- $_ := set $values.proxy "webservice" .Values.auth.webservice }}
+{{- end }}
+
 {{- $_ := set $values "proxy" (omit $values.proxy "verticalPodAutoscaling" "image" "annotations" "labels" "nodeSelector" "resources" "service" "ldap" "kerberos" "keycloak" "openid" "saml" "social" "users") }}
 {{- $_ := set $values.proxy.kubernetes "namespace" .Release.Namespace }}
 {{- range .Values.proxy.specs }}

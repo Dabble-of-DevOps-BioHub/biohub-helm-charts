@@ -322,7 +322,7 @@ clusterIssuer:
   ## @param clusterIssuer.email email to add to letsEncrypt
   email: ""
 
-## @section ShinyProxy AppPod application parameters
+## @section ShinyProxy AppPod Application Pod Parameters
 ## ShinyProxy configuration
 ## ref: https://www.shinyproxy.io/documentation/configuration
 ## appPod sets the default resources. Each of these can be overridden in the specs.*.container-memory-request
@@ -330,15 +330,249 @@ clusterIssuer:
 appPod:
   resources:
     requests:
-      ## @param appPod.resources.requests.cpu -- Resources requests for spawned pods
+      ## @param appPod.resources.requests.cpu Resources requests for spawned pods
       cpu: 200m
-      ## @param appPod.resources.requests.memory -- Resources requests for spawned pods
+      ## @param appPod.resources.requests.memory Resources requests for spawned pods
       memory: 100Mi
     limits:
-      ## @param appPod.resources.limits.cpu -- Resources requests for spawned pods
+      ## @param appPod.resources.limits.cpu Resources requests for spawned pods
       cpu: 300m
-      ## @param appPod.resources.limits.memory -- Resources requests for spawned pods
+      ## @param appPod.resources.limits.memory Resources requests for spawned pods
       memory: 200Mi
+
+## @section ShinyProxy Proxy Authentication
+## ref: https://www.shinyproxy.io/documentation/configuration/#authentication
+## Authentication parameters for ShinyProxy
+
+## @section ShinyProxy Proxy Simple Username/Password Authentication
+## ref: https://www.shinyproxy.io/documentation/configuration/#simple-authentication
+## Please note that this is not a secure way to authenticate your application. It is only here to provide a starting point.
+## Since passwords are contained in clear text in the application.yml file, this is not a secure way to set up authentication, but can be useful for demonstration purposes (e.g. in the absence of a network connection) or for very specific use cases.
+## **Note**
+## the user name of the authenticated user is made available to the Shiny application via the environment variable SHINYPROXY_USERNAME;
+## the groups the authenticated user is member of are made available to the Shiny application via the environment variable SHINYPROXY_USERGROUPS. The group names are converted into capital letters (e.g. MATHEMATICIANS)
+
+auth:
+  ## @param auth.authSimpleEnabled
+  authSimpleEnabled: true
+  users:
+    ## @param auth.users[0].name
+  - name: user01
+    ## @param auth.users[0].password Please note that you should absolutely change this password
+    password: "password"
+    ## @param auth.users[0].groups User Groups
+    groups: scientists, users
+
+  ## @section ShinyProxy Proxy Public / No Authentication
+  ## ref: https://www.shinyproxy.io/documentation/configuration/
+
+  ## @param auth.authNoneEnabled Default is no authentication, public app
+  authNoneEnabled: false
+
+  ## @section ShinyProxy Proxy LDAP Authentication
+  ## ref: https://www.shinyproxy.io/documentation/configuration/#ldap
+  ## When using LDAP authentication, ShinyProxy will use the provided LDAP url to:
+  ## Authenticate users by attempting to bind with their login name and password.
+  ## Authorize users to access apps by searching for any LDAP groups they are a member of, and matching those group names to the list of group names configured for the app.
+  ## With the default values (authentication: ldap), authentication will be done against the LDAP server at ldap.forumsys.com; to log in one can use the user name “tesla” and password “password”.
+  ## The base DN given in the url (e.g. dc=example,dc=com in ldap://ldap.forumsys.com:389/dc=example,dc=com) does not have to be repeated in user-search-base or group-search-base. However, it must be repeated in the manager-dn.
+  ## user-dn-pattern and user-search-filter support the placeholder {0} which will be replaced with the user’s login name.
+  ## group-search-filter supports three placeholders: {0} maps to the user’s DN, {1} maps to the user’s login name, and {2} maps to the user’s CN.
+
+  ## @param auth.authLDAPEnabled Use LDAP Authentication
+  authLDAPEnabled: false
+  ldap:
+      ## @param auth.ldap.url the LDAP connection string, composed of the URL and base DN of the LDAP directory
+      url: ""
+      ## @param auth.ldap.user-dn-pattern pattern of the distinguished name for a user. Use this if all your users are in a single LDAP location
+      user-dn-pattern: ""
+      ## @param auth.ldap.user-search-filter LDAP filter to search for users. Use this if your users are in different LDAP locations, and you cannot use user-dn-pattern
+      user-search-filter: ""
+      ## @param auth.ldap.user-search-base search base to search for users. Only used if user-search-filter is set
+      user-search-base: ""
+      ## @param auth.ldap.group-search-filter LDAP filter used to search for group memberships
+      group-search-filter: ""
+      ## @param auth.ldap.group-search-base search base to search for groups. Only used if group-search-filter is set
+      group-search-base: ""
+      ## @param auth.ldap.manager-dn the distinguished name of the user used to bind to the LDAP directory; leave empty if the initial bind is anonymous
+      manager-dn: ""
+      ## @param auth.ldap.manager-password the password of the user used to bind to the LDAP directory; can be omitted if manager-dn is empty (i.e. when the initial bind is anonymous).
+      manager-password: ""
+
+  ## @section ShinyProxy Proxy Kerberos Authentication
+  ## ref: https://www.shinyproxy.io/documentation/configuration/#kerberos
+  ## A second type of authentication is Kerberos based authentication which offers single-sign on top of the authentication and authorization.
+  ## Kerberos-based authentication can be configured using
+
+  ## @param auth.authKerberosEnabled
+  authKerberosEnabled: false
+  kerberos:
+    ## @param auth.kerberos.auth-service-principal principal name of the Kerberos entity that processes authentication requests;
+    auth-service-principal: ""
+    ## @param auth.kerberos.auth-service-keytab path to the keytab file containing the secret of the auth-service-principal;
+    auth-service-keytab: ""
+    ## @param auth.kerberos.deleg-service-principal principal name of the Kerberos entity that obtains delegated service tickets for the user; if not specified the value of the auth-service-principal will be used also for the deleg-service-principal;
+    deleg-service-principal: ""
+    ## @param auth.kerberos.deleg-service-keytab path to the keytab file containing the secret of the deleg-service-principal; if not specified the value of the auth-service-keytab is used as the deleg-service-keytab;
+    deleg-service-keytab: ""
+    ## @param auth.kerberos.backend-principals array of service principals for which delegated service tickets should be obtained e.g. ["HTTP/your-api-server.com", "postgres/your-postgres-server.com"]
+    backend-principals: ""
+    ## @param auth.kerberos.client-ccache-path absolute or relative path to a folder where user-specific credential caches are maintained; these are mounted automatically as volumes in the container, and contain service tickets for the configured backend-principals;
+    client-ccache-path: ""
+    ## @param auth.kerberos.ticket-renew-interval interval in milliseconds for automatically renewing the backend service tickets; the default is 28800000 which corresponds to 8 hours.
+    ticket-renew-interval: ""
+
+
+  ## @section ShinyProxy Proxy Single-Sign On / Keycloak Authentication
+  ## ref: https://www.shinyproxy.io/documentation/configuration/#single-sign-on--keycloak
+
+  ## @param auth.authKeyCloakEnabled Enable KeyCloak/SSO
+  authKeyCloakEnabled: false
+
+  keycloak:
+    ## @param auth.keycloak.realm
+    realm: yoursso
+    ## @param auth.keycloak.auth-server-url
+    auth-server-url: http://yoururl.com:8180/auth
+    ## @param auth.keycloak.resource
+    resource: yourresource
+    ## @param auth.keycloak.credentials-secret
+    credentials-secret: your-credentials-secret
+    ## @param auth.keycloak.ssl-required one can set the SSL/HTTPS mode to one of none, all or external (default). These options are documented here;
+    ssl-required: "none"
+    ## @param auth.keycloak.name-attribute name of the attribute to use as the user’s name; one of name (default, current behaviour), preferred_username, nickname or email
+    name-attribute: ""
+    ## @param auth.keycloak.use-resource-role-mappings boolean value to use either client roles (true) or realm roles (false; default); see also the relevant Keycloak documentation.
+    use-resource-role-mappings: false
+
+
+  ## @section ShinyProxy Proxy OpenID Connect (OIDC) Authentication
+  ## ref: https://www.shinyproxy.io/documentation/configuration/#openid-connect-oidc
+  ## OpenID Connect is a modern authentication protocol based on the OAuth2 standard. It uses tokens, removing the need to store passwords and offering a single-sign-on experience for desktop, web and mobile apps.
+  ## More information about OIDC can be found on the OpenID website.
+  ## To configure OIDC in ShinyProxy, several steps must be performed:
+  ## Register your ShinyProxy installation with an OIDC provider.
+  ## Obtain the configuration parameters for your OIDC provider that ShinyProxy requires.
+  ## (Optional) For group-based authorization, add a custom claim in the OIDC ID Token.
+
+  ## @param auth.authOpenIDEnabled Enable OIDC authentication. Default is false
+  authOpenIDEnabled: false
+
+  openid:
+    ## @param auth.openid.auth-url
+    auth-url: https://accounts.google.com/o/oauth2/v2/auth
+    ## @param auth.openid.token-url
+    token-url: https://www.googleapis.com/oauth2/v4/token
+    ## @param auth.openid.jwks-url
+    jwks-url: https://www.googleapis.com/oauth2/v3/certs
+    ## @param auth.openid.logout-url URL to be used for logging out of the OpenId session on the OpenId provider back-end; for an Auth0 back-end one can specify e.g.
+    logout-url: ""
+    ## @param auth.openid.client-id
+    client-id: "***"
+    ## @param auth.openid.client-secret
+    client-secret: "***"
+
+  ## @section ShinyProxy Proxy SAML 2.0 Authentication
+  ## ref: https://www.shinyproxy.io/documentation/configuration/#saml-20
+  ## ShinyProxy supports authentication and authorization using an IDP (Identity Provider) conforming to the SAML 2.0 specification.
+
+  ## @param auth.authSAMLEnabled Enable SAML Auth
+  authSAMLEnabled: false
+
+  saml:
+    ## @param auth.saml.idp-metadata-url the URL where the IDP’s metadata can be retrieved
+    idp-metadata-url: ""
+    ## @param auth.saml.app-entity-id the entity ID of this application, must match the AudienceRestriction in the SAML assertion received from the IDP
+    app-entity-id: ""
+    ## @param auth.saml.app-base-url the application’s base URL. Some IDPs require that you specify valid callback URLs. This must match a valid callback URL.
+    app-base-url: ""
+    ## @param auth.saml.name-attribute the name of the attribute in the SAML assertion containing the username
+    name-attribute: ""
+    ## @param auth.saml.roles-attribute the name of the attribute in the SAML assertion containing the user roles
+    roles-attribute: ""
+    ## @param auth.saml.logout-url optional URL to which the user will be redirected when they logout
+    logout-url: ""
+    ## @param auth.saml.logout-method can be local (default) or saml. See below for more information.
+    logout-method: ""
+    ## @param auth.saml.log-attributes when set to true, ShinyProxy logs all SAML attributes provided by the IDP when a user logs in. This makes it easier to find the correct attribute to use for the name-attribute and roles-attribute configuration. Note that this may log sensitive information (e.g., some SAML claims may contain passwords or tokens), therefore this option should only be used when setting up SAML (or you have to ensure no sensitive values are contained within the SAML assertion).
+    log-attributes: ""
+    ## @param auth.saml.max-authentication-age configures the maximum age of SAML credentials in seconds. By default, this is 7200 seconds (i.e. 2 hours). See this FAQ entry for more information and an alternative solution.
+    max-authentication-age: ""
+    ## @param auth.saml.force-authn if set to true the IDP is required to re-authenticate the user and not rely on previous authentication events. This is useful when the IDP provides ShinyProxy credentials which are older than the time configured in the max-authentication-age. See this FAQ entry for more information and an alternative solution.
+    force-authn: ""
+    ## @param auth.saml.keystore
+    keystore: path to the JKS keystore
+    ## @param auth.saml.keystore-password (If the IDP sends back encrypted SAML assertions) Password to access the keystore. If omitted, encryption-cert-password will be used instead
+    keystore-password: ""
+    ## @param auth.saml.encryption-cert-name (If the IDP sends back encrypted SAML assertions) Name of the certificate whose public key the SAML Assertion is encrypted with
+    encryption-cert-name: ""
+    ## @param auth.saml.encryption-cert-password (If the IDP sends back encrypted SAML assertions) Password of the certificate whose public key the SAML Assertion is encrypted with
+    encryption-cert-password: ""
+
+  ## @section ShinyProxy Proxy Social Authentication
+  ## ref: https://www.shinyproxy.io/documentation/configuration/#social-authentication
+  ## A sixth type of authentication offered by ShinyProxy besides LDAP, Kerberos, Keycloak, OpenID Connect and SAML 2.0 is so-called social authentication. This type of authentication allows users to log in with
+  ## *Facebook
+  ## *Twitter
+  ## *Google
+  ## *Github or
+  ## *Linkedin
+  ## accounts into ShinyProxy.
+
+  ## @param auth.authSocialEnabled Enable Social Auth
+  authSocialEnabled: false
+
+  social:
+    ## @param auth.social.facebookEnabled
+    facebookEnabled: false
+    facebook:
+      ## @param auth.social.facebook.app-id
+      app-id: yourfacebookappid
+      ## @param auth.social.facebook.app-secret
+      app-secret: yourfacebookappsecret
+    ## @param auth.social.twitterEnabled
+    twitterEnabled: false
+    twitter:
+      ## @param auth.social.twitter.app-id
+      app-id: yourtwitterappid
+      ## @param auth.social.twitter.app-secret
+      app-secret: yourtwitterappsecret
+    ## @param auth.social.googleEnabled
+    googleEnabled: false
+    google:
+      ## @param auth.social.google.app-id
+      app-id: yourgoogleappid
+      ## @param auth.social.google.app-secret
+      app-secret: yourgoogleappsecret
+    ## @param auth.social.githubEnabled
+    githubEnabled: false
+    github:
+      ## @param auth.social.github.app-id
+      app-id: yourgithubappid
+      ## @param auth.social.github.app-secret
+      app-secret: yourgithubappsecret
+    ## @param auth.social.linkedinEnabled
+    linkedinEnabled: false
+    linkedin:
+      ## @param auth.social.linkedin.app-id
+      app-id: yourlinkedinappid
+      ## @param auth.social.linkedin.app-secret
+      app-secret: yourlinkedinappsecret
+
+  ## @section ShinyProxy Proxy WebService Authentication
+  ## ref: https://www.shinyproxy.io/documentation/configuration/#web-service-based-authentication
+  ## Amongst the different authentication methods, ShinyProxy also offers the possibility to use a custom web service that handles authentication with a HTTP POST call returning a session id and user information.
+  ## The `authentication-request-body`` is a customizable JSON body that gets POSTed to the `authentication-url``.
+  ## If the HTTP response code is 200, the authentication is considered successful while all other response codes result in an authentication error. Since no authorization is offered by this type of web services, authorization logic is not implemented and authenticated users will be able to access all public applications.
+
+  ## @param auth.authWebServiceEnabled
+  authWebServiceEnabled: false
+
+  webservice:
+    ## @param auth.webservice.authentication-url
+    authentication-url: https://your-auth-server.com/login
+    ## @param auth.webservice.authentication-request-body
+    authentication-request-body: '{"username": "%s", "password": "%s"}'
 
 ## @section ShinyProxy Proxy application parameters
 ## ShinyProxy Kubernetes configuration

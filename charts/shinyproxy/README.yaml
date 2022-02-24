@@ -1,0 +1,129 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: BioAnalyze - ShinyProxy Helm Chart
+
+# Logo for this project
+#logo: docs/logo.png
+
+# License of this project
+license: "APACHE2"
+
+# Copyrights
+copyrights:
+  - name: "Dabble of DevOps, SCorp"
+    url: "https://www.dabbleofdevops.com"
+    year: "2022"
+
+# Canonical GitHub repo
+github_repo: dabble-of-devops-bioanalyze/helm-charts
+
+# Badges to display
+badges:
+  # - name: "Latest Release"
+  #   image: "https://img.shields.io/github/release/dabble-of-devops-bioanalyze/helm-charts.svg"
+  #   url: "https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/latest"
+
+# List any related terraform modules that this module may be used with or that this module depends on.
+related:
+  - name: "BioAnalyze Help Desk"
+    description: "Home of the docs and help for the BioAnalyze Project."
+    url: "https://dabbleofdevopshelp.zendesk.com/"
+  - name: "BioAnalyze"
+    description: "BioAnalyze Website and Newsletter"
+    url: "https://www.bioanalyze.io"
+  - name: "Dabble of DevOps Consulting"
+    description: "Want to hire me to design your HPC infrastructure?"
+    url: "https://www.dabbleofdevops.com"
+  - name: "terraform-aws-eks-cluster"
+    url: "https://github.com/cloudposse/terraform-aws-eks-cluster/"
+    description: Base CloudPosse module for AWS EKS Clusters"
+
+# List any resources helpful for someone to get started. For example, link to the hashicorp documentation or AWS documentation.
+references:
+  - name: ShinyProxy
+    url: https://www.shinyproxy.io/
+    description: |
+      ShinyProxy is your favourite way to deploy Shiny apps in an enterprise context. It has built-in functionality for LDAP authentication and authorization, makes securing Shiny traffic (over TLS) a breeze and has no limits on concurrent usage of a Shiny app.
+  - name: ShinyProxy Flask Demo
+    url: https://github.com/openanalytics/shinyproxy-flask-demo
+    description: "Example flask app with gunicorn"
+
+# Short description of this project
+description: |-
+  This is a helm chart for the awesome [ShinyProxy](https://www.shinyproxy.io/).
+
+  ShinyProxy adds Authentication and Load Balancing to RShiny, Dash and Flask Apps.
+
+  ## Parameters
+
+
+  ## Credits and Thanks
+
+  Open source software is not built in a vacuum!
+
+  [ShinyProxy](https://www.shinyproxy.io/) backs this helm chart. It's a great piece of software to add authentication and load balancing to any RShiny, Dash, or Flask web application.
+  [Zero to ShinyProxy](https://github.com/remche/zero-to-shinyproxy) is another ShinyProxy helm chart that this chart uses as a base.
+  [CloudPosse](https://github.com/cloudposse) is a devops accelerator that has tons of great recipes and build tools that all devs should take advantage.
+
+# Introduction to the project
+introduction: |-
+
+  - Cloud Native - Deploy your RShiny, Dash, and Flask apps to AWS in what I think is the least painful way possible.
+  - Authentication - enabled through [ShinyProxy](https://www.shinyproxy.io/documentation/configuration/) in the hosted version.
+  - Load Balancing - We're doing data science over here. We don't want big computers hanging out burning money when we're not even using them.
+  - Open source - Nothing is hidden behind a paywall.
+  - Self hosted using the DIY approach with the Helm Charts
+  - Hosted option with the AWS Marketplace (Coming Soon!).
+
+# How to use this module. Should be an easy example to copy and paste.
+usage: |-
+  ## ✨ Quick Start Self Hosted with `Helm`
+
+  > Install the Helm Chart
+
+    ```bash
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm repo add bioanalyze https://dabble-of-devops-bioanalyze.github.io/helm-charts/
+    helm repo update
+    helm upgrade --install \
+      my-awesome-app \
+      bioanalyze/shinyproxy \
+      --values path-to-my/values.yaml
+    ```
+
+  ## ✨ Quick Start  - AWS Marketplace
+
+  Coming Soon!
+
+
+# Example usage
+examples: |-
+
+# How to get started quickly
+quickstart: |-
+  The `Makefile` is always the source of truth in any BioAnalyze project.
+
+    ```
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm repo add bioanalyze https://dabble-of-devops-bioanalyze.github.io/helm-charts/
+    helm repo update
+    helm upgrade --install \
+      my-awesome-app \
+      bioanalyze/shinyproxy \
+      --values path-to-my/values.yaml
+    ```
+
+# Other files to include in this README from the project folder
+# include:
+#   - "docs/targets.md"
+#   - "docs/terraform.md"
+
+# Contributors to this project
+contributors:
+  - name: "Jillian Rowe"
+    github: "jerowe"
