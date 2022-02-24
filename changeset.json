@@ -7,7 +7,67 @@
         "Identifier": "example1-abcd-1234-5ef6-7890abcdef12",
         "Type": "ContainerProduct@1.0"
       },
-      "Details": "{       \"Version\": {         \"VersionTitle\": \"1.1\",         \"ReleaseNotes\": \"Minor bug fix\"     },       \"DeliveryOptions\": [{         \"DeliveryOptionTitle\": \"EKSDelivery\",         \"Details\": {           \"EcrDeliveryOptionDetails\" : {             \"ContainerImages\": [               \"709825985650.dkr.ecr.us-east-1.amazonaws.com/sellername/reponame1:1.1\"],             \"DeploymentResources\": [{               \"Name\": \"HelmDeploymentTemplate\",               \"Url\": \"709825985650.dkr.ecr.us-east-1.amazonaws.com/sellername/reponame2:mychart1.1\"}],             \"CompatibleServices\": [\"EKS\"],             \"Description\": \"Sample Description\",             \"UsageInstructions\":\"helm pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/sellername/reponame2:mychart1.1\"   } } }, {         \"DeliveryOptionTitle\": \"HelmChartDeliveryOption\",         \"Details\": {           \"HelmDeliveryOptionDetails\": {             \"CompatibleServices\": [\"EKS\", \"EKS-Anywhere\"],             \"ContainerImages\": [               \"709825985650.dkr.ecr.us-east-1.amazonaws.com/sellername/reponame1:1.1\"],             \"HelmChartUri\": \"709825985650.dkr.ecr.us-east-1.amazonaws.com/sellername/reponame1:helmchart1.1\"],\",             \"Description\": \"Helm chart description\",             \"UsageInstructions\": \"Usage instructions\",             \"QuickLaunchEnabled\": true,             \"MarketplaceServiceAccountName\": \"Service account name\",             \"ReleaseName\": \"Optional release name\",             \"Namespace\": \"Optional Kubernetes namespace\",             \"OverrideParameters\": [{               \"Key\": \"Helm_key_name\",               \"DefaultValue\": \"${AWSMP_LICENSE_SECRET}\",               \"Metadata\": {                 \"Label\": \"AWS CloudFormation template field label\",                 \"Description\": \"AWS CloudFormation template field description\",                 \"Obfuscate\": false } }, {               \"Key\": \"Helm_key_name_2\",               \"DefaultValue\": \"${AWSMP_SERVICE_ACCOUNT}\",               \"Metadata\": {                 \"Label\": \"AWS CloudFormation template field label\",                 \"Description\": \"AWS CloudFormation template field description\",                 \"Obfuscate\": false } } ] } } } ] }"
-}
-]
+      "Details": {
+        "Version": {
+          "VersionTitle": "1.1",
+          "ReleaseNotes": "Minor bug fix"
+        },
+        "DeliveryOptions": [
+          {
+            "DeliveryOptionTitle": "EKSDelivery",
+            "Details": {
+              "EcrDeliveryOptionDetails": {
+                "ContainerImages": [
+                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/sellername/reponame1: 1.1"
+                ],
+                "DeploymentResources": [
+                  {
+                    "Name": "HelmDeploymentTemplate",
+                    "Url": "709825985650.dkr.ecr.us-east-1.amazonaws.com/sellername/reponame2:mychart1.1"
+                  }
+                ],
+                "CompatibleServices": [
+                  "EKS"
+                ],
+                "Description": "Sample Description",
+                "UsageInstructions": "helm pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/sellername/reponame2:mychart1.1"
+              }
+            }
+          },
+          {
+            "DeliveryOptionTitle": "HelmChartDeliveryOption",
+            "Details": {
+              "HelmDeliveryOptionDetails": {
+                "CompatibleServices": [
+                  "EKS",
+                  "EKS-Anywhere"
+                ],
+                "ContainerImages": [
+                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/sellername/reponame1: 1.1"
+                ],
+                "HelmChartUri": "709825985650.dkr.ecr.us-east-1.amazonaws.com/sellername/reponame1:helmchart1.1"
+              },
+              "Description": "Helm chart description",
+              "UsageInstructions": "Usage instructions",
+              "QuickLaunchEnabled": true,
+              "MarketplaceServiceAccountName": "Service account name",
+              "ReleaseName": "Optional release name",
+              "Namespace": "Optional Kubernetes namespace",
+              "OverrideParameters": [
+                {
+                  "Key": "Helm_key_name",
+                  "DefaultValue": "${AWSMP_LICENSE_SECRET}",
+                  "Metadata": {
+                    "Label": "AWS CloudFormation template field label",
+                    "Description": "AWS CloudFormation template field description",
+                    "Obfuscate": false
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
 }

@@ -77,7 +77,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: us-east-1
           # REPO: 018835827632.dkr.ecr.us-east-1.amazonaws.com
-          REPO: 709825985650.dkr.ecr.us-east-1.amazonaws.com
+          REPO: 709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/
           HELM_EXPERIMENTAL_OCI: "1"
         run: |-
 
@@ -98,7 +98,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: us-east-1
           # REPO: 018835827632.dkr.ecr.us-east-1.amazonaws.com
-          REPO: 709825985650.dkr.ecr.us-east-1.amazonaws.com
+          # REPO: 709825985650.dkr.ecr.us-east-1.amazonaws.com
+          REPO: 709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/
           HELM_EXPERIMENTAL_OCI: "1"
         run: |-
           aws ecr describe-images \

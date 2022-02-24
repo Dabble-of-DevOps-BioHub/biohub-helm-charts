@@ -3,7 +3,7 @@ SHELL := /bin/bash
 DOCKER="dabbleofdevops/terraform:terraform-0.14"
 VERSION?=0.0.01
 SHA?=0.0.1
-ECR_IMAGE="709825985650.dkr.ecr.us-east-1.amazonaws.com/k8s-shinyproxy"
+ECR_IMAGE="709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-shinyproxy"
 DOCKERHUB_IMAGE="dabbleofdevops/k8s-shinyproxy"
 
 # 018835827632.dkr.ecr.us-east-1.amazonaws.com/k8s-shinyproxy
