@@ -52,3 +52,6 @@ images/cellxgene-gateway/app/supervisord.pid
 charts/*/*.tgz
 charts/shinyproxy/*.tgz
 charts/single-cell-cloud-lab/*.tgz
+
+charts/single-cell-cloud-lab/charts/*.tgz
+charts/**/charts/*.tgz
