@@ -3,6 +3,23 @@ entries:
   shinyproxy:
   - apiVersion: v2
     appVersion: 2.6.0
+    created: "2022-02-24T11:00:20.171699724Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 1.x.x
+    description: A Helm chart to install Shinyproxy
+    digest: 09942256a037113ee84a7d8b44e418e7f2c268c7188b5fd4c498021f04237552
+    icon: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v2_logo_only-01.png
+    name: shinyproxy
+    type: application
+    urls:
+    - https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/download/shinyproxy-0.9.4/shinyproxy-0.9.4.tgz
+    version: 0.9.4
+  - apiVersion: v2
+    appVersion: 2.6.0
     created: "2022-02-22T12:29:00.85953685Z"
     dependencies:
     - name: common
@@ -53,4 +70,4 @@ entries:
     urls:
     - https://github.com/dabble-of-devops-bioanalyze/helm-charts/releases/download/single-cell-cloud-lab-0.4.1/single-cell-cloud-lab-0.4.1.tgz
     version: 0.4.1
-generated: "2022-02-22T12:29:01.102340774Z"
+generated: "2022-02-24T11:00:20.171710024Z"
