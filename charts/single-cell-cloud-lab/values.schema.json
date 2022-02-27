@@ -103,7 +103,7 @@
                             "default": "https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png",
                             "description": "The url of the logo that is displayed in the ShinyProxy navigation bar; this can also be a local file using the file scheme (file://)"
                         },
-                        "landing_page": {
+                        "landing-page": {
                             "type": "string",
                             "default": "/app_direct/single-cell-cloud-lab/",
                             "description": "the URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;"

@@ -47,8 +47,8 @@ shinyproxy:
     title: "BioAnalyze - Single Cell Cloud Lab"
     ## @param shinyproxy.proxy.logo-url The url of the logo that is displayed in the ShinyProxy navigation bar; this can also be a local file using the file scheme (file://)
     logo-url: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png
-    ## @param shinyproxy.proxy.landing_page the URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;
-    landing_page: /app_direct/single-cell-cloud-lab/
+    ## @param shinyproxy.proxy.landing-page the URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;
+    landing-page: /app_direct/single-cell-cloud-lab/
     specs:
       ## @param shinyproxy.proxy.specs[0].id application id
     - id: single-cell-cloud-lab

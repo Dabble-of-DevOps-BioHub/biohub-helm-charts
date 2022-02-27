@@ -75,9 +75,11 @@ Get the auth object and return it in the format shinyproxy expects
 */}}
 {{- define "shinyproxy.auth" -}}
 {{- $auth := pick .Values "auth" }}
-{{- $authYAML := get .Values "authYaml" | fromYaml  }}
 
+{{- if .Values.authYamlEnabled }}
+{{- $authYAML := get .Values "authYaml" | fromYaml  }}
 {{- $auth := merge $auth $authYAML -}}
+{{- end -}}
 
 {{- $values := pick .Values "proxy" "logging" "management" }}
 
