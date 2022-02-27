@@ -4,12 +4,6 @@ APP VERSION: {{ .Chart.AppVersion  }}
 
 ** Please be patient while the chart is being deployed **
 
-{{- if .Values.diagnosticMode.enabled }}
-The chart has been deployed in diagnostic mode. All probes have been disabled and the command has been overwritten with:
-
-  command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 4 }}
-  args: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.args "context" $) | nindent 4 }}
-
 Get the list of pods by executing:
 
   kubectl get pods --namespace {{ .Release.namespace }} -l app.kubernetes.io/instance={{ include "common.names.fullname" . }}
@@ -22,8 +16,4 @@ Get the services by listing
 
   kubectl get svc --namespace {{ .Release.namespace }} -w {{ include "common.names.fullname" . }}
 
-{{- else }}
-
 Instructions to access the application depending on the serviceType and other considerations
-
-{{- end }}

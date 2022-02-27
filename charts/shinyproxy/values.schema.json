@@ -507,6 +507,16 @@
                 }
             }
         },
+        "authYamlEnabled": {
+            "type": "boolean",
+            "default": false,
+            "description": "Optionally, pass in the parameters to authYaml as a Yaml string. This is mostly here to get around the AWS Marketplace limit of only having 15 overrides."
+        },
+        "authYaml": {
+            "type": "string",
+            "default": "\"\"",
+            "description": "Optionally, pass in the parameters to authYaml as a Yaml string. This is mostly here to get around the AWS Marketplace limit of only having 15 overrides. These values will be merged with the helm chart auth values."
+        },
         "auth": {
             "type": "object",
             "properties": {

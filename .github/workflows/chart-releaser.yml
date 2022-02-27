@@ -90,18 +90,28 @@ jobs:
           # REPO: 709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/
           HELM_EXPERIMENTAL_OCI: "1"
         run: |-
+          aws ecr get-login-password \
+              --region us-east-1 | helm registry login \
+              --username AWS \
+              --password-stdin ${REPO}
+
           aws ecr describe-images \
-            --repository-name k8s-single-cell-cloud-lab \
+            --registry-id 709825985650 \
+            --repository-name dabble-of-devops/shinyproxy \
             --region us-east-1
 
           aws ecr describe-images \
-            --repository-name single-cell-cloud-lab \
+            --registry-id 709825985650 \
+            --repository-name dabble-of-devops/k8s-shinyproxy \
             --region us-east-1
 
           aws ecr describe-images \
-            --repository-name shinyproxy \
+            --registry-id 709825985650 \
+            --repository-name dabble-of-devops/single-cell-cloud-lab \
             --region us-east-1
 
+          # the k8s-single-cell-cloud-lab image gets pushed from the main repo
           aws ecr describe-images \
-            --repository-name k8s-shinyproxy \
+            --registry-id 709825985650 \
+            --repository-name dabble-of-devops/k8s-single-cell-cloud-lab \
             --region us-east-1

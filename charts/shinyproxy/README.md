@@ -158,12 +158,14 @@ ShinyProxy adds Authentication and Load Balancing to RShiny, Dash and Flask Apps
 
 ### ShinyProxy Proxy Simple Username/Password Authentication
 
-| Name                     | Description                                                 | Value               |
-| ------------------------ | ----------------------------------------------------------- | ------------------- |
-| `auth.authSimpleEnabled` |                                                             | `true`              |
-| `auth.users[0].name`     |                                                             | `user01`            |
-| `auth.users[0].password` | Please note that you should absolutely change this password | `password`          |
-| `auth.users[0].groups`   | User Groups                                                 | `scientists, users` |
+| Name                     | Description                                                                                                                                                                                                            | Value               |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `authYamlEnabled`        | Optionally, pass in the parameters to authYaml as a Yaml string. This is mostly here to get around the AWS Marketplace limit of only having 15 overrides.                                                              | `false`             |
+| `authYaml`               | Optionally, pass in the parameters to authYaml as a Yaml string. This is mostly here to get around the AWS Marketplace limit of only having 15 overrides. These values will be merged with the helm chart auth values. | `""`                |
+| `auth.authSimpleEnabled` |                                                                                                                                                                                                                        | `true`              |
+| `auth.users[0].name`     |                                                                                                                                                                                                                        | `user01`            |
+| `auth.users[0].password` | Please note that you should absolutely change this password                                                                                                                                                            | `password`          |
+| `auth.users[0].groups`   | User Groups                                                                                                                                                                                                            | `scientists, users` |
 
 
 ### ShinyProxy Proxy Public / No Authentication
@@ -411,6 +413,62 @@ The `Makefile` is always the source of truth in any BioAnalyze project.
 ## Examples
 
 
+## Access data in S3
+
+*Please note that this will give read and write access to an S3 Bucket and should only used in trusted environments.*
+
+In order to access data in S3 you need to create an IAM role policy and associate it with a K8s service account.
+
+[Full Docs](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html)
+
+Change the value from `MY-S3-BUCKET` to your bucket.
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "ListObjectsInBucket",
+            "Effect": "Allow",
+            "Action": ["s3:ListBucket"],
+            "Resource": ["arn:aws:s3:::MY-S3-BUCKET"]
+        },
+        {
+            "Sid": "AllObjectActions",
+            "Effect": "Allow",
+            "Action": "s3:*Object",
+            "Resource": ["arn:aws:s3:::MY-S3-BUCKET/*"]
+        }
+    ]
+}
+```
+
+Save this to `MY-S3-BUCKET-rw-policy.json`
+
+```
+aws iam create-policy \
+  --policy-name MY-S3-BUCKET-rw-policy \
+  --policy-document MY-S3-BUCKET-rw-policy.json
+````
+
+The ARN should come up when you create the role, but if you miss it you can search for it.
+
+```
+aws iam list-policies | jq -r '.Policies[] | select(.PolicyName|match("MY-S3-BUCKET-rw-policy")) | .Arn'
+```
+
+Then create the K8s service account using `eksctl`
+
+```
+eksctl create iamserviceaccount \
+    --name MY-S3-BUCKET-rw \
+    --namespace default \
+    --region MY-REGION \
+    --cluster MY-CLUSTER \
+    --attach-policy-arn ABOVE-ARN \
+    --approve \
+    --override-existing-serviceaccounts
+```
 
 
 
@@ -440,6 +498,8 @@ For additional context, refer to some of these links.
 - [ShinyProxy](https://www.shinyproxy.io/) - ShinyProxy is your favourite way to deploy Shiny apps in an enterprise context. It has built-in functionality for LDAP authentication and authorization, makes securing Shiny traffic (over TLS) a breeze and has no limits on concurrent usage of a Shiny app.
 
 - [ShinyProxy Flask Demo](https://github.com/openanalytics/shinyproxy-flask-demo) - Example flask app with gunicorn
+- [IAM Policy Creation](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/iam/create-policy.html#examples) - AWS Docs for IAM Creation
+- [EKSctl IAM service account example](https://github.com/weaveworks/eksctl/blob/main/examples/13-iamserviceaccounts.yaml) - Create your cluster with IAM policies attached.
 
 
 ## Help

@@ -23,3 +23,13 @@
 # example charts
 examples
 examples/*
+changeset.json
+# ci folder
+ci
+examples
+examples/*
+templates/*.bak
+Makefile
+.build-harness
+README.md.gotmpl
+README.yaml

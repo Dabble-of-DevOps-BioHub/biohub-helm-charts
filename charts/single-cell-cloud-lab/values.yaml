@@ -1,48 +1,3 @@
-## @section Global parameters
-## Global Docker image parameters
-## Please, note that this will override the image parameters, including dependencies, configured to use the global value
-## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
-
-## @param global.imageRegistry Global Docker image registry
-## @param global.imagePullSecrets Global Docker registry secret names as an array
-## @param global.storageClass Global StorageClass for Persistent Volume(s)
-##
-global:
-  imageRegistry: ""
-  ## E.g.
-  ## imagePullSecrets:
-  ##   - myRegistryKeySecretName
-  ##
-  imagePullSecrets: []
-  storageClass: ""
-
-## @section Common parameters
-# diagnosticMode:
-#   ## @param diagnosticMode.enabled enable diagnostic mode
-#   enabled: true
-
-## @param kubeVersion Override Kubernetes version
-##
-kubeVersion: ""
-## @param nameOverride String to partially override common.names.fullname
-##
-nameOverride: ""
-## @param fullnameOverride String to fully override common.names.fullname
-##
-fullnameOverride: ""
-## @param commonLabels Labels to add to all deployed objects
-##
-commonLabels: {}
-## @param commonAnnotations Annotations to add to all deployed objects
-##
-commonAnnotations: {}
-## @param clusterDomain Kubernetes cluster domain name
-##
-clusterDomain: cluster.local
-## @param extraDeploy Array of extra objects to deploy with the release
-##
-extraDeploy: []
-
 ## @section ShinyProxy Proxy application parameters
 ## ShinyProxy Kubernetes configuration
 ## ref: https://www.shinyproxy.io/documentation/configuration/#kubernetes
@@ -117,7 +72,8 @@ shinyproxy:
       container-cpu-request: 1
       ## @param shinyproxy.proxy.specs[0].container-cpu-limit
       container-cpu-limit: 8
-      # service-account: s3-read-write-cellxgene-example-bucket
+      ## @param shinyproxy.proxy.specs[0].service-account The service account used to access the S3 buckets. Please see the docs for more details.
+      service-account: s3-read-write-cellxgene-example-bucket
       ## @param shinyproxy.proxy.specs[0].target-path
       target-path: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH')}"
       container-env:

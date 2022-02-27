@@ -352,6 +352,11 @@ appPod:
 ## the user name of the authenticated user is made available to the Shiny application via the environment variable SHINYPROXY_USERNAME;
 ## the groups the authenticated user is member of are made available to the Shiny application via the environment variable SHINYPROXY_USERGROUPS. The group names are converted into capital letters (e.g. MATHEMATICIANS)
 
+## @param authYamlEnabled Optionally, pass in the parameters to authYaml as a Yaml string. This is mostly here to get around the AWS Marketplace limit of only having 15 overrides.
+authYamlEnabled: false
+## @param authYaml Optionally, pass in the parameters to authYaml as a Yaml string. This is mostly here to get around the AWS Marketplace limit of only having 15 overrides. These values will be merged with the helm chart auth values.
+authYaml: ""
+
 auth:
   ## @param auth.authSimpleEnabled
   authSimpleEnabled: true

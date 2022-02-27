@@ -1,0 +1,117 @@
+{
+  "Catalog": "AWSMarketplace",
+  "ChangeSet": [
+    {
+      "ChangeType": "AddDeliveryOptions",
+      "Entity": {
+        "Identifier": "7ca964a4-c579-492d-8619-135a911f3c9f",
+        "Type": "ContainerProduct@1.0"
+      },
+      "Details": {
+        "Version": {
+          "VersionTitle": "0.1",
+          "ReleaseNotes": "Internal beta test"
+        },
+        "DeliveryOptions": [
+          {
+            "DeliveryOptionTitle": "EKSDelivery",
+            "Details": {
+              "EcrDeliveryOptionDetails": {
+                "ContainerImages": [
+                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-single-cell-cloud-lab:0.4.2"
+                ],
+                "DeploymentResources": [
+                  {
+                    "Name": "HelmDeploymentTemplate",
+                    "Url": "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/single-cell-cloud-lab:0.4.2"
+                  }
+                ],
+                "CompatibleServices": [
+                  "EKS"
+                ],
+                "Description": "Single Cell Analysis in the Cloud",
+                "UsageInstructions": "helm pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/single-cell-cloud-lab:0.4.2"
+              }
+            }
+          },
+          {
+            "DeliveryOptionTitle": "HelmChartDeliveryOption",
+            "Details": {
+              "HelmDeliveryOptionDetails": {
+                "CompatibleServices": [
+                  "EKS",
+                  "EKS-Anywhere"
+                ],
+                "ContainerImages": [
+                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-single-cell-cloud-lab:0.4.2"
+                ],
+                "HelmChartUri": "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/single-cell-cloud-lab:0.4.2"
+              },
+              "Description": "Helm chart description",
+              "UsageInstructions": "Usage instructions",
+              "QuickLaunchEnabled": true,
+              "ReleaseName": "Internal Beta",
+              "Namespace": "default",
+              "OverrideParameters": [
+                {
+                  "Key": "shinyproxy.proxy.specs[0].service-account",
+                  "DefaultValue": "",
+                  "Metadata": {
+                    "Label": "Required: S3 Bucket Access Service Account",
+                    "Description": "Required: K8s Service account name to access your single cell data.",
+                    "Obfuscate": false
+                  }
+                },
+                {
+                  "Key": "shinyproxy.proxy.specs[0].container-env.CELLXGENE_BUCKET",
+                  "DefaultValue": "my-s3-bucket",
+                  "Metadata": {
+                    "Label": "Required: S3 Bucket ",
+                    "Description": "S3 Bucket that hosts your single cell data.",
+                    "Obfuscate": false
+                  }
+                },
+                {
+                  "Key": "shinyproxy.auth.simple.users[0].name",
+                  "DefaultValue": "admin",
+                  "Metadata": {
+                    "Label": "Simple Auth: Username",
+                    "Description": "Username to log into your interface with",
+                    "Obfuscate": false
+                  }
+                },
+                {
+                  "Key": "shinyproxy.auth.simple.users[0].password",
+                  "DefaultValue": "",
+                  "Metadata": {
+                    "Label": "Simple Auth: Password",
+                    "Description": "Password to log into the Single Cell Cloud Lab.",
+                    "Obfuscate": true
+                  }
+                },
+                {
+                  "Key": "shinyproxy.authYamlEnabled",
+                  "DefaultValue": "false",
+                  "Metadata": {
+                    "Label": "Auth Override",
+                    "Description": "Override the simple username / authentication method with your own. See https://github.com/dabble-of-devops-bioanalyze/helm-charts/tree/main/charts/shinyproxy",
+                    "Obfuscate": false
+                  }
+                },
+                {
+                  "Key": "shinyproxy.authYaml",
+                  "DefaultValue": "",
+                  "Metadata": {
+                    "Label": "Auth Override",
+                    "Description": "Auth Parameters as Yaml",
+                    "Obfuscate": false
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

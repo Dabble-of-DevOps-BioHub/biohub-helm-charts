@@ -5,7 +5,7 @@
 #
 
 # Name of this project
-name: BioAnalyze - ShinyProxy Helm Chart
+name: BioAnalyze - Single Cell Cloud Lab Helm Chart
 
 # Logo for this project
 #logo: docs/logo.png
@@ -61,7 +61,7 @@ references:
 
 # Short description of this project
 description: |-
-  This is a helm chart for the awesome [ShinyProxy](https://www.shinyproxy.io/).
+  This is a helm chart for the awesome [ShinyProxy](https://www.shinyproxy.io/) configured for a Single Cell Data Visualization Application.
 
   ShinyProxy adds Authentication and Load Balancing to RShiny, Dash and Flask Apps.
 
@@ -78,7 +78,7 @@ description: |-
 # Introduction to the project
 introduction: |-
 
-  - Cloud Native - Deploy your RShiny, Dash, and Flask apps to AWS in what I think is the least painful way possible.
+  - Cloud Native - View your Single Cell data stored on S3 in a browser.
   - Authentication - enabled through [ShinyProxy](https://www.shinyproxy.io/documentation/configuration/) in the hosted version.
   - Load Balancing - We're doing data science over here. We don't want big computers hanging out burning money when we're not even using them.
   - Open source - Nothing is hidden behind a paywall.

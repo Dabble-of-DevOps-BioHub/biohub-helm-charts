@@ -2,61 +2,6 @@
     "title": "Chart Values",
     "type": "object",
     "properties": {
-        "global": {
-            "type": "object",
-            "properties": {
-                "imageRegistry": {
-                    "type": "string",
-                    "default": "\"\"",
-                    "description": "Global Docker image registry"
-                },
-                "imagePullSecrets": {
-                    "type": "array",
-                    "default": "[]",
-                    "description": "Global Docker registry secret names as an array"
-                },
-                "storageClass": {
-                    "type": "string",
-                    "default": "\"\"",
-                    "description": "Global StorageClass for Persistent Volume(s)"
-                }
-            }
-        },
-        "kubeVersion": {
-            "type": "string",
-            "default": "\"\"",
-            "description": "Override Kubernetes version"
-        },
-        "nameOverride": {
-            "type": "string",
-            "default": "\"\"",
-            "description": "String to partially override common.names.fullname"
-        },
-        "fullnameOverride": {
-            "type": "string",
-            "default": "\"\"",
-            "description": "String to fully override common.names.fullname"
-        },
-        "commonLabels": {
-            "type": "object",
-            "default": "{}",
-            "description": "Labels to add to all deployed objects"
-        },
-        "commonAnnotations": {
-            "type": "object",
-            "default": "{}",
-            "description": "Annotations to add to all deployed objects"
-        },
-        "clusterDomain": {
-            "type": "string",
-            "default": "cluster.local",
-            "description": "Kubernetes cluster domain name"
-        },
-        "extraDeploy": {
-            "type": "array",
-            "default": "[]",
-            "description": "Array of extra objects to deploy with the release"
-        },
         "shinyproxy": {
             "type": "object",
             "properties": {
@@ -158,11 +103,6 @@
                             "default": "https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png",
                             "description": "The url of the logo that is displayed in the ShinyProxy navigation bar; this can also be a local file using the file scheme (file://)"
                         },
-                        "authentication": {
-                            "type": "string",
-                            "default": "none",
-                            "description": "Authentication see the ShinyProxy [docs](https://www.shinyproxy.io/documentation/configuration/#authentication)"
-                        },
                         "landing_page": {
                             "type": "string",
                             "default": "/app_direct/single-cell-cloud-lab/",
@@ -217,6 +157,10 @@
                                     "container-cpu-limit": {
                                         "type": "number",
                                         "description": ""
+                                    },
+                                    "service-account": {
+                                        "type": "string",
+                                        "description": "The service account used to access the S3 buckets. Please see the docs for more details."
                                     },
                                     "target-path": {
                                         "type": "string",
