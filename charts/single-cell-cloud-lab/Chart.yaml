@@ -6,7 +6,7 @@ dependencies:
     tags:
       - bitnami-common
     version: 1.x.x
-  - name: shinyproxy
+  - name: sp
     repository: "https://dabble-of-devops-bioanalyze.github.io/helm-charts/"
     version: 0.x.x
 description: "Helm chart for Single Cell Analysis using several single cell tools."
