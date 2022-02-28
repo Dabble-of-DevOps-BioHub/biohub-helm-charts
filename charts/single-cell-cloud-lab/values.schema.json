@@ -105,7 +105,7 @@
                         },
                         "landing-page": {
                             "type": "string",
-                            "default": "/app_direct/single-cell-cloud-lab/",
+                            "default": "/app/single-cell-cloud-lab/",
                             "description": "the URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;"
                         },
                         "specs": {

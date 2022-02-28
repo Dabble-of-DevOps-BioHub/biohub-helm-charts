@@ -164,7 +164,7 @@ ShinyProxy adds Authentication and Load Balancing to RShiny, Dash and Flask Apps
 | `authYaml`               | Optionally, pass in the parameters to authYaml as a Yaml string. This is mostly here to get around the AWS Marketplace limit of only having 15 overrides. These values will be merged with the helm chart auth values. | `""`                |
 | `auth.authSimpleEnabled` |                                                                                                                                                                                                                        | `true`              |
 | `auth.users[0].name`     |                                                                                                                                                                                                                        | `user01`            |
-| `auth.users[0].password` | Please note that you should absolutely change this password                                                                                                                                                            | `password`          |
+| `auth.users[0].password` | Please note that you should absolutely change this password                                                                                                                                                            | `password123`       |
 | `auth.users[0].groups`   | User Groups                                                                                                                                                                                                            | `scientists, users` |
 
 
