@@ -1,9 +1,0 @@
-dependencies:
-- name: common
-  repository: https://charts.bitnami.com/bitnami
-  version: 1.11.1
-- name: shinyproxy
-  repository: https://dabble-of-devops-bioanalyze.github.io/helm-charts/
-  version: 0.9.4
-digest: sha256:cbd7bc562e2dde2b281da911c8a76b06c9752f08a1db0a107fb844ba34334cf6
-generated: "2022-02-24T14:15:56.147174+03:00"

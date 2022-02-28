@@ -2,11 +2,11 @@
 ## ShinyProxy Kubernetes configuration
 ## ref: https://www.shinyproxy.io/documentation/configuration/#kubernetes
 
-sp:
+shinyproxy:
   ingress:
-    ## @param sp.ingress.enabled enable an ingress
+    ## @param shinyproxy.ingress.enabled enable an ingress
     enabled: false
-    ## @param sp.ingress.annotations annotations to add - usually for nginx ingress and/or external-dns
+    ## @param shinyproxy.ingress.annotations annotations to add - usually for nginx ingress and/or external-dns
     annotations: {}
       # kubernetes.io/ingress.class: nginx
       # cert-manager.io/cluster-issuer: bigomics-playground-auth-letsencrypt
@@ -17,79 +17,79 @@ sp:
     #   - app.bioanalyzedev.io
     #   secretName: bioanalyzedev-auth.local-tls
   proxy:
-    ## @param sp.proxy.service.type LoadBalancer or ClusterIP
+    ## @param shinyproxy.proxy.service.type LoadBalancer or ClusterIP
     service:
       type: LoadBalancer
     kubernetes:
-      ## @param sp.proxy.kubernetes.pod-wait-time how long to wait for the pod to spin up
+      ## @param shinyproxy.proxy.kubernetes.pod-wait-time how long to wait for the pod to spin up
       pod-wait-time: 600000
 
     resources:
       requests:
-        ## @param sp.proxy.resources.requests.cpu shinyproxy proxy cpu request
+        ## @param shinyproxy.proxy.resources.requests.cpu shinyproxy proxy cpu request
         cpu: 1
-        ## @param sp.proxy.resources.requests.memory shinyproxy proxy memory request
+        ## @param shinyproxy.proxy.resources.requests.memory shinyproxy proxy memory request
         memory: 512Mi
       limits:
-        ## @param sp.proxy.resources.limits.cpu shinyproxy proxy memory request
+        ## @param shinyproxy.proxy.resources.limits.cpu shinyproxy proxy memory request
         cpu: 8
-        ## @param sp.proxy.resources.limits.memory shinyproxy proxy memory request
+        ## @param shinyproxy.proxy.resources.limits.memory shinyproxy proxy memory request
         memory: 5G
 
     image:
-      ## @param sp.proxy.image.repository Shiny Proxy docker image repo
+      ## @param shinyproxy.proxy.image.repository Shiny Proxy docker image repo
       repository: dabbleofdevops/shinyproxy
-      ## @param sp.proxy.image.tag Shiny Proxy docker image tag
+      ## @param shinyproxy.proxy.image.tag Shiny Proxy docker image tag
       # tag: 2.6.0
       tag: 503883c
 
-    ## @param sp.proxy.title The title that is displayed in the ShinyProxy navigation bar;
+    ## @param shinyproxy.proxy.title The title that is displayed in the ShinyProxy navigation bar;
     title: "BioAnalyze - Single Cell Cloud Lab"
-    ## @param sp.proxy.logo-url The url of the logo that is displayed in the ShinyProxy navigation bar; this can also be a local file using the file scheme (file://)
+    ## @param shinyproxy.proxy.logo-url The url of the logo that is displayed in the ShinyProxy navigation bar; this can also be a local file using the file scheme (file://)
     logo-url: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png
-    ## @param sp.proxy.landing-page the URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;
+    ## @param shinyproxy.proxy.landing-page the URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;
     landing-page: /app/single-cell-cloud-lab/
     specs:
-      ## @param sp.proxy.specs[0].id application id
+      ## @param shinyproxy.proxy.specs[0].id application id
     - id: single-cell-cloud-lab
-      ## @param sp.proxy.specs[0].port port the internal application is running on
+      ## @param shinyproxy.proxy.specs[0].port port the internal application is running on
       port: 5005
-      ## @param sp.proxy.specs[0].display_name Name displayed on the landing page
+      ## @param shinyproxy.proxy.specs[0].display_name Name displayed on the landing page
       display_name: "Single Cell Cloud Lab"
-      ## @param sp.proxy.specs[0].container-image Docker image
+      ## @param shinyproxy.proxy.specs[0].container-image Docker image
       container-image: dabbleofdevops/k8s-single-cell-cloud-lab:v1.0.0
-      ## @param sp.proxy.specs[0].container-wait-time
+      ## @param shinyproxy.proxy.specs[0].container-wait-time
       container-wait-time: 600000
-      ## @param sp.proxy.specs[0].heartbeat-enabled
+      ## @param shinyproxy.proxy.specs[0].heartbeat-enabled
       heartbeat-enabled: true
-      ## @param sp.proxy.specs[0].heartbeat-timeout
+      ## @param shinyproxy.proxy.specs[0].heartbeat-timeout
       heartbeat-timeout: 600000
-      ## @param sp.proxy.specs[0].container-memory-request
+      ## @param shinyproxy.proxy.specs[0].container-memory-request
       container-memory-request: 2G
-      ## @param sp.proxy.specs[0].container-memory-limit
+      ## @param shinyproxy.proxy.specs[0].container-memory-limit
       container-memory-limit: 10G
-      ## @param sp.proxy.specs[0].container-cpu-request
+      ## @param shinyproxy.proxy.specs[0].container-cpu-request
       container-cpu-request: 1
-      ## @param sp.proxy.specs[0].container-cpu-limit
+      ## @param shinyproxy.proxy.specs[0].container-cpu-limit
       container-cpu-limit: 8
-      ## @param sp.proxy.specs[0].service-account The service account used to access the S3 buckets. Please see the docs for more details.
+      ## @param shinyproxy.proxy.specs[0].service-account The service account used to access the S3 buckets. Please see the docs for more details.
       service-account: s3-read-write-cellxgene-example-bucket
-      ## @param sp.proxy.specs[0].target-path
+      ## @param shinyproxy.proxy.specs[0].target-path
       target-path: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH')}"
       container-env:
         # Must specify one of CELLXGENE_BUCKET or CELLXGENE_DATA
         # if you are using an s3 bucket you must have the credentials
         # cannot have s3:// prefix
-        ## @param sp.proxy.specs[0].container-env.CELLXGENE_BUCKET S3 Bucket to load data from
-        CELLXGENE_BUCKET: "my-s3-bucket"
-        ## @param sp.proxy.specs[0].container-env.SCRIPT_NAME SCRIPT_NAME env var to pass to gunicorn for correct proxy
+        ## @param shinyproxy.proxy.specs[0].container-env.BUCKET S3 Bucket to load data from
+        BUCKET: "my-s3-bucket"
+        ## @param shinyproxy.proxy.specs[0].container-env.SCRIPT_NAME SCRIPT_NAME env var to pass to gunicorn for correct proxy
         SCRIPT_NAME: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH').replaceFirst('/$','')}"
-        ## @param sp.proxy.specs[0].container-env.SYNC_ENABLED Sync local cellxgene results to the S3 Bucket
+        ## @param shinyproxy.proxy.specs[0].container-env.SYNC_ENABLED Sync local cellxgene results to the S3 Bucket
         SYNC_ENABLED: "True"
-        ## @param sp.proxy.specs[0].container-env.PUBLIC Let ShinyProxy take care of the Auth
+        ## @param shinyproxy.proxy.specs[0].container-env.PUBLIC Let ShinyProxy take care of the Auth
         PUBLIC: "True"
 
-      ## @param sp.proxy.specs[0].kubernetes-pod-patches Add some file mounts and env vars
+      ## @param shinyproxy.proxy.specs[0].kubernetes-pod-patches Add some file mounts and env vars
       kubernetes-pod-patches: |-
         - op: add
           path: /spec/containers/0/env/-

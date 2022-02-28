@@ -7,7 +7,7 @@ import typing
 
 client = boto3.client('marketplace-catalog')
 
-def read_changset_file(file: str) -> dict:
+def read_changeset_file(file: str) -> dict:
     assert os.path.exists(file)
     fh = open(file)
     data =  json.load(fh)

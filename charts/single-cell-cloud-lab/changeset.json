@@ -64,7 +64,7 @@
                   }
                 },
                 {
-                  "Key": "shinyproxy.proxy.specs[0].container-env.CELLXGENE_BUCKET",
+                  "Key": "shinyproxy.proxy.specs[0].container-env.BUCKET",
                   "DefaultValue": "my-s3-bucket",
                   "Metadata": {
                     "Label": "Required: S3 Bucket ",

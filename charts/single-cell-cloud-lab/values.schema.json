@@ -169,7 +169,7 @@
                                     "container-env": {
                                         "type": "object",
                                         "properties": {
-                                            "CELLXGENE_BUCKET": {
+                                            "BUCKET": {
                                                 "type": "string",
                                                 "description": "S3 Bucket to load data from"
                                             },
