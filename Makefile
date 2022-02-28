@@ -34,9 +34,10 @@ make-dirs:
 docker/build:
 	echo "build"
 	docker build -t k8s-shinyproxy images/shinyproxy
-	docker tag k8s-shinyproxy:latest $(ECR_IMAGE):latest
+
 	docker tag k8s-shinyproxy:latest $(ECR_IMAGE):$(VERSION)
 	docker tag k8s-shinyproxy:latest $(ECR_IMAGE):$(SHA)
+
 	docker tag k8s-shinyproxy:latest $(DOCKERHUB_IMAGE):latest
 	docker tag k8s-shinyproxy:latest $(DOCKERHUB_IMAGE):$(VERSION)
 	docker tag k8s-shinyproxy:latest $(DOCKERHUB_IMAGE):$(SHA)
@@ -49,7 +50,7 @@ docker/push:
 
 	# push to ecr
 	aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 709825985650.dkr.ecr.us-east-1.amazonaws.com
-	docker push $(ECR_IMAGE):latest
+
 	docker push $(ECR_IMAGE):$(VERSION)
 	docker push $(ECR_IMAGE):$(SHA)
 
