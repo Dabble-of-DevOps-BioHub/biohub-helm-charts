@@ -9,107 +9,84 @@
       },
       "Details": {
         "Version": {
-          "VersionTitle": "0.1",
-          "ReleaseNotes": "Internal beta test"
+          "ReleaseNotes": "Internal Release 0.0.1 for testing",
+          "VersionTitle": "Internal Release 0.0.1"
         },
         "DeliveryOptions": [
           {
-            "DeliveryOptionTitle": "EKSDelivery",
-            "Details": {
-              "EcrDeliveryOptionDetails": {
-                "ContainerImages": [
-                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-single-cell-cloud-lab:v0.19.0",
-                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-shinyproxy:2.6.0"
-                ],
-                "DeploymentResources": [
-                  {
-                    "Name": "HelmDeploymentTemplate",
-                    "Url": "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/single-cell-cloud-lab:0.4.6"
-                  }
-                ],
-                "CompatibleServices": [
-                  "EKS"
-                ],
-                "Description": "Single Cell Analysis in the Cloud",
-                "UsageInstructions": "helm pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/single-cell-cloud-lab:0.4.2"
-              }
-            }
-          },
-          {
-            "DeliveryOptionTitle": "HelmChartDeliveryOption",
             "Details": {
               "HelmDeliveryOptionDetails": {
                 "CompatibleServices": [
-                  "EKS",
-                  "EKS-Anywhere"
+                  "EKS"
                 ],
                 "ContainerImages": [
-                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-single-cell-cloud-lab:0.4.2"
+                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-single-cell-cloud-lab:v0.25.0"
                 ],
-                "HelmChartUri": "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/single-cell-cloud-lab:0.4.2"
-              },
-              "Description": "Helm chart description",
-              "UsageInstructions": "Usage instructions",
-              "QuickLaunchEnabled": true,
-              "ReleaseName": "Internal Beta",
-              "Namespace": "default",
-              "OverrideParameters": [
-                {
-                  "Key": "shinyproxy.proxy.specs[0].service-account",
-                  "DefaultValue": "",
-                  "Metadata": {
-                    "Label": "Required: S3 Bucket Access Service Account",
-                    "Description": "Required: K8s Service account name to access your single cell data.",
-                    "Obfuscate": false
+                "Description": "Helm Chart Delivery for EKS",
+                "UsageInstructions": "Before launching you will need to have your single cell data stored in S3.\\n\\nhttps://github.com/dabble-of-devops-bioanalyze/helm-charts/tree/main/charts/single-cell-cloud-lab#access-data-in-s3",
+                "HelmChartUri": "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/single-cell-cloud-lab:0.5.1",
+                "Namespace": "default",
+                "MarketplaceServiceAccountName": "single-cell-cloud-lab-sa",
+                "OverrideParameters": [
+                  {
+                    "Key": "shinyproxy.proxy.specs[0].service-account",
+                    "DefaultValue": "my-s3-bucket-sa",
+                    "Metadata": {
+                      "Label": "Required: S3 Bucket Access Service Account",
+                      "Description": "Required: K8s Service account name to access your single cell data.",
+                      "Obfuscate": false
+                    },
+                    "id": "7ebddf34-832b-4056-bd96-24e3474a1576"
+                  },
+                  {
+                    "Key": "shinyproxy.proxy.specs[0].container-env.BUCKET",
+                    "DefaultValue": "my-s3-bucket",
+                    "Metadata": {
+                      "Label": "Required: S3 Bucket",
+                      "Description": "S3 Bucket that hosts your single cell data.",
+                      "Obfuscate": false
+                    }
+                  },
+                  {
+                    "Key": "shinyproxy.auth.simple.users[0].name",
+                    "DefaultValue": "admin",
+                    "Metadata": {
+                      "Label": "Simple Auth: Username",
+                      "Description": "Login username for the single cell cloud lab.",
+                      "Obfuscate": false
+                    }
+                  },
+                  {
+                    "Key": "shinyproxy.auth.simple.users[0].password",
+                    "DefaultValue": "password123",
+                    "Metadata": {
+                      "Label": "Simple Auth: Password",
+                      "Description": "Password to log into the Single Cell Cloud Lab.",
+                      "Obfuscate": true
+                    }
+                  },
+                  {
+                    "Key": "shinyproxy.authYamlEnabled",
+                    "DefaultValue": "false",
+                    "Metadata": {
+                      "Label": "Auth Override Boolean",
+                      "Description": "Override the simple username / authentication method with your own. See https://github.com/dabble-of-devops-bioanalyze/helm-charts/tree/main/charts/shinyproxy",
+                      "Obfuscate": false
+                    }
+                  },
+                  {
+                    "Key": "shinyproxy.authYaml",
+                    "Metadata": {
+                      "Label": "Auth Override YAML Text",
+                      "Description": "Auth Parameters as Yaml\\n\\nPlease see the docs for full details - https://github.com/dabble-of-devops-bioanalyze/helm-charts/tree/main/charts/single-cell-cloud-lab#access-data-in-s3",
+                      "Obfuscate": false
+                    }
                   }
-                },
-                {
-                  "Key": "shinyproxy.proxy.specs[0].container-env.BUCKET",
-                  "DefaultValue": "my-s3-bucket",
-                  "Metadata": {
-                    "Label": "Required: S3 Bucket ",
-                    "Description": "S3 Bucket that hosts your single cell data.",
-                    "Obfuscate": false
-                  }
-                },
-                {
-                  "Key": "shinyproxy.auth.simple.users[0].name",
-                  "DefaultValue": "admin",
-                  "Metadata": {
-                    "Label": "Simple Auth: Username",
-                    "Description": "Username to log into your interface with",
-                    "Obfuscate": false
-                  }
-                },
-                {
-                  "Key": "shinyproxy.auth.simple.users[0].password",
-                  "DefaultValue": "",
-                  "Metadata": {
-                    "Label": "Simple Auth: Password",
-                    "Description": "Password to log into the Single Cell Cloud Lab.",
-                    "Obfuscate": true
-                  }
-                },
-                {
-                  "Key": "shinyproxy.authYamlEnabled",
-                  "DefaultValue": "false",
-                  "Metadata": {
-                    "Label": "Auth Override",
-                    "Description": "Override the simple username / authentication method with your own. See https://github.com/dabble-of-devops-bioanalyze/helm-charts/tree/main/charts/shinyproxy",
-                    "Obfuscate": false
-                  }
-                },
-                {
-                  "Key": "shinyproxy.authYaml",
-                  "DefaultValue": "",
-                  "Metadata": {
-                    "Label": "Auth Override",
-                    "Description": "Auth Parameters as Yaml",
-                    "Obfuscate": false
-                  }
-                }
-              ]
-            }
+                ],
+                "QuickLaunchEnabled": true
+              }
+            },
+            "DeliveryOptionTitle": "EKS Helm Delivery"
           }
         ]
       }

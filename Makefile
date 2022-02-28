@@ -5,6 +5,7 @@ DOCKER="dabbleofdevops/terraform:terraform-0.14"
 VERSION?=0.0.01
 SHA?=0.0.1
 ECR_IMAGE="709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-shinyproxy"
+P_ECR_IMAGE="018835827632.dkr.ecr.us-east-1.amazonaws.com/k8s-shinyproxy"
 DOCKERHUB_IMAGE="dabbleofdevops/k8s-shinyproxy"
 
 # 018835827632.dkr.ecr.us-east-1.amazonaws.com/k8s-shinyproxy
@@ -38,6 +39,9 @@ docker/build:
 	docker tag k8s-shinyproxy:latest $(ECR_IMAGE):$(VERSION)
 	docker tag k8s-shinyproxy:latest $(ECR_IMAGE):$(SHA)
 
+	docker tag k8s-shinyproxy:latest $(P_ECR_IMAGE):$(VERSION)
+	docker tag k8s-shinyproxy:latest $(P_ECR_IMAGE):$(SHA)
+
 	docker tag k8s-shinyproxy:latest $(DOCKERHUB_IMAGE):latest
 	docker tag k8s-shinyproxy:latest $(DOCKERHUB_IMAGE):$(VERSION)
 	docker tag k8s-shinyproxy:latest $(DOCKERHUB_IMAGE):$(SHA)
@@ -53,6 +57,11 @@ docker/push:
 
 	docker push $(ECR_IMAGE):$(VERSION)
 	docker push $(ECR_IMAGE):$(SHA)
+
+	aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 018835827632.dkr.ecr.us-east-1.amazonaws.com
+
+	docker push $(P_ECR_IMAGE):$(VERSION)
+	docker push $(P_ECR_IMAGE):$(SHA)
 
 helm/readme:
 	cd charts/shinyproxy && \
@@ -76,3 +85,10 @@ eks/shell:
 		-v $(shell pwd)/../../terraform-recipes:/root/terraform-recipes \
 		-w /root/project/helm_charts \
 		$(DOCKER) bash
+
+
+ecr/describe:
+	aws ecr describe-image-scan-findings \
+		--registry-id 709825985650 \
+		--repository-name k8s-single-cell-cloud-lab  \
+		--image-id imageDigest=sha256:d606b5007f35c51b026e1ca7de713baf37b62c726fac8227173d8d1930cc6cf4
