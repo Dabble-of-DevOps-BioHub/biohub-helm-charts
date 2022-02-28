@@ -1,5 +1,6 @@
 #FROM openjdk:11-jre
-FROM bitnami/java:11-debian-10
+# FROM bitnami/java:11-debian-10
+FROM bitnami/java:11
 
 ARG SHINYPROXY_VERSION="2.6.0"
 ENV SHELL=/bin/bash \
