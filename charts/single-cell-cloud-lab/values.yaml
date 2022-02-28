@@ -57,7 +57,7 @@ shinyproxy:
       ## @param shinyproxy.proxy.specs[0].display_name Name displayed on the landing page
       display_name: "Single Cell Cloud Lab"
       ## @param shinyproxy.proxy.specs[0].container-image Docker image
-      container-image: dabbleofdevops/k8s-single-cell-cloud-lab:v1.0.0
+      container-image: dabbleofdevops/k8s-single-cell-cloud-lab:v0.21.0
       ## @param shinyproxy.proxy.specs[0].container-wait-time
       container-wait-time: 600000
       ## @param shinyproxy.proxy.specs[0].heartbeat-enabled
