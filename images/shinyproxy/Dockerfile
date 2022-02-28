@@ -2,6 +2,16 @@
 FROM bitnami/java:11-debian-10
 
 ARG SHINYPROXY_VERSION="2.6.0"
+ENV SHELL=/bin/bash \
+    LANG=C.UTF-8  \
+    LC_ALL=C.UTF-8 \
+    CONDA_DIR=/opt/bitnami/conda \
+	DEBIAN_FRONTEND=noninteractive
+
+USER root
+RUN apt-get update -y; apt-get upgrade -y; \
+    apt-get install -y curl git wget unzip supervisor; \
+    rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -u 1001 -s /bin/bash shiny
 RUN mkdir -p /opt/shinyproxy/ && chown shiny /opt/shinyproxy
