@@ -45,9 +45,10 @@ jobs:
           CALVER="$( date -u '+%Y.%m.%d' )"
           SHA7="${GITHUB_SHA::7}"
           VERSION="${{ steps.yq.outputs.result }}"
+
           echo "CALVER=${CALVER}" >> $GITHUB_ENV
           echo "SHA7=${SHA7}" >> $GITHUB_ENV
-          echo "VERSION=${VERSION}"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Build and Push
         if: steps.changed-docker.outputs.any_changed == 'true'

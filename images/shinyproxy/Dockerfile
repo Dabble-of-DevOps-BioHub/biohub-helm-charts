@@ -3,6 +3,7 @@ FROM bitnami/java:11-debian-10
 
 ARG SHINYPROXY_VERSION="2.6.0"
 
+
 RUN useradd -m -u 1001 -s /bin/bash shiny
 RUN mkdir -p /opt/shinyproxy/ && chown shiny /opt/shinyproxy
 COPY templates/ /opt/shinyproxy/templates/
