@@ -41,7 +41,7 @@ jobs:
 
       - name: List packages
         run: |-
-          ls -lah .cr-release-packages
+          ls -lah .cr-release-packages || echo 'No packages'
 
       # Helm chart name must be the same as the repo name
       # 018835827632.dkr.ecr.us-east-1.amazonaws.com/cellxgene-gateway
