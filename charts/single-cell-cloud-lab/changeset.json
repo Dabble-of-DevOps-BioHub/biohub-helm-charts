@@ -18,7 +18,8 @@
             "Details": {
               "EcrDeliveryOptionDetails": {
                 "ContainerImages": [
-                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-single-cell-cloud-lab:v0.19.0"
+                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-single-cell-cloud-lab:v0.19.0",
+                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-shinyproxy:2.6.0"
                 ],
                 "DeploymentResources": [
                   {
