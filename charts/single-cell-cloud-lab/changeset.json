@@ -24,7 +24,7 @@
                 "DeploymentResources": [
                   {
                     "Name": "HelmDeploymentTemplate",
-                    "Url": "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/single-cell-cloud-lab:0.4.2"
+                    "Url": "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/single-cell-cloud-lab:0.4.6"
                   }
                 ],
                 "CompatibleServices": [
