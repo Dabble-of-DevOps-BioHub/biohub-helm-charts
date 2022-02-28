@@ -50,8 +50,12 @@ jobs:
           echo "SHA7=${SHA7}" >> $GITHUB_ENV
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-      - name: Build and Push
+      - name: Docker Build
         if: steps.changed-docker.outputs.any_changed == 'true'
         run: |-
           make VERSION=${VERSION} SHA=${SHA7} docker/build
+
+      - name: Docker Push
+        if: steps.changed-docker.outputs.any_changed == 'true'
+        run: |-
           make VERSION=${VERSION} SHA=${SHA7} docker/push

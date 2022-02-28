@@ -18,7 +18,6 @@ RUN mkdir -p /opt/shinyproxy/ && chown shiny /opt/shinyproxy
 COPY templates/ /opt/shinyproxy/templates/
 RUN wget https://www.shinyproxy.io/downloads/shinyproxy-$SHINYPROXY_VERSION.jar -O /opt/shinyproxy/shinyproxy.jar
 
-
 # TODO Change to bitnami 1001?
 # non root user!
 USER shiny
