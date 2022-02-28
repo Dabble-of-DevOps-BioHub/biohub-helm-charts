@@ -55,8 +55,8 @@ docker/push:
 	# push to aws private ecr for scans
 	aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 018835827632.dkr.ecr.us-east-1.amazonaws.com
 
-	docker push $(P_ECR_IMAGE):$(VERSION)
 	docker push $(P_ECR_IMAGE):$(SHA)
+	docker push $(P_ECR_IMAGE):$(VERSION)
 
 	# push to ecr
 	aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 709825985650.dkr.ecr.us-east-1.amazonaws.com
