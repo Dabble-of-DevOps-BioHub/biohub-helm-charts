@@ -53,18 +53,19 @@ def sanity_checks(details_data):
     pass
 
 def describe_change_set(change_set_id: str):
-    response = marketplace_client.describe_change_set(
+    describe_change_set_response = marketplace_client.describe_change_set(
         Catalog = "AWSMarketplace",
         ChangeSetId=change_set_id,
         # ClientRequestToken='string'
     )
-    for changeset in response['ChangeSet']:
+    for changeset in describe_change_set_response['ChangeSet']:
         details = changeset['Details']
         details_data = json.loads(details)
         changeset['Details'] = details_data
 
+
 def start_change_set(data):
-    response = marketplace_client.start_change_set(
+    start_change_set_response = marketplace_client.start_change_set(
         Catalog = "AWSMarketplace",
         ChangeSet= data.get('ChangeSet'),
         ChangeSetName='internal-release-0.0.1',

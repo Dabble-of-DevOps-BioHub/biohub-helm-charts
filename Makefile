@@ -48,21 +48,21 @@ docker/build:
 
 docker/push:
 	# push to dockerhub
-	docker push $(DOCKERHUB_IMAGE):latest
-	docker push $(DOCKERHUB_IMAGE):$(VERSION)
-	docker push $(DOCKERHUB_IMAGE):$(SHA)
+	docker push -q $(DOCKERHUB_IMAGE):latest || echo 'Unable to push image'
+	docker push -q $(DOCKERHUB_IMAGE):$(VERSION) || echo 'Unable to push image'
+	docker push -q $(DOCKERHUB_IMAGE):$(SHA) || echo 'Unable to push image'
 
 	# push to aws private ecr for scans
 	aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 018835827632.dkr.ecr.us-east-1.amazonaws.com
 
-	docker push $(P_ECR_IMAGE):$(SHA)
-	docker push $(P_ECR_IMAGE):$(VERSION)
+	docker push -q $(P_ECR_IMAGE):$(SHA) || echo 'Unable to push image'
+	docker push -q $(P_ECR_IMAGE):$(VERSION) || echo 'Unable to push image'
 
 	# push to ecr
 	aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 709825985650.dkr.ecr.us-east-1.amazonaws.com
 
-	docker push $(ECR_IMAGE):$(SHA)
-	docker push $(ECR_IMAGE):$(VERSION)
+	docker push -q $(ECR_IMAGE):$(SHA) || echo 'Unable to push image'
+	docker push -q $(ECR_IMAGE):$(VERSION) || echo 'Unable to push image'
 
 
 helm/readme:

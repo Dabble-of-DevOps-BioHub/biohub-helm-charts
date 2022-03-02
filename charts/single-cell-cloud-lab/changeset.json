@@ -20,7 +20,8 @@
                   "EKS"
                 ],
                 "ContainerImages": [
-                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-single-cell-cloud-lab:v0.25.0"
+                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-single-cell-cloud-lab:v0.29.0",
+                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-shinyproxy:cd81ab3"
                 ],
                 "Description": "Helm Chart Delivery for EKS",
                 "UsageInstructions": "Before launching you will need to have your single cell data stored in S3.\\n\\nhttps://github.com/dabble-of-devops-bioanalyze/helm-charts/tree/main/charts/single-cell-cloud-lab#access-data-in-s3",
