@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
+from pydoc import describe
 import boto3
 import json
 import os
 import typing
+import time
 
 REGISTRY_ID = os.environ.get('REGISTERY_ID', '709825985650')
 SELLER_NAME = os.environ.get('SELLER_NAME', 'dabble-of-devops')
@@ -58,6 +60,20 @@ def describe_change_set(change_set_id: str):
         ChangeSetId=change_set_id,
         # ClientRequestToken='string'
     )
+    return describe_change_set_response
+
+def get_change_set_status(change_set_id):
+
+    describe_change_set_response=describe_change_set(change_set_id)
+    in_complete_statuses = ['PREPARING','APPLYING']
+    complete_statuses = [ 'SUCCEEDED','CANCELLED','FAILED']
+    status = describe_change_set_response['Status']
+
+    while status not in complete_statuses:
+        describe_change_set_response=describe_change_set(change_set_id)
+        status = describe_change_set_response['Status']
+        time.sleep(60)
+
     for changeset in describe_change_set_response['ChangeSet']:
         details = changeset['Details']
         details_data = json.loads(details)
@@ -71,3 +87,5 @@ def start_change_set(data):
         ChangeSetName='internal-release-0.0.1',
         # ClientRequestToken='string'
     )
+    change_set_id = start_change_set_response['ChangeSetId']
+    return change_set_id
