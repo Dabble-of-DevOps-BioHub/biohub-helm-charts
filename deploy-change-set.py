@@ -6,6 +6,7 @@ import json
 import os
 import typing
 import time
+from pprint import pprint
 
 REGISTRY_ID = os.environ.get('REGISTERY_ID', '709825985650')
 SELLER_NAME = os.environ.get('SELLER_NAME', 'dabble-of-devops')
@@ -74,10 +75,19 @@ def get_change_set_status(change_set_id):
         status = describe_change_set_response['Status']
         time.sleep(60)
 
+    failure_code = describe_change_set_response['FailureCode']
+
+    print(f"Change set complete with status: {status}")
+    print(f"Failure Code: {failure_code}")
     for changeset in describe_change_set_response['ChangeSet']:
         details = changeset['Details']
         details_data = json.loads(details)
         changeset['Details'] = details_data
+        # title = changeset['Details']['DeliveryOptionTitle']
+        # print(f"Error Detail List:")
+        error_detail_list = describe_change_set_response['ErrorDetailList']
+        print('---------------------------')
+        pprint(error_detail_list)
 
 
 def start_change_set(data):
