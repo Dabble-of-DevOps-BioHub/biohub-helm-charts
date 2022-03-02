@@ -24,4 +24,3 @@ RUN wget https://www.shinyproxy.io/downloads/shinyproxy-$SHINYPROXY_VERSION.jar 
 USER shiny
 WORKDIR /opt/shinyproxy/
 CMD ["java", "-jar", "shinyproxy.jar"]
-

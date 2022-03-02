@@ -34,7 +34,7 @@ make-dirs:
 
 docker/build:
 	echo "build"
-	docker build -t k8s-shinyproxy images/shinyproxy
+	docker build -q -t k8s-shinyproxy images/shinyproxy
 
 	docker tag k8s-shinyproxy:latest $(ECR_IMAGE):$(VERSION)
 	docker tag k8s-shinyproxy:latest $(ECR_IMAGE):$(SHA)
