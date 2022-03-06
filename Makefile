@@ -67,6 +67,8 @@ docker/push:
 	-docker push -q $(ECR_IMAGE):$(SHA)
 	-docker push -q $(ECR_IMAGE):$(VERSION)
 
+pytest:
+	python -m pytest -s tests
 
 helm/readme:
 	cd charts/shinyproxy && \

@@ -1,0 +1,55 @@
+proxy:
+  kubernetes:
+    podWaitTime: 600000
+  title: "BioAnalyze - Single Cell Cloud Lab"
+  logoUrl: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png
+  containerLogPath: ./container-logs
+  landingPage: /app/single-cell-cloud-lab/
+  containerWaitTime: 600000
+  specs:
+  - id: single-cell-cloud-lab
+    port: 5005
+    displayName: "Single Cell Cloud Lab"
+    containerImage: dabbleofdevops/k8s-single-cell-cloud-lab:v0.16.0
+    containerWaitTime: 600000
+    heartbeatEnabled: true
+    heartbeatTimeout: 600000
+    containerMemoryRequest: 2G
+    containerMemoryLimit: 10G
+    containerCpuRequest: 1
+    containerCpuLimit: 8
+    targetPath: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH')}"
+    # have to have a service-account
+    serviceAccount: s3-read-write-single-cell-cloud-lab-bucket
+    containerEnv:
+      PUBLIC: "True"
+      # if you are using an s3 bucket you must have the credentials
+      # cannot have s3:// prefix
+      CELLXGENE_BUCKET: "single-cell-cloud-lab-1286294352"
+      SYNC_ENABLED: "True"
+      SCRIPT_NAME: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH').replaceFirst('/$','')}"
+    kubernetesPodPatches: |-
+      - op: add
+        path: /spec/containers/0/env/-
+        value:
+            name: PROXY_ID
+            value: "#{proxy.id}"
+
+      - op: add
+        path: /spec/containers/0/env/-
+        value:
+            name: PROXY_USERID
+            value: "#{proxy.userId}"
+
+      # in case the app has no volumes yet:
+      - op: add
+        path: /spec/volumes
+        value:
+          - name: cache-volume
+            emptyDir: {}
+
+      - op: add
+        path: /spec/containers/0/volumeMounts
+        value:
+          - mountPath: /cache
+            name: cache-volume

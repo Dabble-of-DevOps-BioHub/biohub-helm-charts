@@ -517,6 +517,31 @@
             "default": "\"\"",
             "description": "Optionally, pass in the parameters to authYaml as a Yaml string. This is mostly here to get around the AWS Marketplace limit of only having 15 overrides. These values will be merged with the helm chart auth values."
         },
+        "authExistingSecretEnabled": {
+            "type": "boolean",
+            "default": false,
+            "description": "Optionally, use an existing secret for Auth."
+        },
+        "authExistingSecret": {
+            "type": "object",
+            "properties": {
+                "secretKeyRef": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "default": "\"\"",
+                            "description": "pass in the secretKeyRef here."
+                        },
+                        "key": {
+                            "type": "string",
+                            "default": "secrets.json",
+                            "description": "pass in the secretKeyRef here."
+                        }
+                    }
+                }
+            }
+        },
         "auth": {
             "type": "object",
             "properties": {
@@ -564,37 +589,37 @@
                             "default": "\"\"",
                             "description": "the LDAP connection string, composed of the URL and base DN of the LDAP directory"
                         },
-                        "user-dn-pattern": {
+                        "userDnPattern": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "pattern of the distinguished name for a user. Use this if all your users are in a single LDAP location"
                         },
-                        "user-search-filter": {
+                        "userSearchFilter": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "LDAP filter to search for users. Use this if your users are in different LDAP locations, and you cannot use user-dn-pattern"
                         },
-                        "user-search-base": {
+                        "userSearchBase": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "search base to search for users. Only used if user-search-filter is set"
                         },
-                        "group-search-filter": {
+                        "groupSearchFilter": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "LDAP filter used to search for group memberships"
                         },
-                        "group-search-base": {
+                        "groupSearchBase": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "search base to search for groups. Only used if group-search-filter is set"
                         },
-                        "manager-dn": {
+                        "managerDn": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "the distinguished name of the user used to bind to the LDAP directory; leave empty if the initial bind is anonymous"
                         },
-                        "manager-password": {
+                        "managerPassword": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "the password of the user used to bind to the LDAP directory; can be omitted if manager-dn is empty (i.e. when the initial bind is anonymous)."
@@ -609,37 +634,37 @@
                 "kerberos": {
                     "type": "object",
                     "properties": {
-                        "auth-service-principal": {
+                        "authServicePrincipal": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "principal name of the Kerberos entity that processes authentication requests;"
                         },
-                        "auth-service-keytab": {
+                        "authServiceKeytab": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "path to the keytab file containing the secret of the auth-service-principal;"
                         },
-                        "deleg-service-principal": {
+                        "delegServicePrincipal": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "principal name of the Kerberos entity that obtains delegated service tickets for the user; if not specified the value of the auth-service-principal will be used also for the deleg-service-principal;"
                         },
-                        "deleg-service-keytab": {
+                        "delegServiceKeytab": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "path to the keytab file containing the secret of the deleg-service-principal; if not specified the value of the auth-service-keytab is used as the deleg-service-keytab;"
                         },
-                        "backend-principals": {
+                        "backendPrincipals": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "array of service principals for which delegated service tickets should be obtained e.g. [\"HTTP/your-api-server.com\", \"postgres/your-postgres-server.com\"]"
                         },
-                        "client-ccache-path": {
+                        "clientCcachePath": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "absolute or relative path to a folder where user-specific credential caches are maintained; these are mounted automatically as volumes in the container, and contain service tickets for the configured backend-principals;"
                         },
-                        "ticket-renew-interval": {
+                        "ticketRenewInterval": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "interval in milliseconds for automatically renewing the backend service tickets; the default is 28800000 which corresponds to 8 hours."
@@ -659,7 +684,7 @@
                             "default": "yoursso",
                             "description": ""
                         },
-                        "auth-server-url": {
+                        "authServerUrl": {
                             "type": "string",
                             "default": "http://yoururl.com:8180/auth",
                             "description": ""
@@ -669,22 +694,22 @@
                             "default": "yourresource",
                             "description": ""
                         },
-                        "credentials-secret": {
+                        "credentialsSecret": {
                             "type": "string",
                             "default": "your-credentials-secret",
                             "description": ""
                         },
-                        "ssl-required": {
+                        "sslRequired": {
                             "type": "string",
                             "default": "none",
                             "description": "one can set the SSL/HTTPS mode to one of none, all or external (default). These options are documented here;"
                         },
-                        "name-attribute": {
+                        "nameAttribute": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "name of the attribute to use as the user’s name; one of name (default, current behaviour), preferred_username, nickname or email"
                         },
-                        "use-resource-role-mappings": {
+                        "useResourceRoleMappings": {
                             "type": "boolean",
                             "default": false,
                             "description": "boolean value to use either client roles (true) or realm roles (false; default); see also the relevant Keycloak documentation."
@@ -699,32 +724,32 @@
                 "openid": {
                     "type": "object",
                     "properties": {
-                        "auth-url": {
+                        "authUrl": {
                             "type": "string",
                             "default": "https://accounts.google.com/o/oauth2/v2/auth",
                             "description": ""
                         },
-                        "token-url": {
+                        "tokenUrl": {
                             "type": "string",
                             "default": "https://www.googleapis.com/oauth2/v4/token",
                             "description": ""
                         },
-                        "jwks-url": {
+                        "jwksUrl": {
                             "type": "string",
                             "default": "https://www.googleapis.com/oauth2/v3/certs",
                             "description": ""
                         },
-                        "logout-url": {
+                        "logoutUrl": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "URL to be used for logging out of the OpenId session on the OpenId provider back-end; for an Auth0 back-end one can specify e.g."
                         },
-                        "client-id": {
+                        "clientId": {
                             "type": "string",
                             "default": "***",
                             "description": ""
                         },
-                        "client-secret": {
+                        "clientSecret": {
                             "type": "string",
                             "default": "***",
                             "description": ""
@@ -739,52 +764,52 @@
                 "saml": {
                     "type": "object",
                     "properties": {
-                        "idp-metadata-url": {
+                        "idpMetadataUrl": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "the URL where the IDP’s metadata can be retrieved"
                         },
-                        "app-entity-id": {
+                        "appEntityId": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "the entity ID of this application, must match the AudienceRestriction in the SAML assertion received from the IDP"
                         },
-                        "app-base-url": {
+                        "appBaseUrl": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "the application’s base URL. Some IDPs require that you specify valid callback URLs. This must match a valid callback URL."
                         },
-                        "name-attribute": {
+                        "nameAttribute": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "the name of the attribute in the SAML assertion containing the username"
                         },
-                        "roles-attribute": {
+                        "rolesAttribute": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "the name of the attribute in the SAML assertion containing the user roles"
                         },
-                        "logout-url": {
+                        "logoutUrl": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "optional URL to which the user will be redirected when they logout"
                         },
-                        "logout-method": {
+                        "logoutMethod": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "can be local (default) or saml. See below for more information."
                         },
-                        "log-attributes": {
+                        "logAttributes": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "when set to true, ShinyProxy logs all SAML attributes provided by the IDP when a user logs in. This makes it easier to find the correct attribute to use for the name-attribute and roles-attribute configuration. Note that this may log sensitive information (e.g., some SAML claims may contain passwords or tokens), therefore this option should only be used when setting up SAML (or you have to ensure no sensitive values are contained within the SAML assertion)."
                         },
-                        "max-authentication-age": {
+                        "maxAuthenticationAge": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "configures the maximum age of SAML credentials in seconds. By default, this is 7200 seconds (i.e. 2 hours). See this FAQ entry for more information and an alternative solution."
                         },
-                        "force-authn": {
+                        "forceAuthn": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "if set to true the IDP is required to re-authenticate the user and not rely on previous authentication events. This is useful when the IDP provides ShinyProxy credentials which are older than the time configured in the max-authentication-age. See this FAQ entry for more information and an alternative solution."
@@ -794,17 +819,17 @@
                             "default": "path to the JKS keystore",
                             "description": ""
                         },
-                        "keystore-password": {
+                        "keystorePassword": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "(If the IDP sends back encrypted SAML assertions) Password to access the keystore. If omitted, encryption-cert-password will be used instead"
                         },
-                        "encryption-cert-name": {
+                        "encryptionCertName": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "(If the IDP sends back encrypted SAML assertions) Name of the certificate whose public key the SAML Assertion is encrypted with"
                         },
-                        "encryption-cert-password": {
+                        "encryptionCertPassword": {
                             "type": "string",
                             "default": "\"\"",
                             "description": "(If the IDP sends back encrypted SAML assertions) Password of the certificate whose public key the SAML Assertion is encrypted with"
@@ -827,12 +852,12 @@
                         "facebook": {
                             "type": "object",
                             "properties": {
-                                "app-id": {
+                                "appId": {
                                     "type": "string",
                                     "default": "yourfacebookappid",
                                     "description": ""
                                 },
-                                "app-secret": {
+                                "appSecret": {
                                     "type": "string",
                                     "default": "yourfacebookappsecret",
                                     "description": ""
@@ -847,12 +872,12 @@
                         "twitter": {
                             "type": "object",
                             "properties": {
-                                "app-id": {
+                                "appId": {
                                     "type": "string",
                                     "default": "yourtwitterappid",
                                     "description": ""
                                 },
-                                "app-secret": {
+                                "appSecret": {
                                     "type": "string",
                                     "default": "yourtwitterappsecret",
                                     "description": ""
@@ -867,12 +892,12 @@
                         "google": {
                             "type": "object",
                             "properties": {
-                                "app-id": {
+                                "appId": {
                                     "type": "string",
                                     "default": "yourgoogleappid",
                                     "description": ""
                                 },
-                                "app-secret": {
+                                "appSecret": {
                                     "type": "string",
                                     "default": "yourgoogleappsecret",
                                     "description": ""
@@ -887,12 +912,12 @@
                         "github": {
                             "type": "object",
                             "properties": {
-                                "app-id": {
+                                "appId": {
                                     "type": "string",
                                     "default": "yourgithubappid",
                                     "description": ""
                                 },
-                                "app-secret": {
+                                "appSecret": {
                                     "type": "string",
                                     "default": "yourgithubappsecret",
                                     "description": ""
@@ -907,12 +932,12 @@
                         "linkedin": {
                             "type": "object",
                             "properties": {
-                                "app-id": {
+                                "appId": {
                                     "type": "string",
                                     "default": "yourlinkedinappid",
                                     "description": ""
                                 },
-                                "app-secret": {
+                                "appSecret": {
                                     "type": "string",
                                     "default": "yourlinkedinappsecret",
                                     "description": ""
@@ -929,12 +954,12 @@
                 "webservice": {
                     "type": "object",
                     "properties": {
-                        "authentication-url": {
+                        "authenticationUrl": {
                             "type": "string",
                             "default": "https://your-auth-server.com/login",
                             "description": ""
                         },
-                        "authentication-request-body": {
+                        "authenticationRequestBody": {
                             "type": "string",
                             "default": "{\"username\": \"%s\", \"password\": \"%s\"}",
                             "description": ""
@@ -951,22 +976,22 @@
                     "default": "Open Analytics Shiny Proxy",
                     "description": "The title that is displayed in the ShinyProxy navigation bar;"
                 },
-                "logo-url": {
+                "logoUrl": {
                     "type": "string",
                     "default": "https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png",
                     "description": "The url of the logo that is displayed in the ShinyProxy navigation bar; this can also be a local file using the file scheme (file://)"
                 },
-                "landing-page": {
+                "landingPage": {
                     "type": "string",
                     "default": "/",
                     "description": "The URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;"
                 },
-                "heartbeat-rate": {
+                "heartbeatRate": {
                     "type": "number",
                     "default": 10000,
                     "description": "The user’s browser will sent a heartbeat call every heartbeat-rate milliseconds; default value is 10000 (10 seconds);"
                 },
-                "heartbeat-timeout": {
+                "heartbeatTimeout": {
                     "type": "number",
                     "default": 60000,
                     "description": "If the server does not receive a heartbeat for heartbeat-timeout milliseconds, the relevant proxy will be released (and the container stopped); default value is 60000 (60 seconds). Apps can override this using the heartbeat-timeout property."
@@ -976,17 +1001,17 @@
                     "default": "none",
                     "description": "Authentication see the ShinyProxy [docs](https://www.shinyproxy.io/documentation/configuration/#authentication)"
                 },
-                "container-log-path": {
+                "containerLogPath": {
                     "type": "string",
                     "default": "./container-logs",
                     "description": "ShinyProxy can be configured to store log files of running containers. These log files contain the stdout and stderr output of the R process running the Shiny app."
                 },
-                "container-wait-time": {
+                "containerWaitTime": {
                     "type": "number",
                     "default": 600000,
                     "description": "timeout for the container to be available to ShinyProxy; defaults to 20s (20000)"
                 },
-                "container-backend": {
+                "containerBackend": {
                     "type": "string",
                     "default": "kubernetes",
                     "description": "This is a helm chart so we're using Kubernetes"
@@ -994,7 +1019,7 @@
                 "kubernetes": {
                     "type": "object",
                     "properties": {
-                        "internal-networking": {
+                        "internalNetworking": {
                             "type": "boolean",
                             "default": true,
                             "description": ""

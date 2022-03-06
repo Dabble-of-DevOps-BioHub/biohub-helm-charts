@@ -8,6 +8,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8.8]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,10 +27,24 @@ jobs:
         # with:
         #   version: v3.4.0
 
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Python Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest jsonschema
+
+
       - name: Helm Dependency update
         run: |
           make helm/build
 
+      - name: Helm Python Run Tests
+        run: |
+          make tests
       # "arn:aws:ecr:us-east-1:018835827632:repository/shinyproxy"
       # "018835827632.dkr.ecr.us-east-1.amazonaws.com/helm-shinyproxy"
       # 018835827632.dkr.ecr.us-east-1.amazonaws.com/helm-cellxgene-gateway

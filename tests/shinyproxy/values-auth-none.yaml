@@ -1,0 +1,5 @@
+authYamlEnabled: false
+
+auth:
+  authSimpleEnabled: false
+  authNoneEnabled: true

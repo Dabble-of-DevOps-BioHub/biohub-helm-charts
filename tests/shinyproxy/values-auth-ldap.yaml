@@ -1,0 +1,14 @@
+authYamlEnabled: false
+
+auth:
+  authSimpleEnabled: false
+  authLDAPEnabled: true
+  ldap:
+    url: "http://my-ldap-url"
+    userDnPattern: "my-user-dn-pattern"
+    userSearchFilter: "my-user-search-filter"
+    userSearchBase: "my-search-base"
+    groupSearchFilter: "my-group-search-filter"
+    groupSearchBase: "my-group-search-base"
+    managerDn: "my-manager-dn"
+    managerPassword: "my-manager-password"

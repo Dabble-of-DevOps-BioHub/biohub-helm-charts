@@ -21,8 +21,8 @@ shinyproxy:
     service:
       type: LoadBalancer
     kubernetes:
-      ## @param shinyproxy.proxy.kubernetes.pod-wait-time how long to wait for the pod to spin up
-      pod-wait-time: 600000
+      ## @param shinyproxy.proxy.kubernetes.podWaitTime how long to wait for the pod to spin up
+      podWaitTime: 600000
 
     resources:
       requests:
@@ -45,52 +45,52 @@ shinyproxy:
 
     ## @param shinyproxy.proxy.title The title that is displayed in the ShinyProxy navigation bar;
     title: "BioAnalyze - Single Cell Cloud Lab"
-    ## @param shinyproxy.proxy.logo-url The url of the logo that is displayed in the ShinyProxy navigation bar; this can also be a local file using the file scheme (file://)
-    logo-url: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png
-    ## @param shinyproxy.proxy.landing-page the URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;
-    landing-page: /app/single-cell-cloud-lab/
+    ## @param shinyproxy.proxy.logoUrl The url of the logo that is displayed in the ShinyProxy navigation bar; this can also be a local file using the file scheme (file://)
+    logoUrl: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png
+    ## @param shinyproxy.proxy.landingPage the URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;
+    landingPage: /app/single-cell-cloud-lab/
     specs:
       ## @param shinyproxy.proxy.specs[0].id application id
     - id: single-cell-cloud-lab
       ## @param shinyproxy.proxy.specs[0].port port the internal application is running on
       port: 5005
-      ## @param shinyproxy.proxy.specs[0].display_name Name displayed on the landing page
-      display_name: "Single Cell Cloud Lab"
-      ## @param shinyproxy.proxy.specs[0].container-image Docker image
-      container-image: dabbleofdevops/k8s-single-cell-cloud-lab:v0.25.0
-      ## @param shinyproxy.proxy.specs[0].container-wait-time
-      container-wait-time: 600000
-      ## @param shinyproxy.proxy.specs[0].heartbeat-enabled
-      heartbeat-enabled: true
-      ## @param shinyproxy.proxy.specs[0].heartbeat-timeout
-      heartbeat-timeout: 600000
-      ## @param shinyproxy.proxy.specs[0].container-memory-request
-      container-memory-request: 2G
-      ## @param shinyproxy.proxy.specs[0].container-memory-limit
-      container-memory-limit: 10G
-      ## @param shinyproxy.proxy.specs[0].container-cpu-request
-      container-cpu-request: 1
-      ## @param shinyproxy.proxy.specs[0].container-cpu-limit
-      container-cpu-limit: 8
-      ## @param shinyproxy.proxy.specs[0].service-account The service account used to access the S3 buckets. Please see the docs for more details.
-      service-account: s3-read-write-cellxgene-example-bucket
-      ## @param shinyproxy.proxy.specs[0].target-path
-      target-path: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH')}"
-      container-env:
+      ## @param shinyproxy.proxy.specs[0].displayName Name displayed on the landing page
+      displayName: "Single Cell Cloud Lab"
+      ## @param shinyproxy.proxy.specs[0].containerImage Docker image
+      containerImage: dabbleofdevops/k8s-single-cell-cloud-lab:v0.25.0
+      ## @param shinyproxy.proxy.specs[0].containerWaitTime
+      containerWaitTime: 600000
+      ## @param shinyproxy.proxy.specs[0].heartbeatEnabled
+      heartbeatEnabled: true
+      ## @param shinyproxy.proxy.specs[0].heartbeatTimeout
+      heartbeatTimeout: 600000
+      ## @param shinyproxy.proxy.specs[0].containerMemoryRequest
+      containerMemoryRequest: 2G
+      ## @param shinyproxy.proxy.specs[0].containerMemoryLimit
+      containerMemoryLimit: 10G
+      ## @param shinyproxy.proxy.specs[0].containerCpuRequest
+      containerCpuRequest: 1
+      ## @param shinyproxy.proxy.specs[0].containerCpuLimit
+      containerCpuLimit: 8
+      ## @param shinyproxy.proxy.specs[0].serviceAccount The service account used to access the S3 buckets. Please see the docs for more details.
+      serviceAccount: s3-read-write-cellxgene-example-bucket
+      ## @param shinyproxy.proxy.specs[0].targetPath
+      targetPath: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH')}"
+      containerEnv:
         # Must specify one of CELLXGENE_BUCKET or CELLXGENE_DATA
         # if you are using an s3 bucket you must have the credentials
         # cannot have s3:// prefix
-        ## @param shinyproxy.proxy.specs[0].container-env.BUCKET S3 Bucket to load data from
+        ## @param shinyproxy.proxy.specs[0].containerEnv.BUCKET S3 Bucket to load data from
         BUCKET: "my-s3-bucket"
-        ## @param shinyproxy.proxy.specs[0].container-env.SCRIPT_NAME SCRIPT_NAME env var to pass to gunicorn for correct proxy
+        ## @param shinyproxy.proxy.specs[0].containerEnv.SCRIPT_NAME SCRIPT_NAME env var to pass to gunicorn for correct proxy
         SCRIPT_NAME: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH').replaceFirst('/$','')}"
-        ## @param shinyproxy.proxy.specs[0].container-env.SYNC_ENABLED Sync local cellxgene results to the S3 Bucket
+        ## @param shinyproxy.proxy.specs[0].containerEnv.SYNC_ENABLED Sync local cellxgene results to the S3 Bucket
         SYNC_ENABLED: "True"
-        ## @param shinyproxy.proxy.specs[0].container-env.PUBLIC Let ShinyProxy take care of the Auth
+        ## @param shinyproxy.proxy.specs[0].containerEnv.PUBLIC Let ShinyProxy take care of the Auth
         PUBLIC: "True"
 
-      ## @param shinyproxy.proxy.specs[0].kubernetes-pod-patches Add some file mounts and env vars
-      kubernetes-pod-patches: |-
+      ## @param shinyproxy.proxy.specs[0].kubernetesPodPatches Add some file mounts and env vars
+      kubernetesPodPatches: |-
         - op: add
           path: /spec/containers/0/env/-
           value:

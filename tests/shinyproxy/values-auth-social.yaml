@@ -1,0 +1,21 @@
+
+auth:
+  authSimpleEnabled: false
+  authNoneEnabled:  false
+  authSocialEnabled: true
+
+  social:
+    ## @param auth.social.facebookEnabled
+    facebookEnabled: true
+    facebook:
+      ## @param auth.social.facebook.appId
+      appId: yourfacebookappid
+      ## @param auth.social.facebook.app-secret
+      appSecret: yourfacebookappsecret
+    ## @param auth.social.twitterEnabled
+    twitterEnabled: true
+    twitter:
+      ## @param auth.social.twitter.appId
+      appId: yourtwitterappid
+      ## @param auth.social.twitter.appSsecret
+      appSecret: yourtwitterappsecret

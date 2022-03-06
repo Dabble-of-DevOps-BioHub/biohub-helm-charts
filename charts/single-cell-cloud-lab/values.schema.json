@@ -36,7 +36,7 @@
                         "kubernetes": {
                             "type": "object",
                             "properties": {
-                                "pod-wait-time": {
+                                "podWaitTime": {
                                     "type": "number",
                                     "default": 600000,
                                     "description": "how long to wait for the pod to spin up"
@@ -98,12 +98,12 @@
                             "default": "BioAnalyze - Single Cell Cloud Lab",
                             "description": "The title that is displayed in the ShinyProxy navigation bar;"
                         },
-                        "logo-url": {
+                        "logoUrl": {
                             "type": "string",
                             "default": "https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png",
                             "description": "The url of the logo that is displayed in the ShinyProxy navigation bar; this can also be a local file using the file scheme (file://)"
                         },
-                        "landing-page": {
+                        "landingPage": {
                             "type": "string",
                             "default": "/app/single-cell-cloud-lab/",
                             "description": "the URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;"
@@ -122,51 +122,51 @@
                                         "type": "number",
                                         "description": "port the internal application is running on"
                                     },
-                                    "display_name": {
+                                    "displayName": {
                                         "type": "string",
                                         "description": "Name displayed on the landing page"
                                     },
-                                    "container-image": {
+                                    "containerImage": {
                                         "type": "string",
                                         "description": "Docker image"
                                     },
-                                    "container-wait-time": {
+                                    "containerWaitTime": {
                                         "type": "number",
                                         "description": ""
                                     },
-                                    "heartbeat-enabled": {
+                                    "heartbeatEnabled": {
                                         "type": "boolean",
                                         "description": ""
                                     },
-                                    "heartbeat-timeout": {
+                                    "heartbeatTimeout": {
                                         "type": "number",
                                         "description": ""
                                     },
-                                    "container-memory-request": {
+                                    "containerMemoryRequest": {
                                         "type": "string",
                                         "description": ""
                                     },
-                                    "container-memory-limit": {
+                                    "containerMemoryLimit": {
                                         "type": "string",
                                         "description": ""
                                     },
-                                    "container-cpu-request": {
+                                    "containerCpuRequest": {
                                         "type": "number",
                                         "description": ""
                                     },
-                                    "container-cpu-limit": {
+                                    "containerCpuLimit": {
                                         "type": "number",
                                         "description": ""
                                     },
-                                    "service-account": {
+                                    "serviceAccount": {
                                         "type": "string",
                                         "description": "The service account used to access the S3 buckets. Please see the docs for more details."
                                     },
-                                    "target-path": {
+                                    "targetPath": {
                                         "type": "string",
                                         "description": ""
                                     },
-                                    "container-env": {
+                                    "containerEnv": {
                                         "type": "object",
                                         "properties": {
                                             "BUCKET": {
@@ -187,7 +187,7 @@
                                             }
                                         }
                                     },
-                                    "kubernetes-pod-patches": {
+                                    "kubernetesPodPatches": {
                                         "type": "string",
                                         "description": "Add some file mounts and env vars"
                                     }

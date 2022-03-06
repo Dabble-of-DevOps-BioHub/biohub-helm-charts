@@ -44,13 +44,15 @@ def sanity_check_container_images(details_data):
             if len(container_l) == 0:
                 print('No tag found in container')
                 raise NoTagFoundECR
-            elif  len(container_l) == 2:
+            elif len(container_l) == 2:
                 container_name = container_l[0].split('/')
                 ecr_check = ecr_client.describe_images(
                     registryId=REGISTRY_ID,
                     repositoryName=f"{container_name[1]}/{container_name[2]}",
                 )
 
+def sanity_checks_key_length(details_data):
+    pass
 
 def sanity_checks(details_data):
     pass
@@ -79,15 +81,18 @@ def get_change_set_status(change_set_id):
 
     print(f"Change set complete with status: {status}")
     print(f"Failure Code: {failure_code}")
+
     for changeset in describe_change_set_response['ChangeSet']:
         details = changeset['Details']
-        details_data = json.loads(details)
-        changeset['Details'] = details_data
+        if isinstance(details, str):
+            details_data = json.loads(details)
+            changeset['Details'] = details_data
         # title = changeset['Details']['DeliveryOptionTitle']
         # print(f"Error Detail List:")
-        error_detail_list = describe_change_set_response['ErrorDetailList']
+        error_detail_list = changeset['ErrorDetailList']
         print('---------------------------')
         pprint(error_detail_list)
+    return describe_change_set_response
 
 
 def start_change_set(data):
@@ -99,3 +104,9 @@ def start_change_set(data):
     )
     change_set_id = start_change_set_response['ChangeSetId']
     return change_set_id
+
+def run():
+    file = ''
+    data = {}
+    change_set_id = start_change_set(data)
+    describe_change_set_response = get_change_set_status(change_set_id)

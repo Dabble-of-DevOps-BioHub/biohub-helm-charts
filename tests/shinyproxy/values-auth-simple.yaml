@@ -1,0 +1,22 @@
+authYamlEnabled: false
+
+auth:
+  authSimpleEnabled: true
+  authNoneEnabled:  false
+  users:
+    ## @param auth.users[0].name
+  - name: user01
+    ## @param auth.users[0].password Please note that you should absolutely change this password
+    password: "password"
+    ## @param auth.users[0].groups User Groups
+    groups: scientists, users
+  - name: user02
+    ## @param auth.users[0].password Please note that you should absolutely change this password
+    password: "password"
+    ## @param auth.users[0].groups User Groups
+    groups: scientists, users
+  - name: admin
+    ## @param auth.users[0].password Please note that you should absolutely change this password
+    password: "password123"
+    ## @param auth.users[0].groups User Groups
+    groups: scientists, users

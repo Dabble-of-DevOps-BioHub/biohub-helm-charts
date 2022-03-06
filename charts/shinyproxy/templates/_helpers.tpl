@@ -64,6 +64,8 @@ Create the name of the service account to use
 
 {{/*
 Debug functions
+Invoke as
+{{- template "magda.var_dump" $myVar }}
 */}}
 {{- define "magda.var_dump" -}}
 {{- . | mustToPrettyJson |printf "\nThe JSON output of the dumped var is: \n%s" | fail }}
@@ -75,56 +77,125 @@ Get the auth object and return it in the format shinyproxy expects
 */}}
 {{- define "shinyproxy.auth" -}}
 {{- $auth := pick .Values "auth" }}
+{{- $auth := $auth.auth }}
 
 {{- if .Values.authYamlEnabled }}
+
 {{- $authYAML := get .Values "authYaml" | fromYaml  }}
 {{- $auth := merge $auth $authYAML -}}
 {{- end -}}
 
 {{- $values := pick .Values "proxy" "logging" "management" }}
 
-{{- if $auth.authSimpleEnabled }}
-  {{- $_ :=  set $values.proxy "authentication" "simple" }}
-  {{- $_ := set $values.proxy "users" $auth.users }}
-{{- else if $auth.authNoneEnabled }}
+{{/*
+Auth
+*/}}
+{{- if $auth.authNoneEnabled }}
   {{- $_ := set $values.proxy "authentication" "none" }}
 {{- else if $auth.authLDAPEnabled }}
   {{-  $_ := set $values.proxy "authentication" "ldap" }}
-  {{- $_ := set $values.proxy "ldap" $auth.ldap }}
+  {{-  $_ := set $values.proxy "ldap" dict }}
+  {{- range $k, $v := $auth.ldap }}
+    {{- $_ := set $values.proxy.ldap (kebabcase $k) $v }}
+  {{ end }}
 {{- else if $auth.authKerberosEnabled }}
   {{-  $_ := set $values.proxy "authentication" "kerberos" }}
-  {{- $_ := set $values.proxy "kerberos" $auth.kerberos }}
+  {{-  $_ := set $values.proxy "kerberos" dict }}
+  {{- range $k, $v := $auth.kerberos }}
+    {{- $_ := set $values.proxy.kerberos (kebabcase $k) $v }}
+  {{ end }}
 {{- else if $auth.authKeyCloakEnabled }}
   {{-  $_ := set $values.proxy "authentication" "keycloak" }}
-  {{- $_ := set $values.proxy "keycloak" $auth.keycloak }}
+  {{-  $_ := set $values.proxy "keycloak" dict }}
+  {{- range $k, $v := $auth.keycloak }}
+    {{- $_ := set $values.proxy.keycloak (kebabcase $k) $v }}
+  {{ end }}
 {{- else if $auth.authOpenIDEnabled }}
   {{-  $_ := set $values.proxy "authentication" "openid" }}
-  {{- $_ := set $values.proxy "openid" $auth.openid }}
+  {{-  $_ := set $values.proxy "openid" dict }}
+  {{- range $k, $v := $auth.openid }}
+    {{- $_ := set $values.proxy.openid (kebabcase $k) $v }}
+  {{ end }}
 {{- else if $auth.authSAMLEnabled }}
   {{-  $_ := set $values.proxy "authentication" "saml" }}
-  {{- $_ := set $values.proxy "saml" $auth.saml }}
+  {{-  $_ := set $values.proxy "saml" dict }}
+  {{- range $k, $v := $auth.saml }}
+    {{- $_ := set $values.proxy.saml (kebabcase $k) $v }}
+  {{ end }}
 {{- else if $auth.authSocialEnabled }}
   {{- $_ := set $values.proxy "authentication" "social" }}
     {{- $_ := set $values.proxy "social" dict }}
     {{- if $auth.social.twitterEnabled -}}
-        {{- $_ := set $values.proxy.social "twitter" (pick $auth.social "twitter") }}
+        {{-  $_ := set $values.proxy.social "twitter" dict }}
+        {{- range $k, $v := $auth.social.twitter }}
+          {{- $_ := set $values.proxy.social.twitter (kebabcase $k) $v }}
+        {{ end }}
     {{- end -}}
     {{- if $auth.social.facebookEnabled -}}
-        {{- $_ := set $values.proxy.social "facebook" (pick $auth.social "facebook") }}
+        {{-  $_ := set $values.proxy.social "facebook" dict }}
+        {{- range $k, $v := $auth.social.facebook }}
+          {{- $_ := set $values.proxy.social.facebook (kebabcase $k) $v }}
+        {{ end }}
     {{- end -}}
     {{- if $auth.social.googleEnabled -}}
-        {{- $_ := set $values.proxy.social "google" (pick $auth.social "google") }}
+        {{-  $_ := set $values.proxy.social "google" dict }}
+        {{- range $k, $v := $auth.social.google }}
+          {{- $_ := set $values.proxy.social.google (kebabcase $k) $v }}
+        {{ end }}
     {{- end -}}
     {{- if $auth.social.githubEnabled -}}
-        {{- $_ := set $values.proxy.social "github" (pick $auth.social "github") }}
+        {{-  $_ := set $values.proxy.social "github" dict }}
+        {{- range $k, $v := $auth.social.github }}
+          {{- $_ := set $values.proxy.social.github (kebabcase $k) $v }}
+        {{ end }}
     {{- end -}}
     {{- if $auth.social.linkedinEnabled -}}
-        {{- $_ := set $values.proxy.social "linkedin" (pick $auth.social "linkedin") }}
+        {{-  $_ := set $values.proxy.social "linkedin" dict }}
+        {{- range $k, $v := $auth.social.linkedin }}
+          {{- $_ := set $values.proxy.social.linkedin (kebabcase $k) $v }}
+        {{ end }}
     {{- end -}}
 {{- else if $auth.authWebServiceEnabled }}
   {{-  $_ := set $values.proxy "authentication" "webservice" }}
-  {{- $_ := set $values.proxy "webservice" $auth.webservice }}
+  {{-  $_ := set $values.proxy "webservice" dict }}
+  {{- range $k, $v := $auth.webservice }}
+    {{- $_ := set $values.proxy.webservice (kebabcase $k) $v }}
+  {{ end }}
+{{- else if $auth.authSimpleEnabled }}
+  {{- $_ := set $values.proxy "authentication" "simple" }}
+  {{- $_ := set $values.proxy "users" $auth.users }}
 {{- end }}
 
+
+{{/*
+Proxy
+*/}}
+{{- range $k, $v := $values.proxy }}
+  {{- $_ := set $values.proxy (kebabcase $k) $v }}
+  {{- $kebabKey := (kebabcase $k) }}
+  {{- if ne $k $kebabKey -}}
+    {{- $_ := unset $values.proxy $k }}
+  {{ end }}
+{{ end }}
+
+{{- range $k, $v := $values.proxy.kubernetes }}
+  {{- $_ := set $values.proxy.kubernetes (kebabcase $k) $v }}
+  {{- $kebabKey := (kebabcase $k) }}
+  {{- if ne $k $kebabKey -}}
+    {{- $_ := unset $values.proxy.kubernetes $k }}
+  {{ end }}
+{{ end }}
+
+{{- range $l := $values.proxy.specs }}
+  {{- range $k, $v := $l }}
+    {{- $_ := set $l (kebabcase $k) $v }}
+    {{- $kebabKey := (kebabcase $k) }}
+    {{- if ne $k $kebabKey -}}
+      {{- $_ := unset $l $k }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
 {{- mustToJson $values -}}
+
 {{- end }}
