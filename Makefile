@@ -102,3 +102,21 @@ ecr/describe:
 		--registry-id 709825985650 \
 		--repository-name k8s-single-cell-cloud-lab  \
 		--image-id imageDigest=sha256:d606b5007f35c51b026e1ca7de713baf37b62c726fac8227173d8d1930cc6cf4
+
+trivy/shinyproxy:
+	docker build -t k8s-shinyproxy:latest images/shinyproxy
+
+	# all errors
+	echo "Scanning image for all errors"
+	trivy image \
+		--ignore-unfixed \
+		--severity HIGH,CRITICAL \
+		k8s-shinyproxy:latest
+
+	# os specific errors
+	echo "Scanning image for os errors"
+	trivy image \
+		--ignore-unfixed \
+		--vuln-type os \
+		--severity HIGH,CRITICAL \
+		k8s-shinyproxy:latest
