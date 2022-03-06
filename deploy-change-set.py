@@ -100,7 +100,6 @@ def start_change_set(data):
         Catalog = "AWSMarketplace",
         ChangeSet= data.get('ChangeSet'),
         ChangeSetName='internal-release-0.0.1',
-        # ClientRequestToken='string'
     )
     change_set_id = start_change_set_response['ChangeSetId']
     return change_set_id
