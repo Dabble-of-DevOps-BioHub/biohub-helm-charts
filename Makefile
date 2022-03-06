@@ -67,7 +67,10 @@ docker/push:
 	-docker push -q $(ECR_IMAGE):$(SHA)
 	-docker push -q $(ECR_IMAGE):$(VERSION)
 
-pytest:
+helm/test:
+	cd charts/shinyproxy && helm lint
+	cd charts/single-cell-cloud-lab && helm lint
+
 	python -m pytest -s tests
 
 helm/readme:

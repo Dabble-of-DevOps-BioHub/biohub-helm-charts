@@ -44,7 +44,7 @@ jobs:
 
       - name: Helm Python Run Tests
         run: |
-          make tests
+          make helm tests
       # "arn:aws:ecr:us-east-1:018835827632:repository/shinyproxy"
       # "018835827632.dkr.ecr.us-east-1.amazonaws.com/helm-shinyproxy"
       # 018835827632.dkr.ecr.us-east-1.amazonaws.com/helm-cellxgene-gateway
