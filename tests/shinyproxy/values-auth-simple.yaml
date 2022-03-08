@@ -1,5 +1,3 @@
-authYamlEnabled: false
-
 auth:
   authSimpleEnabled: true
   authNoneEnabled:  false

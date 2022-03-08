@@ -109,7 +109,6 @@
                             "description": "the URL to send a user to after login; default value is / which will redirect the user to a list of the Shiny apps. Other typical values are /app/<app-name> or /app_direct/<app-name> which allows to immediately land on a (single) Shiny app;"
                         },
                         "specs": {
-                            "type": "array",
                             "description": "application id",
                             "items": {
                                 "type": "object",
@@ -192,7 +191,158 @@
                                         "description": "Add some file mounts and env vars"
                                     }
                                 }
-                            }
+                            },
+                            "anyOf": [
+                                {
+                                    "type": "array",
+                                    "description": "List of ShinyProxy application specs",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": "application id"
+                                            },
+                                            "port": {
+                                                "type": "number",
+                                                "description": "port the internal application is running on"
+                                            },
+                                            "displayName": {
+                                                "type": "string",
+                                                "description": "Name displayed on the landing page"
+                                            },
+                                            "containerImage": {
+                                                "type": "string",
+                                                "description": "Docker image"
+                                            },
+                                            "containerWaitTime": {
+                                                "type": "number",
+                                                "description": ""
+                                            },
+                                            "heartbeatEnabled": {
+                                                "type": "boolean",
+                                                "description": ""
+                                            },
+                                            "heartbeatTimeout": {
+                                                "type": "number",
+                                                "description": ""
+                                            },
+                                            "containerMemoryRequest": {
+                                                "type": "string",
+                                                "description": ""
+                                            },
+                                            "containerMemoryLimit": {
+                                                "type": "string",
+                                                "description": ""
+                                            },
+                                            "containerCpuRequest": {
+                                                "type": "number",
+                                                "description": ""
+                                            },
+                                            "containerCpuLimit": {
+                                                "type": "number",
+                                                "description": ""
+                                            },
+                                            "serviceAccount": {
+                                                "type": "string",
+                                                "description": "The service account used to access the S3 buckets. Please see the docs for more details."
+                                            },
+                                            "targetPath": {
+                                                "type": "string",
+                                                "description": ""
+                                            },
+                                            "containerEnv": {
+                                                "type": "object"
+                                            },
+                                            "kubernetesPodPatches": {
+                                                "type": "string",
+                                                "description": "Add some file mounts and env vars"
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "object",
+                                    "description": "Dict of ShinyProxy Application Specs",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "description": "application id"
+                                        },
+                                        "port": {
+                                            "type": "number",
+                                            "description": "port the internal application is running on"
+                                        },
+                                        "displayName": {
+                                            "type": "string",
+                                            "description": "Name displayed on the landing page"
+                                        },
+                                        "containerImage": {
+                                            "type": "string",
+                                            "description": "Docker image"
+                                        },
+                                        "containerWaitTime": {
+                                            "type": "number",
+                                            "description": ""
+                                        },
+                                        "heartbeatEnabled": {
+                                            "type": "boolean",
+                                            "description": ""
+                                        },
+                                        "heartbeatTimeout": {
+                                            "type": "number",
+                                            "description": ""
+                                        },
+                                        "containerMemoryRequest": {
+                                            "type": "string",
+                                            "description": ""
+                                        },
+                                        "containerMemoryLimit": {
+                                            "type": "string",
+                                            "description": ""
+                                        },
+                                        "containerCpuRequest": {
+                                            "type": "number",
+                                            "description": ""
+                                        },
+                                        "containerCpuLimit": {
+                                            "type": "number",
+                                            "description": ""
+                                        },
+                                        "serviceAccount": {
+                                            "type": "string",
+                                            "description": "The service account used to access the S3 buckets. Please see the docs for more details."
+                                        },
+                                        "targetPath": {
+                                            "type": "string",
+                                            "description": ""
+                                        },
+                                        "containerEnv": {
+                                            "type": "object"
+                                        },
+                                        "kubernetesPodPatches": {
+                                            "type": "string",
+                                            "description": "Add some file mounts and env vars"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                "auth": {
+                    "properties": {
+                        "users": {
+                            "anyOf": [
+                                {
+                                    "type": "array",
+                                    "description": "List of ShinyProxy Application Simple Auth Users"
+                                },
+                                {
+                                    "type": "object",
+                                    "description": "Dict of ShinyProxy Application Simple Auth Users"
+                                }
+                            ]
                         }
                     }
                 }

@@ -55,11 +55,19 @@ spec:
             - name: http
               containerPort: {{ .Values.containerPorts.http }}
           env:
+          {{- if not .Values.authExistingSecretEnabled -}}
             - name: SPRING_APPLICATION_JSON
               valueFrom:
                 secretKeyRef:
                   name: {{ include "common.names.fullname" . }}
                   key: secrets.json
+          {{ else }}
+            - name: SPRING_APPLICATION_JSON
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.authExistingSecret.secretRef.name }}
+                  key: {{ .Values.authExistingSecret.secretRef.key }}
+          {{ end }}
           volumeMounts:
           - name: application-conf
             mountPath: /opt/shinyproxy/application.yml

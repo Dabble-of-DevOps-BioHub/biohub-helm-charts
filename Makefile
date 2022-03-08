@@ -67,24 +67,12 @@ docker/push:
 	-docker push -q $(ECR_IMAGE):$(SHA)
 	-docker push -q $(ECR_IMAGE):$(VERSION)
 
-helm/test:
-	cd charts/shinyproxy && helm lint
-	cd charts/single-cell-cloud-lab && helm lint
+custom-readme:
+	cd charts/shinyproxy && make custom-readme
+	python ./scripts/patch_values_schema.py charts/shinyproxy/values.schema.json
 
-	python -m pytest -s tests
-
-helm/readme:
-	cd charts/shinyproxy && \
-		readme-generator \
-			--values values.yaml \
-			--readme README.md \
-			-m values.schema.json
-
-	cd charts/single-cell-cloud-lab && \
-		readme-generator \
-			--values values.yaml \
-			--readme README.md \
-			-m values.schema.json
+	cd charts/single-cell-cloud-lab && make custom-readme
+	python ./scripts/patch_values_schema.py charts/single-cell-cloud-lab/values.schema.json
 
 eks/shell:
 	$(MAKE) make-dirs
@@ -103,20 +91,27 @@ ecr/describe:
 		--repository-name k8s-single-cell-cloud-lab  \
 		--image-id imageDigest=sha256:d606b5007f35c51b026e1ca7de713baf37b62c726fac8227173d8d1930cc6cf4
 
-trivy/shinyproxy:
+test/trivy/shinyproxy:
 	docker build -t k8s-shinyproxy:latest images/shinyproxy
-
-	# all errors
-	echo "Scanning image for all errors"
-	trivy image \
-		--ignore-unfixed \
-		--severity HIGH,CRITICAL \
-		k8s-shinyproxy:latest
-
 	# os specific errors
 	echo "Scanning image for os errors"
 	trivy image \
 		--ignore-unfixed \
 		--vuln-type os \
+		--exit-code 1 \
 		--severity HIGH,CRITICAL \
 		k8s-shinyproxy:latest
+
+test/helm:
+	cd charts/shinyproxy && helm lint
+	cd charts/single-cell-cloud-lab && helm lint
+
+	python -m pytest -s tests
+
+test/all:
+	$(MAKE) custom-readme
+	$(MAKE) test/helm
+	$(MAKE) test/trivy/shinyproxy
+
+changeset/deploy:
+	bash scripts/deploy_change_set.sh

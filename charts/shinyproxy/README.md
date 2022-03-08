@@ -158,17 +158,15 @@ ShinyProxy adds Authentication and Load Balancing to RShiny, Dash and Flask Apps
 
 ### ShinyProxy Proxy Simple Username/Password Authentication
 
-| Name                                   | Description                                                                                                                                                                                                            | Value               |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| `authYamlEnabled`                      | Optionally, pass in the parameters to authYaml as a Yaml string. This is mostly here to get around the AWS Marketplace limit of only having 15 overrides.                                                              | `false`             |
-| `authYaml`                             | Optionally, pass in the parameters to authYaml as a Yaml string. This is mostly here to get around the AWS Marketplace limit of only having 15 overrides. These values will be merged with the helm chart auth values. | `""`                |
-| `authExistingSecretEnabled`            | Optionally, use an existing secret for Auth.                                                                                                                                                                           | `false`             |
-| `authExistingSecret.secretKeyRef.name` | pass in the secretKeyRef here.                                                                                                                                                                                         | `""`                |
-| `authExistingSecret.secretKeyRef.key`  | pass in the secretKeyRef here.                                                                                                                                                                                         | `secrets.json`      |
-| `auth.authSimpleEnabled`               |                                                                                                                                                                                                                        | `true`              |
-| `auth.users[0].name`                   |                                                                                                                                                                                                                        | `user01`            |
-| `auth.users[0].password`               | Please note that you should absolutely change this password                                                                                                                                                            | `password123`       |
-| `auth.users[0].groups`                 | User Groups                                                                                                                                                                                                            | `scientists, users` |
+| Name                                   | Description                                                                                                                             | Value               |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `authExistingSecretEnabled`            | Optionally, use an existing secret for Auth. You must still set the authentication type. For Example: --set auth.authSimpleEnabled=true | `false`             |
+| `authExistingSecret.secretKeyRef.name` | pass in the secretKeyRef here.                                                                                                          | `shinyproxy`        |
+| `authExistingSecret.secretKeyRef.key`  | pass in the secretKeyRef here.                                                                                                          | `secrets.json`      |
+| `auth.authSimpleEnabled`               |                                                                                                                                         | `true`              |
+| `auth.users[0].name`                   |                                                                                                                                         | `user01`            |
+| `auth.users[0].password`               | Please note that you should absolutely change this password                                                                             | `password123`       |
+| `auth.users[0].groups`                 | User Groups                                                                                                                             | `scientists, users` |
 
 
 ### ShinyProxy Proxy Public / No Authentication
@@ -300,7 +298,13 @@ ShinyProxy adds Authentication and Load Balancing to RShiny, Dash and Flask Apps
 | `proxy.containerWaitTime`             | timeout for the container to be available to ShinyProxy; defaults to 20s (20000)                                                                                                                                                                  | `600000`                                                                                                 |
 | `proxy.containerBackend`              | This is a helm chart so we're using Kubernetes                                                                                                                                                                                                    | `kubernetes`                                                                                             |
 | `proxy.kubernetes.internalNetworking` |                                                                                                                                                                                                                                                   | `true`                                                                                                   |
-| `proxy.specs`                         | See the [specs](https://www.shinyproxy.io/documentation/configuration/#apps) docs.                                                                                                                                                                | `[]`                                                                                                     |
+| `proxy.specs`                         | (https://www.shinyproxy.io/documentation/configuration/#apps) docs.                                                                                                                                                                               | `[]`                                                                                                     |
+
+
+### ShinyProxy AWS Quick Launch Enabled
+
+| Name | Description | Value |
+| ---- | ----------- | ----- |
 
 
 ### Traffic Exposure parameters

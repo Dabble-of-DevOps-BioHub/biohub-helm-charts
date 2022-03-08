@@ -507,20 +507,10 @@
                 }
             }
         },
-        "authYamlEnabled": {
-            "type": "boolean",
-            "default": false,
-            "description": "Optionally, pass in the parameters to authYaml as a Yaml string. This is mostly here to get around the AWS Marketplace limit of only having 15 overrides."
-        },
-        "authYaml": {
-            "type": "string",
-            "default": "\"\"",
-            "description": "Optionally, pass in the parameters to authYaml as a Yaml string. This is mostly here to get around the AWS Marketplace limit of only having 15 overrides. These values will be merged with the helm chart auth values."
-        },
         "authExistingSecretEnabled": {
             "type": "boolean",
             "default": false,
-            "description": "Optionally, use an existing secret for Auth."
+            "description": "Optionally, use an existing secret for Auth. You must still set the authentication type. For Example: --set auth.authSimpleEnabled=true"
         },
         "authExistingSecret": {
             "type": "object",
@@ -530,7 +520,7 @@
                     "properties": {
                         "name": {
                             "type": "string",
-                            "default": "\"\"",
+                            "default": "shinyproxy",
                             "description": "pass in the secretKeyRef here."
                         },
                         "key": {
@@ -551,25 +541,16 @@
                     "description": ""
                 },
                 "users": {
-                    "type": "array",
-                    "description": "",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "name": {
-                                "type": "string",
-                                "description": ""
-                            },
-                            "password": {
-                                "type": "string",
-                                "description": "Please note that you should absolutely change this password"
-                            },
-                            "groups": {
-                                "type": "string",
-                                "description": "User Groups"
-                            }
+                    "anyOf": [
+                        {
+                            "type": "array",
+                            "description": "List of ShinyProxy Application Simple Auth Users"
+                        },
+                        {
+                            "type": "object",
+                            "description": "Dict of ShinyProxy Application Simple Auth Users"
                         }
-                    }
+                    ]
                 },
                 "authNoneEnabled": {
                     "type": "boolean",
@@ -707,7 +688,7 @@
                         "nameAttribute": {
                             "type": "string",
                             "default": "\"\"",
-                            "description": "name of the attribute to use as the user’s name; one of name (default, current behaviour), preferred_username, nickname or email"
+                            "description": "name of the attribute to use as the user\u2019s name; one of name (default, current behaviour), preferred_username, nickname or email"
                         },
                         "useResourceRoleMappings": {
                             "type": "boolean",
@@ -767,7 +748,7 @@
                         "idpMetadataUrl": {
                             "type": "string",
                             "default": "\"\"",
-                            "description": "the URL where the IDP’s metadata can be retrieved"
+                            "description": "the URL where the IDP\u2019s metadata can be retrieved"
                         },
                         "appEntityId": {
                             "type": "string",
@@ -777,7 +758,7 @@
                         "appBaseUrl": {
                             "type": "string",
                             "default": "\"\"",
-                            "description": "the application’s base URL. Some IDPs require that you specify valid callback URLs. This must match a valid callback URL."
+                            "description": "the application\u2019s base URL. Some IDPs require that you specify valid callback URLs. This must match a valid callback URL."
                         },
                         "nameAttribute": {
                             "type": "string",
@@ -989,7 +970,7 @@
                 "heartbeatRate": {
                     "type": "number",
                     "default": 10000,
-                    "description": "The user’s browser will sent a heartbeat call every heartbeat-rate milliseconds; default value is 10000 (10 seconds);"
+                    "description": "The user\u2019s browser will sent a heartbeat call every heartbeat-rate milliseconds; default value is 10000 (10 seconds);"
                 },
                 "heartbeatTimeout": {
                     "type": "number",
@@ -1027,9 +1008,143 @@
                     }
                 },
                 "specs": {
-                    "type": "array",
                     "default": "[]",
-                    "description": "See the [specs](https://www.shinyproxy.io/documentation/configuration/#apps) docs."
+                    "description": "(https://www.shinyproxy.io/documentation/configuration/#apps) docs.",
+                    "anyOf": [
+                        {
+                            "type": "array",
+                            "description": "List of ShinyProxy application specs",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "application id"
+                                    },
+                                    "port": {
+                                        "type": "number",
+                                        "description": "port the internal application is running on"
+                                    },
+                                    "displayName": {
+                                        "type": "string",
+                                        "description": "Name displayed on the landing page"
+                                    },
+                                    "containerImage": {
+                                        "type": "string",
+                                        "description": "Docker image"
+                                    },
+                                    "containerWaitTime": {
+                                        "type": "number",
+                                        "description": ""
+                                    },
+                                    "heartbeatEnabled": {
+                                        "type": "boolean",
+                                        "description": ""
+                                    },
+                                    "heartbeatTimeout": {
+                                        "type": "number",
+                                        "description": ""
+                                    },
+                                    "containerMemoryRequest": {
+                                        "type": "string",
+                                        "description": ""
+                                    },
+                                    "containerMemoryLimit": {
+                                        "type": "string",
+                                        "description": ""
+                                    },
+                                    "containerCpuRequest": {
+                                        "type": "number",
+                                        "description": ""
+                                    },
+                                    "containerCpuLimit": {
+                                        "type": "number",
+                                        "description": ""
+                                    },
+                                    "serviceAccount": {
+                                        "type": "string",
+                                        "description": "The service account used to access the S3 buckets. Please see the docs for more details."
+                                    },
+                                    "targetPath": {
+                                        "type": "string",
+                                        "description": ""
+                                    },
+                                    "containerEnv": {
+                                        "type": "object"
+                                    },
+                                    "kubernetesPodPatches": {
+                                        "type": "string",
+                                        "description": "Add some file mounts and env vars"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "type": "object",
+                            "description": "Dict of ShinyProxy Application Specs",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "application id"
+                                },
+                                "port": {
+                                    "type": "number",
+                                    "description": "port the internal application is running on"
+                                },
+                                "displayName": {
+                                    "type": "string",
+                                    "description": "Name displayed on the landing page"
+                                },
+                                "containerImage": {
+                                    "type": "string",
+                                    "description": "Docker image"
+                                },
+                                "containerWaitTime": {
+                                    "type": "number",
+                                    "description": ""
+                                },
+                                "heartbeatEnabled": {
+                                    "type": "boolean",
+                                    "description": ""
+                                },
+                                "heartbeatTimeout": {
+                                    "type": "number",
+                                    "description": ""
+                                },
+                                "containerMemoryRequest": {
+                                    "type": "string",
+                                    "description": ""
+                                },
+                                "containerMemoryLimit": {
+                                    "type": "string",
+                                    "description": ""
+                                },
+                                "containerCpuRequest": {
+                                    "type": "number",
+                                    "description": ""
+                                },
+                                "containerCpuLimit": {
+                                    "type": "number",
+                                    "description": ""
+                                },
+                                "serviceAccount": {
+                                    "type": "string",
+                                    "description": "The service account used to access the S3 buckets. Please see the docs for more details."
+                                },
+                                "targetPath": {
+                                    "type": "string",
+                                    "description": ""
+                                },
+                                "containerEnv": {
+                                    "type": "object"
+                                },
+                                "kubernetesPodPatches": {
+                                    "type": "string",
+                                    "description": "Add some file mounts and env vars"
+                                }
+                            }
+                        }
+                    ]
                 }
             }
         },

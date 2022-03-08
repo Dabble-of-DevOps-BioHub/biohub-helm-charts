@@ -20,16 +20,16 @@
                   "EKS"
                 ],
                 "ContainerImages": [
-                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-single-cell-cloud-lab:v0.29.0"
+                  "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/k8s-single-cell-cloud-lab:v0.31.0"
                 ],
                 "Description": "Helm Chart Delivery for EKS",
-                "UsageInstructions": "Before launching you will need to have your single cell data stored in S3.\\n\\nhttps://github.com/dabble-of-devops-bioanalyze/helm-charts/tree/main/charts/single-cell-cloud-lab#access-data-in-s3",
+                "UsageInstructions": "Before launching you will need to have your single cell data stored in S3. See: https://github.com/dabble-of-devops-bioanalyze/helm-charts/tree/main/charts/single-cell-cloud-lab#access-data-in-s3",
                 "HelmChartUri": "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/single-cell-cloud-lab:0.5.1",
                 "Namespace": "default",
                 "MarketplaceServiceAccountName": "single-cell-cloud-lab-sa",
                 "OverrideParameters": [
                   {
-                    "Key": "shinyproxy.proxy.specs[0].service-account",
+                    "Key": "shinyproxy.proxy.specs.serviceAccount",
                     "DefaultValue": "my-s3-bucket-sa",
                     "Metadata": {
                       "Label": "Required: S3 Bucket Access Service Account",
@@ -39,7 +39,7 @@
                     "id": "7ebddf34-832b-4056-bd96-24e3474a1576"
                   },
                   {
-                    "Key": "shinyproxy.proxy.specs[0].container-env.BUCKET",
+                    "Key": "shinyproxy.proxy.specs.containerEnv.BUCKET",
                     "DefaultValue": "my-s3-bucket",
                     "Metadata": {
                       "Label": "Required: S3 Bucket",
@@ -48,7 +48,7 @@
                     }
                   },
                   {
-                    "Key": "shinyproxy.auth.simple.users[0].name",
+                    "Key": "shinyproxy.auth.simple.users.name",
                     "DefaultValue": "admin",
                     "Metadata": {
                       "Label": "Simple Auth: Username",
@@ -57,29 +57,12 @@
                     }
                   },
                   {
-                    "Key": "shinyproxy.auth.simple.users[0].password",
+                    "Key": "shinyproxy.auth.simple.users.password",
                     "DefaultValue": "password123",
                     "Metadata": {
                       "Label": "Simple Auth: Password",
                       "Description": "Password to log into the Single Cell Cloud Lab.",
                       "Obfuscate": true
-                    }
-                  },
-                  {
-                    "Key": "shinyproxy.authYamlEnabled",
-                    "DefaultValue": "false",
-                    "Metadata": {
-                      "Label": "Auth Override Boolean",
-                      "Description": "Override the simple username / authentication method with your own. See https://github.com/dabble-of-devops-bioanalyze/helm-charts/tree/main/charts/shinyproxy",
-                      "Obfuscate": false
-                    }
-                  },
-                  {
-                    "Key": "shinyproxy.authYaml",
-                    "Metadata": {
-                      "Label": "Auth Override YAML Text",
-                      "Description": "Auth Parameters as Yaml\\n\\nPlease see the docs for full details - https://github.com/dabble-of-devops-bioanalyze/helm-charts/tree/main/charts/single-cell-cloud-lab#access-data-in-s3",
-                      "Obfuscate": false
                     }
                   }
                 ],

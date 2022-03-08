@@ -79,12 +79,9 @@ Get the auth object and return it in the format shinyproxy expects
 {{- $auth := pick .Values "auth" }}
 {{- $auth := $auth.auth }}
 
-{{- if .Values.authYamlEnabled }}
-
-{{- $authYAML := get .Values "authYaml" | fromYaml  }}
-{{- $auth := merge $auth $authYAML -}}
-{{- end -}}
-
+{{/*
+Values
+*/}}
 {{- $values := pick .Values "proxy" "logging" "management" }}
 
 {{/*
@@ -94,36 +91,47 @@ Auth
   {{- $_ := set $values.proxy "authentication" "none" }}
 {{- else if $auth.authLDAPEnabled }}
   {{-  $_ := set $values.proxy "authentication" "ldap" }}
-  {{-  $_ := set $values.proxy "ldap" dict }}
-  {{- range $k, $v := $auth.ldap }}
-    {{- $_ := set $values.proxy.ldap (kebabcase $k) $v }}
+  {{- if not .Values.authExistingSecretEnabled }}
+    {{-  $_ := set $values.proxy "ldap" dict }}
+    {{- range $k, $v := $auth.ldap }}
+      {{- $_ := set $values.proxy.ldap (kebabcase $k) $v }}
+    {{ end }}
   {{ end }}
 {{- else if $auth.authKerberosEnabled }}
   {{-  $_ := set $values.proxy "authentication" "kerberos" }}
-  {{-  $_ := set $values.proxy "kerberos" dict }}
-  {{- range $k, $v := $auth.kerberos }}
-    {{- $_ := set $values.proxy.kerberos (kebabcase $k) $v }}
+  {{- if not .Values.authExistingSecretEnabled }}
+    {{-  $_ := set $values.proxy "kerberos" dict }}
+    {{- range $k, $v := $auth.kerberos }}
+      {{- $_ := set $values.proxy.kerberos (kebabcase $k) $v }}
+    {{ end }}
   {{ end }}
 {{- else if $auth.authKeyCloakEnabled }}
   {{-  $_ := set $values.proxy "authentication" "keycloak" }}
-  {{-  $_ := set $values.proxy "keycloak" dict }}
-  {{- range $k, $v := $auth.keycloak }}
-    {{- $_ := set $values.proxy.keycloak (kebabcase $k) $v }}
+  {{- if not .Values.authExistingSecretEnabled }}
+    {{-  $_ := set $values.proxy "keycloak" dict }}
+    {{- range $k, $v := $auth.keycloak }}
+      {{- $_ := set $values.proxy.keycloak (kebabcase $k) $v }}
+    {{ end }}
   {{ end }}
 {{- else if $auth.authOpenIDEnabled }}
   {{-  $_ := set $values.proxy "authentication" "openid" }}
-  {{-  $_ := set $values.proxy "openid" dict }}
-  {{- range $k, $v := $auth.openid }}
-    {{- $_ := set $values.proxy.openid (kebabcase $k) $v }}
+  {{- if not .Values.authExistingSecretEnabled }}
+    {{-  $_ := set $values.proxy "openid" dict }}
+    {{- range $k, $v := $auth.openid }}
+      {{- $_ := set $values.proxy.openid (kebabcase $k) $v }}
+    {{ end }}
   {{ end }}
 {{- else if $auth.authSAMLEnabled }}
   {{-  $_ := set $values.proxy "authentication" "saml" }}
   {{-  $_ := set $values.proxy "saml" dict }}
-  {{- range $k, $v := $auth.saml }}
-    {{- $_ := set $values.proxy.saml (kebabcase $k) $v }}
+  {{- if not .Values.authExistingSecretEnabled }}
+    {{- range $k, $v := $auth.saml }}
+      {{- $_ := set $values.proxy.saml (kebabcase $k) $v }}
+    {{ end }}
   {{ end }}
 {{- else if $auth.authSocialEnabled }}
   {{- $_ := set $values.proxy "authentication" "social" }}
+  {{- if not .Values.authExistingSecretEnabled }}
     {{- $_ := set $values.proxy "social" dict }}
     {{- if $auth.social.twitterEnabled -}}
         {{-  $_ := set $values.proxy.social "twitter" dict }}
@@ -155,21 +163,40 @@ Auth
           {{- $_ := set $values.proxy.social.linkedin (kebabcase $k) $v }}
         {{ end }}
     {{- end -}}
+  {{- end -}}
 {{- else if $auth.authWebServiceEnabled }}
   {{-  $_ := set $values.proxy "authentication" "webservice" }}
-  {{-  $_ := set $values.proxy "webservice" dict }}
-  {{- range $k, $v := $auth.webservice }}
-    {{- $_ := set $values.proxy.webservice (kebabcase $k) $v }}
+  {{- if not .Values.authExistingSecretEnabled }}
+    {{-  $_ := set $values.proxy "webservice" dict }}
+    {{- range $k, $v := $auth.webservice }}
+      {{- $_ := set $values.proxy.webservice (kebabcase $k) $v }}
+    {{ end }}
   {{ end }}
 {{- else if $auth.authSimpleEnabled }}
   {{- $_ := set $values.proxy "authentication" "simple" }}
-  {{- $_ := set $values.proxy "users" $auth.users }}
+  {{- if not .Values.authExistingSecretEnabled }}
+    {{- $_ := set $values.proxy "users" $auth.users }}
+    {{ if kindIs "slice" $auth.users }}
+      {{- $_ := set $values.proxy "users" $auth.users }}
+    {{ else }}
+      {{- $usersList := list $auth.users }}
+      {{- $_ := set $values.proxy "users" $usersList }}
+    {{ end }}
+  {{ end }}
 {{- end }}
 
 
 {{/*
 Proxy
 */}}
+
+{{ if kindIs "map" $values.proxy.specs }}
+  {{- $specs := pick $values.proxy "specs" }}
+  {{- $specs := list $specs.specs }}
+  {{- $_ := unset $values.proxy "specs"  }}
+  {{- $_ := set $values.proxy "specs" $specs }}
+{{ end }}
+
 {{- range $k, $v := $values.proxy }}
   {{- $_ := set $values.proxy (kebabcase $k) $v }}
   {{- $kebabKey := (kebabcase $k) }}
