@@ -324,8 +324,8 @@ def test_auth_existing_secret():
     values_file = os.path.join(os.path.dirname(__file__), "values-auth-existing-secret.yaml")
     chart = HelmChart(chart_name=chart_name, helm_dir=helm_dir, values_file=values_file)
     chart.run_helm_template(files=["deployment.yaml"])
-    secret_name = chart.values_data['authExistingSecret']['secretRef']['name']
-    secret_key = chart.values_data['authExistingSecret']['secretRef']['key']
+    secret_name = chart.values_data['authExistingSecret']['secretKeyRef']['name']
+    secret_key = chart.values_data['authExistingSecret']['secretKeyRef']['key']
 
     deployment_data = chart.rendered_data["deployment.yaml"]
     container_env = deployment_data['spec']['template']['spec']['containers'][0]['env']

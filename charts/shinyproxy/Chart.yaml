@@ -10,4 +10,4 @@ dependencies:
     tags:
       - bitnami-common
     version: 1.x.x
-version: 0.10.7
+version: 0.10.8
