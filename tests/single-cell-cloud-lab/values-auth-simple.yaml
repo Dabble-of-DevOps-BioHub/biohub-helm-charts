@@ -1,0 +1,18 @@
+shinyproxy:
+  proxy:
+    landingPage: /app/single-cell-cloud-lab/
+    logoUrl: https://github.com/dabble-of-devops-bioanalyze/biohub-info/raw/master/logos/BioHub_v1_logo_only-01.png
+    specs:
+    - serviceAccount: "my-pytest-service-account"
+      containerEnv:
+        BUCKET: "my-pytest-s3-bucket"
+  auth:
+    authSimpleEnabled: true
+    authNoneEnabled:  false
+    users:
+      ## @param auth.users[0].name
+    - name: user01
+      ## @param auth.users[0].password Please note that you should absolutely change this password
+      password: "password"
+      ## @param auth.users[0].groups User Groups
+      groups: scientists, users

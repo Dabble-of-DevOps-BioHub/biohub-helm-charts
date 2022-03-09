@@ -4,6 +4,6 @@ dependencies:
   version: 1.11.3
 - name: shinyproxy
   repository: https://dabble-of-devops-bioanalyze.github.io/helm-charts/
-  version: 0.9.9
-digest: sha256:9205788311e95a577832afd8a426da518aa9a53b2969fef31fa8c98733e15ff2
-generated: "2022-03-06T12:20:24.634068+03:00"
+  version: 0.10.8
+digest: sha256:6de5f67fe4bf822e75cd9df8e8208e9e9a953703514f14adabfefb35b46f85ed
+generated: "2022-03-09T17:00:57.285475+03:00"

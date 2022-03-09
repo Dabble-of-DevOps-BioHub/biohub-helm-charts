@@ -28,4 +28,4 @@ sources:
   - https://github.com/Novartis/cellxgene-gateway
   - https://github.com/remche/zero-to-shinyproxy
   - https://www.shinyproxy.io/documentation
-version: 0.6.8
+version: 0.7.8
