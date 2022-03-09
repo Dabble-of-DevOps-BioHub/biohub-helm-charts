@@ -254,7 +254,9 @@ def run(
 ):
     data = read_changeset_file(changeset_file, version_title, release_notes, helm_chart_version)
     sanity_checks(data)
+    convert_details_to_json(data, version_title, release_notes)
     change_set_id = start_change_set(data, changeset_name)
+    print(f"Successfuly submitted changeset with id: {change_set_id}")
     describe_change_set_response = get_change_set_status(change_set_id)
     pprint(describe_change_set_response)
 
