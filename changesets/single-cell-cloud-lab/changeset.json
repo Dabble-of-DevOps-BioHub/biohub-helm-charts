@@ -24,7 +24,7 @@
                 ],
                 "Description": "Helm Chart Delivery for EKS",
                 "UsageInstructions": "Before launching you will need to have your single cell data stored in S3. See: https://github.com/dabble-of-devops-bioanalyze/helm-charts/tree/main/charts/single-cell-cloud-lab#access-data-in-s3",
-                "HelmChartUri": "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/single-cell-cloud-lab:0.6.8",
+                "HelmChartUri": "709825985650.dkr.ecr.us-east-1.amazonaws.com/dabble-of-devops/single-cell-cloud-lab:0.7.8",
                 "Namespace": "default",
                 "MarketplaceServiceAccountName": "single-cell-cloud-lab-sa",
                 "OverrideParameters": [
